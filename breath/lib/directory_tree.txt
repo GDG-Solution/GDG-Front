@@ -1,0 +1,19 @@
+lib/
+├── main.dart                  // 앱 진입점
+├── screens/                   // 각 화면 디렉터리
+│   ├── home_screen.dart       // 홈 화면
+│   ├── search_screen.dart     // 검색 화면
+│   ├── profile_screen.dart    // 프로필 화면
+│   └── ...                    // 추가 화면
+├── widgets/                   // 재사용 가능한 위젯 디렉터리
+│   ├── custom_bottom_bar.dart // 공통 BottomNavigationBar
+│   └── ...                    // 기타 공통 위젯
+├── providers/                 // 상태 관리 관련 디렉터리 (예: Provider, Riverpod)
+│   └── bottom_nav_provider.dart
+├── utils/                     // 공통 유틸리티 (예: 테마, 상수, 헬퍼 함수)
+│   ├── constants.dart         // 상수 파일
+│   └── theme.dart             // 앱 테마 설정
+├── models/                    // 데이터 모델 디렉터리
+│   └── ...                    // 데이터 클래스 파일
+└── services/                  // API 또는 데이터 관련 서비스
+    └── api_service.dart       // API 호출 파일
