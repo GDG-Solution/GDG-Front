@@ -57,7 +57,7 @@ class HomeMainScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFF6EE95C), Color(0xFF4CAF50)], // 배경 그라디언트
+            colors: [Color(0xFF375E43), Color(0xFF3A413B)], // 배경 그라디언트
           ),
         ),
         child: Column(
