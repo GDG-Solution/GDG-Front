@@ -33,9 +33,11 @@ class HomeMainScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent, // 투명 배경
         elevation: 0,
-        title: Text(
-          "이번 달에 이겨낸 나의 공황은",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        title: IconButton(
+          icon: Icon(Icons.account_circle, color: Colors.white),
+          onPressed: () {
+            // 공황 기록 추가 기능
+          },
         ),
         actions: [
           IconButton(
@@ -90,16 +92,12 @@ class HomeMainScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: CategoryFilter(onCategorySelected: _onCategoryChanged),
             ),
-
             // 공황 기록 리스트 (슬라이드 가능)
-            Expanded(
-              child: PageView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: panicRecords.length,
-                itemBuilder: (context, index) {
-                  final record = panicRecords[index];
-                  return _buildPanicCard(record);
-                },
+            Align(
+              alignment: Alignment.topCenter, // ✅ 위쪽으로 정렬
+              child: SizedBox(
+                height: 360, // ✅ 카드 리스트 높이 고정
+                child: PanicList(panicRecords: panicRecords),
               ),
             ),
           ],
