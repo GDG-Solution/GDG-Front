@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_bottom_bar.dart';
+// import '../widgets/custom_bottom_bar.dart';
+import '../widgets/custom_bottom_nav.dart';
+import 'home_main_screen.dart'; // 홈 UI 화면 추가
 import 'calendar_screen.dart'; // 검색 화면 추가
 import 'more_screen.dart'; // 프로필 화면 추가
 
@@ -11,11 +13,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  // 화면 리스트
   final List<Widget> _screens = [
-    Center(child: Text('Home Screen')), // Home
-    CalendarScreen(), // Search
-    MoreScreen(), // Profile
+    HomeMainScreen(),
+    CalendarScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -32,6 +32,15 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // AI 통화 기능 추가
+        },
+        backgroundColor: Color(0xFF6EE95C),
+        child: Icon(Icons.call, color: Colors.white),
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerDocked, // 중앙 배치
     );
   }
 }
