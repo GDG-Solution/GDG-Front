@@ -67,7 +67,7 @@ class _CallingMainState extends State<CallingMain>
                   width: double.infinity,
                   margin: EdgeInsets.symmetric(horizontal: 35), // 좌우 여백 추가
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(20), // 둥근 모서리
                     border: Border.all(
                       color: Colors.white.withOpacity(0.5), // 반투명한 테두리
