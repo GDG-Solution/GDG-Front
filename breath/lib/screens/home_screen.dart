@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_bottom_bar.dart';
 import 'calendar_screen.dart'; // 검색 화면 추가
 import 'more_screen.dart'; // 프로필 화면 추가
+import './calling/calling_main.dart'; // calling_main.dart 파일 import
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -32,6 +33,15 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // AI 통화 기능 추가
+        },
+        backgroundColor: Color(0xFF6EE95C),
+        child: Icon(Icons.call, color: Colors.white),
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerDocked, // 중앙 배치
     );
   }
 }
