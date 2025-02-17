@@ -42,7 +42,7 @@ class _CallingMainState extends State<CallingMain>
           ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, // ✅ 상, 중, 하 균등 분배
+          mainAxisAlignment: MainAxisAlignment.spaceBetween, // 상, 중, 하 균등 분배
           children: [
             // ✅ 1. 상단 영역 (타이머 등)
             SizedBox(height: 10),
@@ -58,38 +58,31 @@ class _CallingMainState extends State<CallingMain>
                     children: [
                       AnimatedWaveCircle(controller: _controller), // 애니메이션 효과
                       CharacterCircle(), // 중앙 캐릭터
-                      Positioned(
-                        bottom: MediaQuery.of(context).size.height * 0.35,
-                        child: PageIndicator(), // 페이지 인디케이터
-                      )
                     ],
                   ),
                 ),
-
-                // SizedBox(height: 10),
-                // PageIndicator(), // 페이지 인디케이터
                 SizedBox(height: 0),
                 Container(
-                  height: 72, // ✅ 높이를 줄여서 버튼 스타일처럼 만들기
+                  height: 72, // 높이를 줄여서 버튼 스타일처럼 만들기
                   width: double.infinity,
-                  margin: EdgeInsets.symmetric(horizontal: 35), // ✅ 좌우 여백 추가
+                  margin: EdgeInsets.symmetric(horizontal: 35), // 좌우 여백 추가
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1), // ✅ 반투명한 배경
-                    borderRadius: BorderRadius.circular(20), // ✅ 둥근 모서리
+                    color: Colors.white.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(20), // 둥근 모서리
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.5), // ✅ 반투명한 테두리
-                      width: 1.5, // ✅ 테두리 두께
+                      color: Colors.white.withOpacity(0.5), // 반투명한 테두리
+                      width: 1.5, // 테두리 두께
                     ),
                   ),
                   alignment: Alignment.center,
                   child: Text(
                     "우연아 앞에 보이는 것들 아무거나 얘기해줘",
                     style: TextStyle(
-                      color: Colors.white, // ✅ 흰색 텍스트
-                      fontSize: 16, // ✅ 적절한 폰트 크기
-                      fontWeight: FontWeight.w600, // ✅ 중간 굵기 적용
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
-                    textAlign: TextAlign.center, // ✅ 텍스트 중앙 정렬
+                    textAlign: TextAlign.center,
                   ),
                 )
               ],
@@ -97,7 +90,7 @@ class _CallingMainState extends State<CallingMain>
 
             // ✅ 3. 하단 영역 (마이크 버튼)
             Padding(
-              padding: EdgeInsets.only(bottom: 100), // ✅ 버튼 하단 여백 추가
+              padding: EdgeInsets.only(bottom: 100), // 버튼 하단 여백 추가
               child: MicButton(),
             ),
           ],
@@ -109,18 +102,34 @@ class _CallingMainState extends State<CallingMain>
   // ✅ 상단 앱바
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.transparent, // ✅ 배경 투명
+      backgroundColor: Color(0xFF728C78),
       elevation: 0,
       leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () {},
+        icon: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 24,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
       ),
-      title: Text('05:00', style: TextStyle(color: Colors.white)),
+      title: Text(
+        "05:00",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+        textAlign: TextAlign.center,
+      ),
       centerTitle: true,
       actions: [
         IconButton(
           icon: Icon(Icons.call_end, color: Colors.redAccent),
-          onPressed: () {},
+          onPressed: () {
+            print("통화 종료");
+          },
         ),
       ],
     );
@@ -169,35 +178,22 @@ class CharacterCircle extends StatelessWidget {
   }
 }
 
-// ✅ 페이지 인디케이터
-class PageIndicator extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(3, (index) {
-        return Container(
-          margin: EdgeInsets.symmetric(horizontal: 4),
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: index == 1 ? Colors.white : Colors.white.withOpacity(0.5),
-          ),
-        );
-      }),
-    );
-  }
-}
-
 // ✅ 하단 마이크 버튼
 class MicButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min, // ✅ Column이 내용만큼만 차지하도록 설정
+      mainAxisSize: MainAxisSize.min, // Column이 내용만큼만 차지하도록 설정
       children: [
-        Text('눌러서 대답하기', style: TextStyle(color: Colors.white)),
+        Text(
+          "눌러서 대답하기",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+          textAlign: TextAlign.center,
+        ),
         SizedBox(height: 30),
         GestureDetector(
           onTap: () {
