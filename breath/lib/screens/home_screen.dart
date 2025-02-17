@@ -35,7 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // AI 통화 기능 추가
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CallingMain()),
+          );
         },
         backgroundColor: Color(0xFF6EE95C),
         child: Icon(Icons.call, color: Colors.white),
