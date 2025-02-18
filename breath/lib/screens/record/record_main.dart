@@ -79,12 +79,12 @@ class _RecordMainState extends State<RecordMain> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _actionButton("안하기", 88, Color(0xFFDBE3D0)!,
-                      Color(0xff728C78), Color(0xffCBE0B8), () {
+                  _actionButton("안하기", 88, Color(0xFFDBE3D0), Color(0xff728C78),
+                      Color(0xffCBE0B8), () {
                     Navigator.of(context)
                         .popUntil((route) => route.isFirst); // ✅ 홈 화면 이동
                   }),
-                  _actionButton("기록하기", 272, Color(0xFFE1F8CC)!,
+                  _actionButton("기록하기", 272, Color(0xFFE1F8CC),
                       Color(0xFF275220), Color(0xffCBE0B8), () {
                     // ✅ 기록 페이지로 이동 (아직 없음)
                   }),
