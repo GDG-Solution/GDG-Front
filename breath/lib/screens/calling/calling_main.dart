@@ -29,7 +29,7 @@ class _CallingMainState extends State<CallingMain>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(), // ✅ 상단 앱바
+      appBar: _buildAppBar(context), // ✅ 상단 앱바
       body: Container(
         decoration: BoxDecoration(
           gradient: RadialGradient(
@@ -100,7 +100,7 @@ class _CallingMainState extends State<CallingMain>
   }
 
   // ✅ 상단 앱바
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Color(0xFF728C78),
       elevation: 0,
@@ -127,9 +127,7 @@ class _CallingMainState extends State<CallingMain>
       actions: [
         IconButton(
           icon: Icon(Icons.call_end, color: Colors.redAccent),
-          onPressed: () {
-            print("통화 종료");
-          },
+          onPressed: () => _showEndCallDialog(context),
         ),
       ],
     );
@@ -219,4 +217,75 @@ class MicButton extends StatelessWidget {
       ],
     );
   }
+}
+
+void _showEndCallDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: true, // 바깥 클릭 시 닫힘
+    barrierColor: Colors.black54, // 배경 어둡게 처리
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20), // 둥근 모서리
+        ),
+        backgroundColor: Colors.white.withAlpha(100), // 반투명한 배경
+        child: SizedBox(
+          width: 260, // 다이얼로그 너비 지정
+          height: 130, // 다이얼로그 높이 지정
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // 내용 크기에 맞게 설정
+              children: [
+                Text(
+                  "통화를 종료할까요?",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _dialogButton("아니요", Colors.grey[500]!, Colors.white, () {
+                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                    }),
+                    SizedBox(width: 8), // 버튼 간격 추가
+                    _dialogButton("통화종료", Colors.white, Colors.black, () {
+                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                      Navigator.of(context).pop(); // 통화 화면 종료
+                    }),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+// ✅ 다이얼로그 버튼 위젯
+Widget _dialogButton(
+    String text, Color bgColor, Color textColor, VoidCallback onPressed) {
+  return ElevatedButton(
+    onPressed: onPressed,
+    style: ElevatedButton.styleFrom(
+      backgroundColor: bgColor,
+      minimumSize: Size(105, 40),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+    ),
+    child: Text(
+      text,
+      style: TextStyle(
+          fontSize: 14, color: textColor, fontWeight: FontWeight.w500),
+    ),
+  );
 }
