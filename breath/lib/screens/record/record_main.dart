@@ -79,13 +79,13 @@ class _RecordMainState extends State<RecordMain> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _actionButton(
-                      "안하기", 88, Color(0xFFDBE3D0)!, Color(0xff728C78), () {
+                  _actionButton("안하기", 88, Color(0xFFDBE3D0)!,
+                      Color(0xff728C78), Color(0xffCBE0B8), () {
                     Navigator.of(context)
                         .popUntil((route) => route.isFirst); // ✅ 홈 화면 이동
                   }),
-                  _actionButton(
-                      "기록하기", 272, Color(0xFFE1F8CC)!, Color(0xFF275220), () {
+                  _actionButton("기록하기", 272, Color(0xFFE1F8CC)!,
+                      Color(0xFF275220), Color(0xffCBE0B8), () {
                     // ✅ 기록 페이지로 이동 (아직 없음)
                   }),
                 ],
@@ -141,14 +141,14 @@ class _RecordMainState extends State<RecordMain> {
                       5 - dotCount,
                       (i) => Padding(
                         padding: EdgeInsets.only(right: 4),
-                        child: Icon(Icons.circle, color: Colors.grey, size: 8),
+                        child: Icon(Icons.circle, color: Colors.grey, size: 10),
                       ),
                     ),
                     ...List.generate(
                       dotCount,
                       (i) => Padding(
                         padding: EdgeInsets.only(right: 4),
-                        child: Icon(Icons.circle, color: dotColor, size: 8),
+                        child: Icon(Icons.circle, color: dotColor, size: 10),
                       ),
                     ),
                   ],
@@ -178,7 +178,7 @@ class _RecordMainState extends State<RecordMain> {
 
   // ✅ 하단 버튼
   Widget _actionButton(String text, double width, Color bgColor,
-      Color textColor, VoidCallback onPressed) {
+      Color textColor, Color borderColor, VoidCallback onPressed) {
     return SizedBox(
       width: width,
       height: 72,
@@ -186,8 +186,10 @@ class _RecordMainState extends State<RecordMain> {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: bgColor,
+          shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
+            side: BorderSide(color: borderColor, width: 1),
           ),
           padding: EdgeInsets.symmetric(vertical: 15),
         ),
