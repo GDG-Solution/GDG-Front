@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../record/record_main.dart';
 
 class CallingMain extends StatefulWidget {
   @override
@@ -257,6 +258,10 @@ void _showEndCallDialog(BuildContext context) {
                     _dialogButton("통화종료", Colors.white, Colors.black, () {
                       Navigator.of(context).pop(); // 다이얼로그 닫기
                       Navigator.of(context).pop(); // 통화 화면 종료
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RecordMain()),
+                      );
                     }),
                   ],
                 ),
