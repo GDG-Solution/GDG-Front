@@ -1,0 +1,12 @@
+// 색상 설정 방법
+Color(0xFF000000) // 000000: 색상 코드
+Colors.white
+Colors.red[300]
+
+// 그림자 이렇게 설정됨
+BoxShadow(
+    color: Colors.black.withOpacity(0.08), // ✅ 투명도 8% 적용
+    offset: Offset(0, 2), // ✅ X: 0, Y: 2
+    blurRadius: 4, // ✅ Blur: 4
+    spreadRadius: 0, // ✅ Spread: 0
+)
