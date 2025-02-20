@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './record_2.dart';
+import './components/custom_button.dart';
 
 class RecordMain extends StatefulWidget {
   @override
@@ -6,7 +8,7 @@ class RecordMain extends StatefulWidget {
 }
 
 class _RecordMainState extends State<RecordMain> {
-  int _selectedIndex = 3; // ✅ 선택된 인덱스 (-1: 아무것도 선택되지 않음)
+  int _painRate = -1; // ✅ 선택된 인덱스 (-1: 아무것도 선택되지 않음)
 
   @override
   Widget build(BuildContext context) {
@@ -73,21 +75,40 @@ class _RecordMainState extends State<RecordMain> {
               ),
             ),
 
-            // ✅ 하단 버튼
+            // ✅ 하단 버튼 (CustomButton 사용)
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _actionButton("안하기", 88, Color(0xFFDBE3D0), Color(0xff728C78),
-                      Color(0xffCBE0B8), () {
-                    Navigator.of(context)
-                        .popUntil((route) => route.isFirst); // ✅ 홈 화면 이동
-                  }),
-                  _actionButton("기록하기", 272, Color(0xFFE1F8CC),
-                      Color(0xFF275220), Color(0xffCBE0B8), () {
-                    // ✅ 기록 페이지로 이동 (아직 없음)
-                  }),
+                  CustomButton(
+                    text: "안하기",
+                    width: 88,
+                    bgColor: Color(0xFFDBE3D0),
+                    textColor: Color(0xff728C78),
+                    borderColor: Color(0xffCBE0B8),
+                    onPressed: () {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
+                  ),
+                  CustomButton(
+                    text: "기록하기",
+                    width: 272,
+                    bgColor: Color(0xFFE1F8CC),
+                    textColor: Color(0xFF275220),
+                    borderColor: Color(0xffCBE0B8),
+                    onPressed: () {
+                      if (_painRate != -1) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                RecordPage2(painRate: 5 - _painRate),
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
@@ -102,25 +123,21 @@ class _RecordMainState extends State<RecordMain> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _selectedIndex = index;
+          _painRate = index;
         });
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 8),
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
         decoration: BoxDecoration(
-            color: _selectedIndex == index ? Colors.white : Color(0xFFF9FEF3),
+            color: _painRate == index ? Colors.white : Color(0xFFF9FEF3),
             borderRadius: BorderRadius.circular(20),
-            // border: Border.all(
-            //   color: _selectedIndex == index ? Colors.green : Colors.transparent,
-            //   width: 2,
-            // ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.08), // 투명도 8% 적용
-                offset: Offset(0, 2), // X: 0, Y: 2
-                blurRadius: 4, // Blur: 4
-                spreadRadius: 0, // Spread: 0
+                color: Colors.black.withOpacity(0.08),
+                offset: Offset(0, 2),
+                blurRadius: 4,
+                spreadRadius: 0,
               )
             ]),
         child: Row(
@@ -165,41 +182,12 @@ class _RecordMainState extends State<RecordMain> {
             ),
             Spacer(),
             Icon(
-              _selectedIndex == index
+              _painRate == index
                   ? Icons.radio_button_checked
                   : Icons.radio_button_off,
-              color: _selectedIndex == index ? Colors.green : Colors.grey,
+              color: _painRate == index ? Colors.green : Colors.grey,
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  // ✅ 하단 버튼
-  Widget _actionButton(String text, double width, Color bgColor,
-      Color textColor, Color borderColor, VoidCallback onPressed) {
-    return SizedBox(
-      width: width,
-      height: 72,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: bgColor,
-          shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(color: borderColor, width: 1),
-          ),
-          padding: EdgeInsets.symmetric(vertical: 15),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            color: textColor,
-            fontWeight: FontWeight.w600,
-          ),
         ),
       ),
     );
