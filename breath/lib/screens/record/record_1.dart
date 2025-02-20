@@ -6,7 +6,7 @@ class RecordMain extends StatefulWidget {
 }
 
 class _RecordMainState extends State<RecordMain> {
-  int _selectedIndex = -1; // ✅ 선택된 인덱스 (-1: 아무것도 선택되지 않음)
+  int _selectedIndex = 3; // ✅ 선택된 인덱스 (-1: 아무것도 선택되지 않음)
 
   @override
   Widget build(BuildContext context) {
