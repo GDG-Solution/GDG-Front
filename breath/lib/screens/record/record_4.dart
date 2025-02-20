@@ -3,14 +3,12 @@ import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 import 'components/custom_quistion_text.dart';
 
-import './record_4.dart';
-
-class RecordPage3 extends StatefulWidget {
+class RecordPage4 extends StatefulWidget {
   @override
-  _RecordPage3State createState() => _RecordPage3State();
+  _RecordPage4State createState() => _RecordPage4State();
 }
 
-class _RecordPage3State extends State<RecordPage3> {
+class _RecordPage4State extends State<RecordPage4> {
   // ✅ 선택된 증상 관리
   List<String> selectedSymptoms = [];
 
@@ -52,57 +50,11 @@ class _RecordPage3State extends State<RecordPage3> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomQuestionCard(
-                    questionNumber: "Q2",
-                    question: "증상을 모두 선택해주세요",
-                    subText: "강도가 약해도 선택해주세요",
+                    questionNumber: "Q3",
+                    question: "상황적기",
+                    subText: "상황을 설명해주세요",
                   ),
                   SizedBox(height: 20),
-
-                  // ✅ 증상 선택 리스트
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: symptomList.map((symptom) {
-                      bool isSelected = selectedSymptoms.contains(symptom);
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (isSelected) {
-                              selectedSymptoms.remove(symptom);
-                            } else {
-                              selectedSymptoms.add(symptom);
-                            }
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 20),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? Color(0xFF90DD85)
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Color(0xFFE1F8CC),
-                              width: 1.5,
-                            ),
-                          ),
-                          child: Text(
-                            symptom,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: isSelected
-                                  ? FontWeight.w700
-                                  : FontWeight.w500,
-                              color: isSelected
-                                  ? Color(0xFF275220)
-                                  : Color(0xFF728C78),
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
                 ],
               ),
             ),
@@ -153,18 +105,4 @@ class _RecordPage3State extends State<RecordPage3> {
       ),
     );
   }
-
-// ✅ 증상 리스트
-  final List<String> symptomList = [
-    "가슴통증",
-    "호흡곤란",
-    "복통",
-    "구역질",
-    "비현실감",
-    "열감/오한",
-    "떨림",
-    "어지러움",
-    "두근거림",
-    "죽음에 대한 공포"
-  ];
 }

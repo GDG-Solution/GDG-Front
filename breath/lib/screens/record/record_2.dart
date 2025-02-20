@@ -3,6 +3,7 @@ import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 
 import './record_3.dart';
+import 'components/custom_quistion_text.dart';
 
 class RecordPage2 extends StatefulWidget {
   final int painRate;
@@ -73,51 +74,12 @@ class _RecordPage2State extends State<RecordPage2> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFE1F8CC),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          "Q1",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff275220),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "공황이 일어났던 주변을 찍어주세요",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xff000000),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              "찍기 어렵다면 패스해도 좋아요",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff626262),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  CustomQuestionCard(
+                    questionNumber: "Q1",
+                    question: "공황이 일어났던 주변을 찍어주세요",
+                    subText: "찍기 어렵다면 패스해도 좋아요",
                   ),
+
                   SizedBox(height: 20),
 
                   // ✅ 카메라 박스
