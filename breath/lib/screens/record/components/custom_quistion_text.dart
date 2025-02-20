@@ -28,8 +28,8 @@ class CustomQuestionCard extends StatelessWidget {
           child: Text(
             questionNumber,
             style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
               color: Color(0xFF6EE95C),
             ),
           ),

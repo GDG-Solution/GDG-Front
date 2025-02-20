@@ -10,7 +10,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'BREATH',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'Pretendard',
+      ),
       initialRoute: '/', // 초기 경로 설정
       routes: {
         '/': (context) => HomeScreen(),
