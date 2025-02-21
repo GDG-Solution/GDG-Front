@@ -4,6 +4,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import './components/animated_wave_circle.dart';
 import './components/character_circle.dart';
 import './components/end_call_dialog.dart';
+import './components/custom_message_box.dart';
 
 class CallingMain extends StatefulWidget {
   @override
@@ -67,29 +68,7 @@ class _CallingMainState extends State<CallingMain>
                   ),
                 ),
                 SizedBox(height: 0),
-                Container(
-                  height: 72, // 높이를 줄여서 버튼 스타일처럼 만들기
-                  width: double.infinity,
-                  margin: EdgeInsets.symmetric(horizontal: 35), // 좌우 여백 추가
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20), // 둥근 모서리
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.5), // 반투명한 테두리
-                      width: 1.5, // 테두리 두께
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "우연아 앞에 보이는 것들 아무거나 얘기해줘",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                )
+                CustomMessageBox(message: "우연아 앞에 보이는 것들 아무거나 얘기해줘"),
               ],
             ),
 
