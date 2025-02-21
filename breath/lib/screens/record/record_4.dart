@@ -9,8 +9,13 @@ class RecordPage4 extends StatefulWidget {
 }
 
 class _RecordPage4State extends State<RecordPage4> {
-  // ✅ 선택된 증상 관리
-  List<String> selectedSymptoms = [];
+  TextEditingController _inputController = TextEditingController();
+
+  @override
+  void dispose() {
+    _inputController.dispose(); // 메모리 누수 방지
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +59,25 @@ class _RecordPage4State extends State<RecordPage4> {
                     question: "상황적기",
                     subText: "상황을 설명해주세요",
                   ),
+
                   SizedBox(height: 20),
+
+                  // ✅ 입력 필드 추가
+                  TextField(
+                    controller: _inputController,
+                    onChanged: (value) {
+                      print("사용자 입력: $value");
+                    },
+                    decoration: InputDecoration(
+                      hintText: "여기에 입력해주세요.",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      filled: true,
+                      fillColor: Color(0xFFF3F3F3),
+                    ),
+                    maxLines: 4,
+                  )
                 ],
               ),
             ),
