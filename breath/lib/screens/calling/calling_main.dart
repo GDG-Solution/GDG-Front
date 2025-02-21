@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import '../record/record_1.dart';
 
 class CallingMain extends StatefulWidget {
@@ -177,15 +178,23 @@ class CharacterCircle extends StatelessWidget {
   }
 }
 
-// ✅ 하단 마이크 버튼
-class MicButton extends StatelessWidget {
+class MicButton extends StatefulWidget {
+  @override
+  _MicButtonState createState() => _MicButtonState();
+}
+
+class _MicButtonState extends State<MicButton> {
+  final stt.SpeechToText _speech = stt.SpeechToText();
+  bool _isListening = false;
+  String _recognizedText = "";
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min, // Column이 내용만큼만 차지하도록 설정
       children: [
         Text(
-          "눌러서 대답하기",
+          _isListening ? "듣고 있어요..." : "눌러서 대답하기",
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -195,9 +204,7 @@ class MicButton extends StatelessWidget {
         ),
         SizedBox(height: 30),
         GestureDetector(
-          onTap: () {
-            print("마이크 버튼 클릭됨");
-          },
+          onTap: _toggleListening,
           child: Container(
             width: 122,
             height: 122,
@@ -210,13 +217,47 @@ class MicButton extends StatelessWidget {
                   spreadRadius: 2,
                 ),
               ],
-              color: Colors.greenAccent,
+              color: _isListening ? Colors.redAccent : Colors.greenAccent,
             ),
-            child: Icon(Icons.mic, color: Colors.white, size: 45),
+            child: Icon(
+              _isListening ? Icons.mic_off : Icons.mic,
+              color: Colors.white,
+              size: 45,
+            ),
           ),
         ),
       ],
     );
+  }
+
+  // ✅ 마이크 ON/OFF 함수
+  void _toggleListening() async {
+    if (_isListening) {
+      setState(() {
+        _isListening = false;
+      });
+      _speech.stop();
+      print("🗣 인식된 텍스트: $_recognizedText"); // 변환된 텍스트 출력
+    } else {
+      bool available = await _speech.initialize(
+        onStatus: (status) => print("🎙 상태: $status"),
+        onError: (error) => print("❌ 오류: $error"),
+      );
+
+      if (available) {
+        setState(() {
+          _isListening = true;
+        });
+
+        _speech.listen(
+          onResult: (result) {
+            setState(() {
+              _recognizedText = result.recognizedWords;
+            });
+          },
+        );
+      }
+    }
   }
 }
 
