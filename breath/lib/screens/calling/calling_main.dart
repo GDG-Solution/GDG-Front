@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-import '../record/record_1.dart';
+
+import './components/animated_wave_circle.dart';
+import './components/character_circle.dart';
+import './components/end_call_dialog.dart';
 
 class CallingMain extends StatefulWidget {
   @override
@@ -58,8 +61,8 @@ class _CallingMainState extends State<CallingMain>
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      AnimatedWaveCircle(controller: _controller), // 애니메이션 효과
-                      CharacterCircle(), // 중앙 캐릭터
+                      AnimatedWaveCircle(controller: _controller),
+                      CharacterCircle(),
                     ],
                   ),
                 ),
@@ -129,55 +132,14 @@ class _CallingMainState extends State<CallingMain>
       actions: [
         IconButton(
           icon: Icon(Icons.call_end, color: Colors.redAccent),
-          onPressed: () => _showEndCallDialog(context),
+          onPressed: () => showEndCallDialog(context),
         ),
       ],
     );
   }
 }
 
-// ✅ 원형 애니메이션 효과
-class AnimatedWaveCircle extends StatelessWidget {
-  final AnimationController controller;
-  const AnimatedWaveCircle({Key? key, required this.controller})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (context, child) {
-        return Container(
-          width: 225 * controller.value,
-          height: 225 * controller.value,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white.withOpacity(0.1),
-          ),
-        );
-      },
-    );
-  }
-}
-
-// ✅ 중앙 캐릭터 원형 박스
-class CharacterCircle extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 186,
-      height: 186,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.red[300],
-      ),
-      child: Center(
-        child: Text('캐릭터 영상', textAlign: TextAlign.center),
-      ),
-    );
-  }
-}
-
+// ✅ 마이크 버튼
 class MicButton extends StatefulWidget {
   @override
   _MicButtonState createState() => _MicButtonState();
@@ -259,79 +221,4 @@ class _MicButtonState extends State<MicButton> {
       }
     }
   }
-}
-
-void _showEndCallDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    barrierDismissible: true, // 바깥 클릭 시 닫힘
-    barrierColor: Colors.black54, // 배경 어둡게 처리
-    builder: (BuildContext context) {
-      return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20), // 둥근 모서리
-        ),
-        backgroundColor: Colors.white.withAlpha(100), // 반투명한 배경
-        child: SizedBox(
-          width: 260, // 다이얼로그 너비 지정
-          height: 130, // 다이얼로그 높이 지정
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min, // 내용 크기에 맞게 설정
-              children: [
-                Text(
-                  "통화를 종료할까요?",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _dialogButton("아니요", Colors.grey[500]!, Colors.white, () {
-                      Navigator.of(context).pop(); // 다이얼로그 닫기
-                    }),
-                    SizedBox(width: 8), // 버튼 간격 추가
-                    _dialogButton("통화종료", Colors.white, Colors.black, () {
-                      Navigator.of(context).pop(); // 다이얼로그 닫기
-                      Navigator.of(context).pop(); // 통화 화면 종료
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RecordMain()),
-                      );
-                    }),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
-
-// ✅ 다이얼로그 버튼 위젯
-Widget _dialogButton(
-    String text, Color bgColor, Color textColor, VoidCallback onPressed) {
-  return ElevatedButton(
-    onPressed: onPressed,
-    style: ElevatedButton.styleFrom(
-      backgroundColor: bgColor,
-      minimumSize: Size(105, 40),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-    ),
-    child: Text(
-      text,
-      style: TextStyle(
-          fontSize: 14, color: textColor, fontWeight: FontWeight.w500),
-    ),
-  );
 }
