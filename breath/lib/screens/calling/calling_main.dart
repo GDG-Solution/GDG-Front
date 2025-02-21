@@ -98,21 +98,35 @@ class _CallingMainState extends State<CallingMain>
           Navigator.pop(context);
         },
       ),
-      title: Text(
-        "05:00",
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
+      title: Container(
+        child: Row(
+          children: [
+            Image.asset("assets/images/calling/timer_icon.png", width: 18),
+            Container(width: 10),
+            Text(
+              "05:00",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
-        textAlign: TextAlign.center,
       ),
       centerTitle: true,
       actions: [
-        IconButton(
-          icon: Icon(Icons.call_end, color: Colors.redAccent),
-          onPressed: () => showEndCallDialog(context),
-        ),
+        Padding(
+          padding: EdgeInsets.only(right: 15),
+          child: GestureDetector(
+            onTap: () {
+              showEndCallDialog(context);
+            },
+            child: Image.asset("assets/images/calling/stop_calling.png",
+                width: 36),
+          ),
+        )
       ],
     );
   }
