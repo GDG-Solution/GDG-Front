@@ -194,24 +194,44 @@ class _MicButtonState extends State<MicButton> {
       _speech.stop();
       print("🗣 인식된 텍스트: $_recognizedText"); // 변환된 텍스트 출력
     } else {
-      bool available = await _speech.initialize(
-        onStatus: (status) => print("🎙 상태: $status"),
-        onError: (error) => print("❌ 오류: $error"),
-      );
+      bool available = false;
 
-      if (available) {
-        setState(() {
-          _isListening = true;
-        });
-
-        _speech.listen(
-          onResult: (result) {
-            setState(() {
-              _recognizedText = result.recognizedWords;
-            });
-          },
+      try {
+        available = await _speech.initialize(
+          onStatus: (status) => print("🎙 상태: $status"),
+          onError: (error) => print("❌ 오류: $error"),
         );
+      } catch (e) {
+        print("❌ 음성 인식 초기화 실패: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("⚠️ 음성 인식을 사용할 수 없습니다."),
+          ),
+        );
+        return;
       }
+
+      if (!available) {
+        print("⚠️ 음성 인식 서비스를 사용할 수 없습니다. (에뮬레이터에서는 정상 작동하지 않을 수 있음)");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("⚠️ 음성 인식을 사용할 수 없습니다."),
+          ),
+        );
+        return;
+      }
+
+      setState(() {
+        _isListening = true;
+      });
+
+      _speech.listen(
+        onResult: (result) {
+          setState(() {
+            _recognizedText = result.recognizedWords;
+          });
+        },
+      );
     }
   }
 }
