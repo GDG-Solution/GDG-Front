@@ -16,7 +16,7 @@ class CustomBottomBar extends StatelessWidget {
       child: SizedBox(
         height: 90,
         child: BottomAppBar(
-          color: Colors.white,
+          // color: Colors.white,
           shape: CircularNotchedRectangle(),
           notchMargin: 8.0,
           child: Padding(

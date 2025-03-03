@@ -16,11 +16,18 @@ class MonthlyPanicCount extends StatelessWidget {
               fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white),
           children: [
             TextSpan(
-              text: "$count 개",
+              text: "$count",
               style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w700,
                   color: Color(0xff6EE95C)),
+            ),
+            TextSpan(
+              text: " 개",
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white),
             ),
           ],
         ),
