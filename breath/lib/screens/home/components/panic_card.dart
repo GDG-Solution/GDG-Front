@@ -25,7 +25,7 @@ class PanicCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 8), // 카드 간격 추가
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(32),
         boxShadow: [
           BoxShadow(color: Colors.black26, blurRadius: 5, offset: Offset(0, 2)),
         ],
@@ -57,25 +57,28 @@ class PanicCard extends StatelessWidget {
             // 이미지 공간 (예시)
             Container(
               width: double.infinity,
-              height: 100,
+              height: 110,
               decoration: BoxDecoration(
                 color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(Icons.image, color: Colors.grey[600]), // 더미 아이콘
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
 
             // 공황 유형 (예: 호흡곤란)
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
               decoration: BoxDecoration(
                 color: Color(0xffE1F8CC),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
                 category,
-                style: TextStyle(fontSize: 12, color: Color(0xff275220)),
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff275220)),
               ),
             ),
             SizedBox(height: 6),
@@ -83,14 +86,17 @@ class PanicCard extends StatelessWidget {
             // 제목
             Text(
               title,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
             ),
             SizedBox(height: 4),
 
             // 설명
             Text(
               description,
-              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff626262)),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),

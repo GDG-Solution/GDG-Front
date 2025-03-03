@@ -22,9 +22,14 @@ class _CategoryFilterState extends State<CategoryFilter> {
         bool isSelected = selectedCategory == category;
         return TextButton(
           style: TextButton.styleFrom(
-            backgroundColor: isSelected ? Colors.green[300] : Colors.grey[200],
-            foregroundColor: isSelected ? Colors.white : Colors.black,
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            backgroundColor: isSelected
+                ? Color(0xffffffff)
+                : Color(0xFFFFFFFF).withOpacity(0.3), // 70% 투명
+            foregroundColor: isSelected ? Color(0xff111111) : Color(0xffffffff),
+            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
           ),
           onPressed: () {
             setState(() {
@@ -32,7 +37,11 @@ class _CategoryFilterState extends State<CategoryFilter> {
             });
             widget.onCategorySelected(category);
           },
-          child: Text(category),
+          child: Text(category,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              )),
         );
       }).toList(),
     );

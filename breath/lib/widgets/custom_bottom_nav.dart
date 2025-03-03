@@ -8,37 +8,52 @@ class CustomBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      shape: CircularNotchedRectangle(), // FAB 공간 확보
-      notchMargin: 8.0,
-      child: Container(
-        height: 60, // 바텀 바 높이
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildNavItem(Icons.article, "공황 기록", 0),
-            SizedBox(width: 40), // FAB 공간 확보
-            _buildNavItem(Icons.bar_chart, "공황 분석", 1),
-          ],
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      ),
+      child: SizedBox(
+        height: 90,
+        child: BottomAppBar(
+          // color: Colors.white,
+          shape: CircularNotchedRectangle(),
+          notchMargin: 8.0,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildNavItem(
+                    "assets/icons/bottom/first_active.png", "공황기록", 0),
+                SizedBox(width: 50),
+                _buildNavItem("assets/icons/bottom/second.png", "전화내용", 1),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index) {
+  Widget _buildNavItem(String imagePath, String label, int index) {
     return GestureDetector(
       onTap: () => onTap(index),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon,
-              color: index == currentIndex
-                  ? Color(0xff111111)
-                  : Color(0xFFA1A1A1)),
+          Image.asset(
+            imagePath,
+            width: 24,
+            color:
+                index == currentIndex ? Color(0xff111111) : Color(0xFFA1A1A1),
+          ),
+          SizedBox(height: 7),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
               color:
                   index == currentIndex ? Color(0xff111111) : Color(0xFFA1A1A1),
             ),

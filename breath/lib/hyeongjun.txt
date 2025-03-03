@@ -1,0 +1,28 @@
+// 🎨 색상 설정 방법
+Color(0xFF000000) // 000000: 색상 코드
+Colors.white
+Colors.red[300]
+Colors.transparent // 투명 색상
+
+// 🔘 ElevatedButton은 기본적으로 그림자가 있는 버튼이므로 아래 속성을 통해 그림자 제거거
+shadowColor: Colors.transparent
+
+// 👤 그림자 이렇게 설정됨
+BoxShadow(
+    color: Colors.black.withOpacity(0.08), // ✅ 투명도 8% 적용
+    offset: Offset(0, 2), // ✅ X: 0, Y: 2
+    blurRadius: 4, // ✅ Blur: 4
+    spreadRadius: 0, // ✅ Spread: 0
+)
+
+// 📷 이미지 사용
+Image.asset("assets/images/record/leaf_left.png", width: 37),
+
+// Text 텍스트
+ Text(  date,
+        style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+        )
+    ),
