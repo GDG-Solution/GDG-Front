@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 // import '../widgets/custom_bottom_bar.dart';
 import '../widgets/custom_bottom_nav.dart';
-import 'home_main_screen.dart'; // 홈 UI 화면 추가
-import 'calendar_screen.dart'; // 검색 화면 추가
+import './home/home_main_screen.dart'; // 홈 UI 화면 추가
+import './calendar/calendar_screen.dart'; // 검색 화면 추가
 import './calling/calling_main.dart'; // calling_main.dart 파일 import
 
 class HomeScreen extends StatefulWidget {
