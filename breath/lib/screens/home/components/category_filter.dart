@@ -37,7 +37,11 @@ class _CategoryFilterState extends State<CategoryFilter> {
             });
             widget.onCategorySelected(category);
           },
-          child: Text(category),
+          child: Text(category,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              )),
         );
       }).toList(),
     );
