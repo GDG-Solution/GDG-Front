@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../record/record_1.dart';
+import '../../record/record_main.dart';
 import './dialog_button.dart';
 
 void showEndCallDialog(BuildContext context) {

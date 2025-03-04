@@ -1,8 +1,10 @@
+// Q1. 공황이 일어났던 주변을 찍어주세요. 주변 사진 촬영
+
 import 'package:flutter/material.dart';
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 
-import './record_3.dart';
+import 'record_more_2.dart';
 import 'components/custom_quistion_text.dart';
 
 class RecordPage2 extends StatefulWidget {

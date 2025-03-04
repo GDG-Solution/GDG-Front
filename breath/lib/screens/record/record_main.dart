@@ -1,5 +1,7 @@
+// Q0. 오늘도 이겨냈어요! 고통 수치 기록
+
 import 'package:flutter/material.dart';
-import './record_2.dart';
+import 'record_more_1.dart';
 import './components/custom_button.dart';
 
 class RecordMain extends StatefulWidget {
