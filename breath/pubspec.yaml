@@ -63,6 +63,7 @@ flutter:
     - assets/images/record/
     - assets/images/calling/
     - assets/icons/bottom/
+    - assets/icons/home/
 
     # 임시 데이터
     - assets/data/panic_records.json
