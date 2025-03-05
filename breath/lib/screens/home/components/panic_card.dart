@@ -107,7 +107,7 @@ class PanicCard extends StatelessWidget {
                 }).toList(),
               ),
 
-              SizedBox(height: 6),
+              SizedBox(height: 8),
 
               // 제목
               Text(
