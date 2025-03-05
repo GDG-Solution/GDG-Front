@@ -100,12 +100,15 @@ class PanicCard extends StatelessWidget {
             Text(
               description,
               style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xff626262)),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff626262),
+              ),
+              maxLines: 1, // 최대 1줄까지만 표시
+              overflow: TextOverflow.ellipsis, // 초과하면 '...' 표시
+              textAlign: TextAlign.start, // 왼쪽 정렬 (옵션)
             ),
+
             SizedBox(height: 8),
 
             // 시간 & 아이콘
