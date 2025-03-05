@@ -84,20 +84,29 @@ class PanicCard extends StatelessWidget {
               SizedBox(height: 20),
 
               // 공황 유형 (예: 호흡곤란)
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
-                decoration: BoxDecoration(
-                  color: Color(0xffE1F8CC),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  category,
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff275220)),
-                ),
+              Wrap(
+                spacing: 6, // 카테고리 사이 간격
+                runSpacing: 4, // 줄바꿈 간격
+                children: category.split(', ').map((cat) {
+                  // 쉼표로 분할하여 리스트로 변환
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+                    decoration: BoxDecoration(
+                      color: Color(0xffE1F8CC),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      cat.trim(), // 공백 제거 후 출력
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff275220),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
+
               SizedBox(height: 6),
 
               // 제목
