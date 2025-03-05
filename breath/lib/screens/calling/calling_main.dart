@@ -141,7 +141,7 @@ class MicButton extends StatefulWidget {
 class _MicButtonState extends State<MicButton> {
   final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
-  String _recognizedText = "";
+  String _recognizedText = "듣고 있어요...";
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +149,7 @@ class _MicButtonState extends State<MicButton> {
       mainAxisSize: MainAxisSize.min, // Column이 내용만큼만 차지하도록 설정
       children: [
         Text(
-          _isListening ? "듣고 있어요..." : "눌러서 대답하기",
+          _isListening ? _recognizedText : "눌러서 대답하기",
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -192,7 +192,7 @@ class _MicButtonState extends State<MicButton> {
         _isListening = false;
       });
       _speech.stop();
-      print("🗣 인식된 텍스트: $_recognizedText"); // 변환된 텍스트 출력
+      print("🗣 최종 인식된 텍스트: $_recognizedText"); // 변환된 텍스트 출력
     } else {
       bool available = false;
 
@@ -223,6 +223,7 @@ class _MicButtonState extends State<MicButton> {
 
       setState(() {
         _isListening = true;
+        _recognizedText = "듣고 있어요..."; // 기존 텍스트 초기화
       });
 
       _speech.listen(
@@ -230,6 +231,7 @@ class _MicButtonState extends State<MicButton> {
           setState(() {
             _recognizedText = result.recognizedWords;
           });
+          print("🔹 실시간 인식 중: ${result.recognizedWords}"); // 실시간으로 콘솔에 출력
         },
       );
     }
