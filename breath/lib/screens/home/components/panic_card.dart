@@ -9,9 +9,9 @@ class PanicCard extends StatelessWidget {
   final String date;
   final String day;
   final String category;
-  final String painRate;
+  final int painRate;
 
-  PanicCard({
+  const PanicCard({
     required this.title,
     required this.description,
     required this.time,
@@ -54,7 +54,7 @@ class PanicCard extends StatelessWidget {
                   ],
                 ),
                 PainLevelDots(
-                  painRate: int.tryParse(painRate) ?? 0, // 문자열을 정수로 변환
+                  painRate: painRate, // 문자열을 정수로 변환
                 ),
               ],
             ),

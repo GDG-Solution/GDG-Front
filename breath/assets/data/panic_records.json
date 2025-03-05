@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1",
+    "userId": "user_123",
+    "counselId": "counsel_456",
+    "date": "2024-03-05T05:00:00Z",
+    "picture": [],
+    "category": ["호흡곤란"],
+    "score": 5,
+    "title": "집에 혼자 있다가 생겼다",
+    "content": "점점 공황이 약해지는 것 같다. 안전한 경험.."
+  },
+  {
+    "id": "2",
+    "userId": "user_123",
+    "counselId": "counsel_789",
+    "date": "2024-03-03T13:30:00Z",
+    "picture": [],
+    "category": ["숨 가쁨"],
+    "score": 3,
+    "title": "사람 많은 곳에서 불안",
+    "content": "주변 소음이 커질수록 심박수가 올라감"
+  }
+]
