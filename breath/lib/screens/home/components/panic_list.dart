@@ -1,55 +1,35 @@
 import 'package:flutter/material.dart';
 import 'panic_card.dart';
 
-class PanicList extends StatefulWidget {
-  final List<Map<String, String>> panicRecords;
+class PanicList extends StatelessWidget {
+  final List<Map<String, dynamic>> panicRecords; // ✅ dynamic으로 변경
+
+  final PageController _pageController = PageController(viewportFraction: 0.8);
 
   PanicList({required this.panicRecords});
 
   @override
-  _PanicListState createState() => _PanicListState();
-}
-
-class _PanicListState extends State<PanicList> {
-  final PageController _pageController = PageController(viewportFraction: 0.8);
-  double _currentPage = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController.addListener(() {
-      setState(() {
-        _currentPage = _pageController.page ?? 0.0;
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
-      height: 360, // 카드 높이 조정
+      height: 360,
       child: PageView.builder(
         controller: _pageController,
         scrollDirection: Axis.horizontal,
-        itemCount: widget.panicRecords.length,
+        itemCount: panicRecords.length,
         itemBuilder: (context, index) {
-          final record = widget.panicRecords[index];
+          final record = panicRecords[index];
 
-          // 현재 선택된 카드면 불투명도 1.0, 나머지는 0.5 적용
-          double opacity = (index - _currentPage).abs() < 0.5 ? 1.0 : 0.5;
-
-          return Opacity(
-            opacity: opacity, // ✅ 불투명도 적용
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: PanicCard(
-                  title: record['title']!,
-                  description: record['description']!,
-                  time: record['time']!,
-                  date: record['date']!,
-                  day: record['day']!,
-                  category: record['category']!,
-                  painRate: record['painRate']!),
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: PanicCard(
+              title: record['title'] as String? ?? "제목 없음", // ✅ 기본값 설정
+              description: record['content'] as String? ?? "내용 없음",
+              time: record['time'] as String? ?? "00:00",
+              date: record['date']?.toString() ?? "N/A", // ✅ null-safe 처리
+              day: record['day'] as String? ?? "-",
+              category:
+                  (record['category'] as List<String>?)?.join(", ") ?? "-",
+              painRate: record['score'] as int? ?? 0, // ✅ 0으로 설정
             ),
           );
         },
