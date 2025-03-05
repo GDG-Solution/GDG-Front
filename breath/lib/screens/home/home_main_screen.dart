@@ -12,7 +12,8 @@ class HomeMainScreen extends StatelessWidget {
       "time": "05:00",
       "date": "20",
       "day": "FRI",
-      "category": "호흡곤란"
+      "category": "호흡곤란",
+      "painRate": "5"
     },
     {
       "title": "사람 많은 곳에서 불안",
@@ -20,7 +21,8 @@ class HomeMainScreen extends StatelessWidget {
       "time": "13:30",
       "date": "18",
       "day": "WED",
-      "category": "숨 가쁨"
+      "category": "숨 가쁨",
+      "painRate": "3"
     },
   ];
 

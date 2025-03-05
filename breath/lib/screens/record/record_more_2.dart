@@ -1,9 +1,11 @@
+// Q2. 증상을 모두 선택해주세요. 증상 선택
+
 import 'package:flutter/material.dart';
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 import 'components/custom_quistion_text.dart';
 
-import './record_4.dart';
+import 'record_more_3.dart';
 
 class RecordPage3 extends StatefulWidget {
   @override
