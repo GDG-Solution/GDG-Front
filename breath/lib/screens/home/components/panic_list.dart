@@ -43,13 +43,13 @@ class _PanicListState extends State<PanicList> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: PanicCard(
-                title: record['title']!,
-                description: record['description']!,
-                time: record['time']!,
-                date: record['date']!,
-                day: record['day']!,
-                category: record['category']!,
-              ),
+                  title: record['title']!,
+                  description: record['description']!,
+                  time: record['time']!,
+                  date: record['date']!,
+                  day: record['day']!,
+                  category: record['category']!,
+                  painRate: record['painRate']!),
             ),
           );
         },

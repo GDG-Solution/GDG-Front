@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../components/pain_level_dots.dart';
+
 class PanicCard extends StatelessWidget {
   final String title;
   final String description;
@@ -7,6 +9,7 @@ class PanicCard extends StatelessWidget {
   final String date;
   final String day;
   final String category;
+  final String painRate;
 
   PanicCard({
     required this.title,
@@ -15,6 +18,7 @@ class PanicCard extends StatelessWidget {
     required this.date,
     required this.day,
     required this.category,
+    required this.painRate,
   });
 
   @override
@@ -49,7 +53,9 @@ class PanicCard extends StatelessWidget {
                         style: TextStyle(fontSize: 12, color: Colors.grey)),
                   ],
                 ),
-                Icon(Icons.more_horiz, color: Colors.black),
+                PainLevelDots(
+                  painRate: int.tryParse(painRate) ?? 0, // 문자열을 정수로 변환
+                ),
               ],
             ),
             SizedBox(height: 8),

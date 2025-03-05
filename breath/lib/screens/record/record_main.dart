@@ -1,8 +1,7 @@
-// Q0. 오늘도 이겨냈어요! 고통 수치 기록
-
 import 'package:flutter/material.dart';
 import 'record_more_1.dart';
 import './components/custom_button.dart';
+import './components/pain_level_selector.dart';
 
 class RecordMain extends StatefulWidget {
   @override
@@ -15,7 +14,7 @@ class _RecordMainState extends State<RecordMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF3FCE7), // ✅ 배경색 적용
+      backgroundColor: Color(0xFFF3FCE7),
       body: SafeArea(
         child: Column(
           children: [
@@ -64,20 +63,16 @@ class _RecordMainState extends State<RecordMain> {
               child: Text("캐릭터"),
             ),
 
-            // ✅ 선택 리스트
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                children: [
-                  _buildOption(0, "매우 강함", Color(0xFFFF6224), 5),
-                  _buildOption(1, "강함", Color(0xFFFF800A), 4),
-                  _buildOption(2, "중간", Color(0xFFFFBD24), 3),
-                  _buildOption(3, "약함", Color(0xFFF6DD96), 2),
-                ],
-              ),
+            // ✅ 선택 리스트 (컴포넌트 사용)
+            PainLevelSelector(
+              onSelected: (painRate) {
+                setState(() {
+                  _painRate = painRate;
+                });
+              },
             ),
 
-            // ✅ 하단 버튼 (CustomButton 사용)
+            // ✅ 하단 버튼
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
@@ -113,81 +108,6 @@ class _RecordMainState extends State<RecordMain> {
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ✅ 옵션 리스트 아이템
-  Widget _buildOption(int index, String label, Color dotColor, int dotCount) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _painRate = index;
-        });
-      },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 8),
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-        decoration: BoxDecoration(
-            color: _painRate == index ? Colors.white : Color(0xFFF9FEF3),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                offset: Offset(0, 2),
-                blurRadius: 4,
-                spreadRadius: 0,
-              )
-            ]),
-        child: Row(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              color: Colors.grey[400],
-            ),
-            SizedBox(width: 15),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ...List.generate(
-                      5 - dotCount,
-                      (i) => Padding(
-                        padding: EdgeInsets.only(right: 4),
-                        child: Icon(Icons.circle, color: Colors.grey, size: 10),
-                      ),
-                    ),
-                    ...List.generate(
-                      dotCount,
-                      (i) => Padding(
-                        padding: EdgeInsets.only(right: 4),
-                        child: Icon(Icons.circle, color: dotColor, size: 10),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8),
-                Text(
-                  label,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff275220)),
-                ),
-              ],
-            ),
-            Spacer(),
-            Icon(
-              _painRate == index
-                  ? Icons.radio_button_checked
-                  : Icons.radio_button_off,
-              color: _painRate == index ? Colors.green : Colors.grey,
             ),
           ],
         ),
