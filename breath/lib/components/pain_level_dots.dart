@@ -5,7 +5,7 @@ class PainLevelDots extends StatelessWidget {
 
   const PainLevelDots({Key? key, required this.painRate}) : super(key: key);
 
-  // ✅ painRate에 따른 색상 자동 매핑
+  // painRate에 따른 색상 자동 매핑
   static const Map<int, Color> painColors = {
     5: Color(0xFFFF6224), // 매우 강함 (빨강)
     4: Color(0xFFFF800A), // 강함 (주황)
@@ -22,14 +22,14 @@ class PainLevelDots extends StatelessWidget {
         ...List.generate(
           5 - painRate,
           (i) => Padding(
-            padding: const EdgeInsets.only(right: 4), // ✅ padding 명시적으로 지정
+            padding: const EdgeInsets.only(right: 4), // padding 명시적으로 지정
             child: Icon(Icons.circle, color: Colors.grey, size: 10),
           ),
         ),
         ...List.generate(
           painRate,
           (i) => Padding(
-            padding: const EdgeInsets.only(right: 4), // ✅ padding 명시적으로 지정
+            padding: const EdgeInsets.only(right: 4), // padding 명시적으로 지정
             child: Icon(Icons.circle, color: dotColor, size: 10),
           ),
         ),

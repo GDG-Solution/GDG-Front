@@ -13,7 +13,7 @@ class RecordPage3 extends StatefulWidget {
 }
 
 class _RecordPage3State extends State<RecordPage3> {
-  // ✅ 선택된 증상 관리
+  // 선택된 증상 관리
   List<String> selectedSymptoms = [];
 
   @override
@@ -23,7 +23,7 @@ class _RecordPage3State extends State<RecordPage3> {
       body: SafeArea(
         child: Column(
           children: [
-            // ✅ 네비게이션 바 추가
+            // 네비게이션 바 추가
             CustomNavigationBar(
               onBack: () {
                 Navigator.pop(context);
@@ -35,7 +35,7 @@ class _RecordPage3State extends State<RecordPage3> {
 
             SizedBox(height: 10), // 네비게이션 바 아래 여백 추가
 
-            // ✅ 질문 카드
+            // 질문 카드
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               padding: EdgeInsets.all(20),
@@ -60,7 +60,7 @@ class _RecordPage3State extends State<RecordPage3> {
                   ),
                   SizedBox(height: 20),
 
-                  // ✅ 증상 선택 리스트
+                  // 증상 선택 리스트
                   Wrap(
                     spacing: 12,
                     runSpacing: 12,
@@ -111,7 +111,7 @@ class _RecordPage3State extends State<RecordPage3> {
 
             Spacer(), // 남은 공간 차지하여 하단 버튼 고정
 
-            // ✅ 하단 버튼 추가 (CustomButton 사용)
+            // 하단 버튼 추가 (CustomButton 사용)
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
@@ -156,7 +156,7 @@ class _RecordPage3State extends State<RecordPage3> {
     );
   }
 
-// ✅ 증상 리스트
+// 증상 리스트
   final List<String> symptomList = [
     "가슴통증",
     "호흡곤란",
