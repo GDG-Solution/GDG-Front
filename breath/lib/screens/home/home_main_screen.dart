@@ -26,7 +26,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
           await rootBundle.loadString('assets/data/panic_records.json');
       List<dynamic> jsonData = json.decode(jsonString);
 
-      print("📢 로드된 JSON 데이터: $jsonData"); // ✅ JSON 데이터 출력
+      print("📢 로드된 JSON 데이터: $jsonData"); // JSON 데이터 출력
 
       setState(() {
         panicRecords = jsonData.map((record) {
@@ -37,19 +37,22 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
             "date": record['date'] != null
                 ? DateTime.parse(record['date'])
                     .toString()
-                    .split(" ")[0] // 변환 적용
+                    .split(" ")[0] // 날짜 변환
                 : "N/A",
             "picture": record["picture"] ?? [],
-            "category":
-                List<String>.from(record["category"]), // List<String> 변환
-            "score": record["score"] as int, // int 변환
+            "category": record["category"] is String
+                ? record["category"].split(', ') // 쉼표로 나눠서 리스트 변환
+                : List<String>.from(record["category"] ?? []), // JSON 배열 처리
+            "score": record["score"] is int
+                ? record["score"]
+                : int.tryParse(record["score"].toString()) ?? 0, // 정수 변환
             "title": record["title"].toString(),
             "content": record["content"].toString(),
           };
         }).toList();
       });
 
-      print("✅ 변환된 panicRecords: $panicRecords"); // ✅ 변환된 데이터 출력
+      print("✅ 변환된 panicRecords: $panicRecords"); // 변환된 데이터 출력
     } catch (e) {
       print("❌ JSON 로딩 오류: $e");
     }
