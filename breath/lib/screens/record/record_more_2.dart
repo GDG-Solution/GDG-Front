@@ -1,11 +1,11 @@
-// Q2. 증상을 모두 선택해주세요. 증상 선택
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:breath/screens/record/record_provider.dart';
+
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 import 'components/custom_gauge_bar.dart';
 import 'components/custom_quistion_text.dart';
-
 import 'record_more_3.dart';
 
 class RecordPage2 extends StatefulWidget {
@@ -19,16 +19,17 @@ class RecordPage2 extends StatefulWidget {
 
 class _RecordPage2State extends State<RecordPage2> {
   // ✅ 선택된 증상 관리
-  List<String> selectedSymptoms = [];
+  //List<String> selectedSymptoms = [];
 
   @override
   Widget build(BuildContext context) {
+    var recordProvider = Provider.of<RecordProvider>(context);
+
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
       body: SafeArea(
         child: Column(
           children: [
-            // ✅ 네비게이션 바 추가
             CustomNavigationBar(
               onBack: () {
                 Navigator.pop(context);
@@ -37,14 +38,8 @@ class _RecordPage2State extends State<RecordPage2> {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
             ),
-
-            CustomGaugeBar(
-              currentValue: 3, // ✅ 현재 값 (0~6)
-            ),
-
+            CustomGaugeBar(currentValue: 3),
             SizedBox(height: 28),
-
-            // ✅ 질문 카드
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -57,21 +52,16 @@ class _RecordPage2State extends State<RecordPage2> {
                   ),
                   SizedBox(height: 20),
 
-                  // ✅ 증상 선택 리스트
+                  // ✅ 증상 선택 리스트 (Provider 사용)
                   Wrap(
                     spacing: 12,
                     runSpacing: 12,
                     children: symptomList.map((symptom) {
-                      bool isSelected = selectedSymptoms.contains(symptom);
+                      bool isSelected =
+                          recordProvider.symptoms.contains(symptom);
                       return GestureDetector(
                         onTap: () {
-                          setState(() {
-                            if (isSelected) {
-                              selectedSymptoms.remove(symptom);
-                            } else {
-                              selectedSymptoms.add(symptom);
-                            }
-                          });
+                          recordProvider.toggleSymptom(symptom);
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
@@ -106,7 +96,7 @@ class _RecordPage2State extends State<RecordPage2> {
               ),
             ),
 
-            Spacer(), // 남은 공간 차지하여 하단 버튼 고정
+            Spacer(),
 
             // ✅ 하단 버튼 추가 (CustomButton 사용)
             Padding(

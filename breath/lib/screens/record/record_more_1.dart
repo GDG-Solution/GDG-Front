@@ -1,11 +1,13 @@
 import 'dart:io'; // 파일을 다루기 위한 패키지
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; // 📸 이미지 선택을 위한 패키지
+import 'package:breath/screens/record/record_provider.dart';
 
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 import 'components/custom_gauge_bar.dart';
 import 'record_more_2.dart';
+import 'package:provider/provider.dart';
 import 'components/custom_quistion_text.dart';
 
 class RecordPage1 extends StatefulWidget {
@@ -27,15 +29,15 @@ class _RecordPage1State extends State<RecordPage1> {
         await picker.pickImage(source: ImageSource.camera); // 카메라 실행
 
     if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path); // 찍은 사진을 변수에 저장
-      });
+      Provider.of<RecordProvider>(context, listen: false)
+          .addPicture(pickedFile.path);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     print("전달받은 painRate: ${widget.painRate}");
+    var recordProvider = Provider.of<RecordProvider>(context);
 
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
@@ -95,7 +97,8 @@ class _RecordPage1State extends State<RecordPage1> {
                           : ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: Image.file(
-                                _image!,
+                                File(recordProvider
+                                    .picturePaths.last), // ✅ 마지막 사진 표시
                                 width: double.infinity,
                                 height: 160,
                                 fit: BoxFit.cover, // 이미지가 꽉 차게 표시됨

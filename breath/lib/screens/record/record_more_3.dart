@@ -1,6 +1,9 @@
 // Q3. 상황적기.
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:breath/screens/record/record_provider.dart';
+
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 import 'components/custom_gauge_bar.dart';
@@ -23,6 +26,8 @@ class _RecordPage3State extends State<RecordPage3> {
 
   @override
   Widget build(BuildContext context) {
+    var recordProvider = Provider.of<RecordProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
       body: SafeArea(
@@ -62,7 +67,8 @@ class _RecordPage3State extends State<RecordPage3> {
                   TextField(
                     controller: _inputController,
                     onChanged: (value) {
-                      print("사용자 입력: $value");
+                      //print("사용자 입력: $value");
+                      recordProvider.setPanicReason(value);
                     },
                     decoration: InputDecoration(
                       hintText: "여기에 입력해주세요.",

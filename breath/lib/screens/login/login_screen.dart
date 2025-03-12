@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:breath/screens/home_screen.dart';
 
@@ -18,6 +19,16 @@ class _LoginScreenState extends State<LoginScreen> {
   // bool _passwordValid = true;
 
   Future<void> _login(BuildContext context) async {
+    final String baseUrl = dotenv.env['BASE_URL'] ?? ""; // 환경 변수에서 URL 가져오기
+
+    if (baseUrl == null || baseUrl.isEmpty) {
+      print("❌ 환경 변수 'BASE_URL'이 설정되지 않았습니다.");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("⚠️ 서버 설정 오류: 관리자에게 문의하세요.")),
+      );
+      return;
+    }
+
     final String userId = _idController.text.trim();
 
     // ✅ ID와 비밀번호 유효성 검사
@@ -36,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.get(
-        Uri.parse("http://121.145.241.173:8080/user?id=$userId"),
+        Uri.parse("$baseUrl/user?id=$userId"),
       );
 
       print("🔹 응답 상태 코드: ${response.statusCode}");
