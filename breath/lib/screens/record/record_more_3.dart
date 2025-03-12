@@ -5,12 +5,12 @@ import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 import 'components/custom_quistion_text.dart';
 
-class RecordPage4 extends StatefulWidget {
+class RecordPage3 extends StatefulWidget {
   @override
-  _RecordPage4State createState() => _RecordPage4State();
+  _RecordPage3State createState() => _RecordPage3State();
 }
 
-class _RecordPage4State extends State<RecordPage4> {
+class _RecordPage3State extends State<RecordPage3> {
   TextEditingController _inputController = TextEditingController();
 
   @override
@@ -102,7 +102,7 @@ class _RecordPage4State extends State<RecordPage4> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage4(),
+                          builder: (context) => RecordPage3(),
                         ),
                       );
                     },
@@ -117,7 +117,7 @@ class _RecordPage4State extends State<RecordPage4> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage4(),
+                          builder: (context) => RecordPage3(),
                         ),
                       );
                     },

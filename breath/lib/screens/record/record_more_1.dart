@@ -7,16 +7,16 @@ import './components/custom_navigation_bar.dart';
 import 'record_more_2.dart';
 import 'components/custom_quistion_text.dart';
 
-class RecordPage2 extends StatefulWidget {
+class RecordPage1 extends StatefulWidget {
   final int painRate;
 
-  RecordPage2({required this.painRate});
+  RecordPage1({required this.painRate});
 
   @override
-  _RecordPage2State createState() => _RecordPage2State();
+  _RecordPage1State createState() => _RecordPage1State();
 }
 
-class _RecordPage2State extends State<RecordPage2> {
+class _RecordPage1State extends State<RecordPage1> {
   @override
   Widget build(BuildContext context) {
     print("전달받은 painRate: ${widget.painRate}"); // ✅ 콘솔 출력 추가
@@ -135,7 +135,7 @@ class _RecordPage2State extends State<RecordPage2> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage3(),
+                          builder: (context) => RecordPage2(),
                         ),
                       );
                     },
@@ -150,7 +150,7 @@ class _RecordPage2State extends State<RecordPage2> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage3(),
+                          builder: (context) => RecordPage2(),
                         ),
                       );
                     },

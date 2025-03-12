@@ -7,12 +7,12 @@ import 'components/custom_quistion_text.dart';
 
 import 'record_more_3.dart';
 
-class RecordPage3 extends StatefulWidget {
+class RecordPage2 extends StatefulWidget {
   @override
-  _RecordPage3State createState() => _RecordPage3State();
+  _RecordPage2State createState() => _RecordPage2State();
 }
 
-class _RecordPage3State extends State<RecordPage3> {
+class _RecordPage2State extends State<RecordPage2> {
   // ✅ 선택된 증상 관리
   List<String> selectedSymptoms = [];
 
@@ -127,7 +127,7 @@ class _RecordPage3State extends State<RecordPage3> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage4(),
+                          builder: (context) => RecordPage3(),
                         ),
                       );
                     },
@@ -142,7 +142,7 @@ class _RecordPage3State extends State<RecordPage3> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage4(),
+                          builder: (context) => RecordPage3(),
                         ),
                       );
                     },
