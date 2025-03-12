@@ -5,6 +5,7 @@ import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 import 'components/custom_gauge_bar.dart';
 import 'components/custom_quistion_text.dart';
+import 'record_more_4.dart';
 
 class RecordPage3 extends StatefulWidget {
   @override
@@ -95,7 +96,7 @@ class _RecordPage3State extends State<RecordPage3> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage3(),
+                          builder: (context) => RecordPage4(),
                         ),
                       );
                     },
@@ -110,7 +111,7 @@ class _RecordPage3State extends State<RecordPage3> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage3(),
+                          builder: (context) => RecordPage4(),
                         ),
                       );
                     },
