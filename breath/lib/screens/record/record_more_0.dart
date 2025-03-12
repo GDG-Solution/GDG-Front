@@ -6,7 +6,6 @@ import './components/custom_navigation_bar.dart';
 
 import 'components/custom_gauge_bar.dart';
 import 'record_more_1.dart';
-import 'components/custom_quistion_text.dart';
 
 class RecordPage0 extends StatefulWidget {
   final int painRate;
