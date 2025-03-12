@@ -52,15 +52,21 @@ class _RecordMainState extends State<RecordMain> {
               ],
             ),
 
-            SizedBox(height: 67),
+            SizedBox(height: 38),
 
             // ✅ 캐릭터 박스
             Container(
-              width: 137,
-              height: 92,
-              color: Colors.grey[400],
-              alignment: Alignment.center,
-              child: Text("캐릭터"),
+              width: 148,
+              height: 112,
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(10), // ✅ 이미지 모서리 둥글게 (선택 사항)
+                image: DecorationImage(
+                  image: AssetImage(
+                      "assets/images/record/record_poco.png"), // ✅ 이미지 경로
+                  fit: BoxFit.cover, // ✅ 이미지가 컨테이너에 맞게 채워지도록 설정
+                ),
+              ),
             ),
 
             // ✅ 선택 리스트 (컴포넌트 사용)
@@ -100,7 +106,7 @@ class _RecordMainState extends State<RecordMain> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                RecordPage2(painRate: 5 - _painRate),
+                                RecordPage1(painRate: 5 - _painRate),
                           ),
                         );
                       }

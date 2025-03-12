@@ -55,8 +55,8 @@ class _PainLevelSelectorState extends State<PainLevelSelector> {
               ),
               child: Row(
                 children: [
-                  Container(width: 48, height: 48, color: Colors.grey[400]),
-                  SizedBox(width: 15),
+                  // Container(width: 48, height: 48, color: Colors.grey[400]),
+                  // SizedBox(width: 15),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
