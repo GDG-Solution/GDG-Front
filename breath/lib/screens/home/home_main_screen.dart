@@ -26,7 +26,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
           : "Unknwon User"; // 한글 디코딩
     });
     print("userId: ${_userId}");
-    print("userId: ${_userName}");
+    print("userName: ${_userName}");
   }
 
   List<Map<String, dynamic>> panicRecords = []; // 데이터를 저장할 리스트
