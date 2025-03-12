@@ -29,7 +29,38 @@ Text(
         )
     ),
 
-// 화면 전환
+// 🫙 Flutter의 LocalStorage 사용
+1. import 해야함
+import 'package:shared_preferences/shared_preferences.dart';
+
+2. User 정보 불러오고 저장하는 함수 정의
+String _userName = "";
+String _userId = "";
+
+Future<void> _loadUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+        _userId = prefs.getString('id') ?? "Unknown ID";
+        String? savedName = prefs.getString('name');
+        _userName = savedName != null
+            ? utf8.decode(savedName.codeUnits)
+            : "Unknwon User"; // 한글 디코딩
+    });
+}
+
+3. initState에 사용자 정보 가져올 수 있도록 해서 페이지 들어가자마자 정보 가져오게 만듦
+@override
+void initState() {
+    super.initState();
+    _loadPanicRecords(); // JSON 데이터 불러오기
+    _loadUserInfo(); // 저장된 사용자 정보 불러오기
+}
+
+4. 사용 ($_userId, $_userName)
+Text("ID: $_userId", style: TextStyle(fontSize: 20)),
+Text("이름: $_userName", style: TextStyle(fontSize: 20)),
+
+// 🎬 화면 전환
 - 페이드인/아웃
 Navigator.of(context).push(
     PageRouteBuilder(
