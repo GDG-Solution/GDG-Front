@@ -20,10 +20,45 @@ BoxShadow(
 Image.asset("assets/images/record/leaf_left.png", width: 37),
 
 // Text 텍스트
- Text(  date,
+Text(
+        date,
         style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
         )
     ),
+
+// 화면 전환
+- 페이드인/아웃
+Navigator.of(context).push(
+    PageRouteBuilder(
+        pageBuilder:
+            (context, animation, secondaryAnimation) =>
+                RecordPage1(painRate: widget.painRate),
+        transitionsBuilder:
+            (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+            opacity: animation, // 투명도 애니메이션
+            child: child,
+        );
+        },
+    ),
+);
+
+- 슬라이드 (좌->우)
+Navigator.of(context).push(
+  PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => 
+                RecordPage1(painRate: widget.painRate),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: Tween<Offset>(
+          begin: Offset(1.0, 0.0), // 오른쪽에서 시작
+          end: Offset.zero, // 원래 위치
+        ).animate(animation),
+        child: child,
+      );
+    },
+  ),
+);
