@@ -9,6 +9,10 @@ import 'components/custom_quistion_text.dart';
 import 'record_more_3.dart';
 
 class RecordPage2 extends StatefulWidget {
+  final int painRate;
+
+  RecordPage2({required this.painRate});
+
   @override
   _RecordPage2State createState() => _RecordPage2State();
 }

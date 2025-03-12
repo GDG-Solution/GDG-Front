@@ -72,7 +72,7 @@ class _RecordPage1State extends State<RecordPage1> {
                       width: double.infinity,
                       height: 250,
                       decoration: BoxDecoration(
-                        color: Color(0xFFF3F3F3),
+                        color: Color(0xFFE1F8CC),
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: _image == null // ✅ 찍은 사진이 없으면 기본 UI 표시
@@ -80,14 +80,14 @@ class _RecordPage1State extends State<RecordPage1> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.camera_alt,
-                                    color: Colors.grey, size: 40),
+                                    color: Color(0xff428C37), size: 40),
                                 SizedBox(height: 8),
                                 Text(
                                   "이곳을 터치해서 사진을 찍어봐",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xff626262),
+                                    color: Color(0xff428C37),
                                   ),
                                 ),
                               ],
@@ -122,7 +122,8 @@ class _RecordPage1State extends State<RecordPage1> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage2(),
+                          builder: (context) =>
+                              RecordPage2(painRate: widget.painRate),
                         ),
                       );
                     },
@@ -137,7 +138,8 @@ class _RecordPage1State extends State<RecordPage1> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage2(),
+                          builder: (context) =>
+                              RecordPage2(painRate: widget.painRate),
                         ),
                       );
                     },
