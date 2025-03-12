@@ -41,25 +41,13 @@ class _RecordPage3State extends State<RecordPage3> {
             // ✅ 질문 카드
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                  )
-                ],
-              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomQuestionCard(
-                    questionNumber: "Q3",
-                    question: "상황적기",
-                    subText: "상황을 설명해주세요",
+                    questionNumber: 3,
+                    question: "공황이 일어난 이유는 무엇인가요",
+                    subText: "이유를 알면 두려움이 줄어들어요",
                   ),
 
                   SizedBox(height: 20),

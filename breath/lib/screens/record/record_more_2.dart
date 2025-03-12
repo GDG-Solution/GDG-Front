@@ -38,25 +38,13 @@ class _RecordPage2State extends State<RecordPage2> {
             // ✅ 질문 카드
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                  )
-                ],
-              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomQuestionCard(
-                    questionNumber: "Q2",
+                    questionNumber: 2,
                     question: "증상을 모두 선택해주세요",
-                    subText: "강도가 약해도 선택해주세요",
+                    subText: "약한 증상도 선택해주세요",
                   ),
                   SizedBox(height: 20),
 
@@ -81,8 +69,8 @@ class _RecordPage2State extends State<RecordPage2> {
                               vertical: 14, horizontal: 20),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Color(0xFF90DD85)
-                                : Colors.transparent,
+                                ? Color(0xFFFFFFFF)
+                                : Color(0xffF9FEF3),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: Color(0xFFE1F8CC),

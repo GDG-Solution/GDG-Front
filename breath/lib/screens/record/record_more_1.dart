@@ -35,50 +35,38 @@ class _RecordPage1State extends State<RecordPage1> {
               },
             ),
 
-            // ✅ 제목
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Align(
-                // ✅ Align 추가하여 좌측 정렬 강제
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "구체적인 기록을 위해\n4 가지 질문에 답해주세요",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff275220),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
+            // // ✅ 제목
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 20),
+            //   child: Align(
+            //     // ✅ Align 추가하여 좌측 정렬 강제
+            //     alignment: Alignment.centerLeft,
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Text(
+            //           "구체적인 기록을 위해\n4 가지 질문에 답해주세요",
+            //           style: TextStyle(
+            //             fontSize: 22,
+            //             fontWeight: FontWeight.w700,
+            //             color: Color(0xff275220),
+            //           ),
+            //         ),
+            //         SizedBox(height: 20),
+            //       ],
+            //     ),
+            //   ),
+            // ),
 
             // ✅ 질문 카드
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                  )
-                ],
-              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomQuestionCard(
-                    questionNumber: "Q1",
-                    question: "공황이 일어났던 주변을 찍어주세요",
+                    questionNumber: 1,
+                    question: "공황이 일어난 환경을 기록해보세요",
                     subText: "찍기 어렵다면 패스해도 좋아요",
                   ),
 
