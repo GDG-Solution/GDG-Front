@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:breath/screens/home_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env"); // 환경 변수 로드
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
