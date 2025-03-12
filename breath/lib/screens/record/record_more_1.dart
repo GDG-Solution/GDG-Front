@@ -1,9 +1,9 @@
-// Q1. 공황이 일어났던 주변을 찍어주세요. 주변 사진 촬영
-
+import 'dart:io'; // 파일을 다루기 위한 패키지
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart'; // 📸 이미지 선택을 위한 패키지
+
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
-
 import 'components/custom_gauge_bar.dart';
 import 'record_more_2.dart';
 import 'components/custom_quistion_text.dart';
@@ -18,15 +18,30 @@ class RecordPage1 extends StatefulWidget {
 }
 
 class _RecordPage1State extends State<RecordPage1> {
+  File? _image; // ✅ 찍은 사진을 저장할 변수
+  final picker = ImagePicker(); // 📸 이미지 선택기 인스턴스
+
+  // ✅ 카메라 실행 함수
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.camera); // 카메라 실행
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path); // 찍은 사진을 변수에 저장
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("전달받은 painRate: ${widget.painRate}"); // ✅ 콘솔 출력 추가
+    print("전달받은 painRate: ${widget.painRate}");
+
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
       body: SafeArea(
         child: Column(
           children: [
-            // ✅ 네비게이션 바
             CustomNavigationBar(
               onBack: () {
                 Navigator.pop(context);
@@ -35,37 +50,8 @@ class _RecordPage1State extends State<RecordPage1> {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
             ),
-
-            CustomGaugeBar(
-              currentValue: 2, // ✅ 현재 값 (0~6)
-            ),
-
+            CustomGaugeBar(currentValue: 2),
             SizedBox(height: 28),
-
-            // // ✅ 제목
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 20),
-            //   child: Align(
-            //     // ✅ Align 추가하여 좌측 정렬 강제
-            //     alignment: Alignment.centerLeft,
-            //     child: Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Text(
-            //           "구체적인 기록을 위해\n4 가지 질문에 답해주세요",
-            //           style: TextStyle(
-            //             fontSize: 22,
-            //             fontWeight: FontWeight.w700,
-            //             color: Color(0xff275220),
-            //           ),
-            //         ),
-            //         SizedBox(height: 20),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-
-            // ✅ 질문 카드
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -79,42 +65,48 @@ class _RecordPage1State extends State<RecordPage1> {
 
                   SizedBox(height: 20),
 
-                  // ✅ 카메라 박스
+                  // ✅ 사진 촬영 영역
                   GestureDetector(
-                    onTap: () {
-                      print("카메라 열기");
-                    },
+                    onTap: _pickImage, // 📸 카메라 실행
                     child: Container(
                       width: double.infinity,
-                      height: 160,
+                      height: 250,
                       decoration: BoxDecoration(
                         color: Color(0xFFF3F3F3),
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.camera_alt, color: Colors.grey, size: 40),
-                          SizedBox(height: 8),
-                          Text(
-                            "주변 배경을 찍어주세요",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff626262),
+                      child: _image == null // ✅ 찍은 사진이 없으면 기본 UI 표시
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.camera_alt,
+                                    color: Colors.grey, size: 40),
+                                SizedBox(height: 8),
+                                Text(
+                                  "이곳을 터치해서 사진을 찍어봐",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff626262),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.file(
+                                _image!,
+                                width: double.infinity,
+                                height: 160,
+                                fit: BoxFit.cover, // 이미지가 꽉 차게 표시됨
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 ],
               ),
             ),
-
             Spacer(),
-
-            // ✅ 하단 버튼 (CustomButton 활용)
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
