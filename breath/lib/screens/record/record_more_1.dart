@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 
+import 'components/custom_gauge_bar.dart';
 import 'record_more_2.dart';
 import 'components/custom_quistion_text.dart';
 
@@ -34,6 +35,12 @@ class _RecordPage1State extends State<RecordPage1> {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
             ),
+
+            CustomGaugeBar(
+              currentValue: 2, // ✅ 현재 값 (0~6)
+            ),
+
+            SizedBox(height: 28),
 
             // // ✅ 제목
             // Padding(

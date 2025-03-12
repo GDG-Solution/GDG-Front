@@ -9,11 +9,11 @@ class CustomGaugeBar extends StatelessWidget {
 
   const CustomGaugeBar({
     Key? key,
-    this.maxValue = 6, // 기본 최대값 6
+    this.maxValue = 5, // 기본 최대값 6
     required this.currentValue,
-    this.height = 20,
-    this.fillColor = Colors.green,
-    this.backgroundColor = Colors.black,
+    this.height = 4,
+    this.fillColor = const Color(0xff90DD85),
+    this.backgroundColor = const Color(0xffDBE3D0),
   }) : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class CustomGaugeBar extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(height / 2), // 둥근 모서리
+        // borderRadius: BorderRadius.circular(height / 2), // 둥근 모서리
       ),
       child: Stack(
         children: [
@@ -36,7 +36,7 @@ class CustomGaugeBar extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: fillColor,
-                borderRadius: BorderRadius.circular(height / 2), // 둥근 모서리 유지
+                // borderRadius: BorderRadius.circular(height / 2), // 둥근 모서리 유지
               ),
             ),
           ),

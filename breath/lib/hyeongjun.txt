@@ -1,5 +1,6 @@
 // 🎨 색상 설정 방법
 Color(0xFF000000) // 000000: 색상 코드
+Color(0xFF000000).withOpacity(0.7) // 투명도 70% 적용
 Colors.white
 Colors.red[300]
 Colors.transparent // 투명 색상

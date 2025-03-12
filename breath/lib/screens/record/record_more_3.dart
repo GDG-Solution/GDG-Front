@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
+import 'components/custom_gauge_bar.dart';
 import 'components/custom_quistion_text.dart';
 
 class RecordPage3 extends StatefulWidget {
@@ -36,7 +37,11 @@ class _RecordPage3State extends State<RecordPage3> {
               },
             ),
 
-            SizedBox(height: 10), // 네비게이션 바 아래 여백 추가
+            CustomGaugeBar(
+              currentValue: 4, // ✅ 현재 값 (0~6)
+            ),
+
+            SizedBox(height: 28),
 
             // ✅ 질문 카드
             Container(
