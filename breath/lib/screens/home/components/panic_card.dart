@@ -29,7 +29,8 @@ class PanicCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailScreen(), // DetailScreen으로 이동
+            builder: (context) =>
+                DetailScreen(panicId: "1"), // DetailScreen으로 이동
           ),
         );
       },
