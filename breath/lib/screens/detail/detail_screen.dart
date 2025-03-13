@@ -15,6 +15,7 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  Map<String, dynamic>? selectedRecord; // 선택된 다이어리 데이터
   List<Map<String, dynamic>> recordsForSameDate = []; // 같은 날짜의 여러 기록 저장
   bool isLoading = true; // 로딩 상태
 
@@ -27,27 +28,33 @@ class _DetailScreenState extends State<DetailScreen> {
   // API 호출하여 공황 기록 데이터 가져오기
   Future<void> loadPanicRecord() async {
     try {
-      List<Map<String, dynamic>> records =
-          await ApiRecordList.fetchPanicRecords();
+      final record = await ApiRecordList.fetchPanicRecordById(widget.panicId);
 
-      // 현재 선택한 기록 찾기
-      final selectedRecord = records.firstWhere(
-        (record) => record['id'] == widget.panicId,
-        orElse: () => {},
-      );
+      if (record.isNotEmpty) {
+        setState(() {
+          selectedRecord = {
+            "id": record["id"] ?? "",
+            "userId": record["userId"] ?? "",
+            "counsel": record["counsel"] ?? {},
+            "date": record["date"] ?? "",
+            "picture": record["picture"] ?? [],
+            "category": List<String>.from(record["category"] ?? []),
+            "score": record["score"] ?? 0,
+            "title": record["title"] ?? "",
+            "content": record["content"] ?? "",
+          };
 
-      if (selectedRecord.isNotEmpty) {
-        // 같은 날짜의 모든 기록 필터링
-        recordsForSameDate = records.where((record) {
-          return record['date'] == selectedRecord['date'];
-        }).toList();
+          // 같은 날짜의 모든 기록을 필터링 (API에서 가져와야 정확함)
+          recordsForSameDate = [selectedRecord!];
+
+          isLoading = false; // 데이터 로딩 완료
+        });
       }
-
-      setState(() {
-        isLoading = false; // 데이터 로딩 완료
-      });
     } catch (e) {
-      print("❌ API 호출 실패: $e");
+      print("❌ detail screen API 호출 실패: $e");
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 

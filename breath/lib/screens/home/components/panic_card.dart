@@ -3,6 +3,7 @@ import '../../../components/pain_level_dots.dart';
 import '../../detail/detail_screen.dart'; // DetailScreen import 추가
 
 class PanicCard extends StatelessWidget {
+  final String panicId;
   final String title;
   final String description;
   final String time;
@@ -12,6 +13,7 @@ class PanicCard extends StatelessWidget {
   final int painRate;
 
   const PanicCard({
+    required this.panicId,
     required this.title,
     required this.description,
     required this.time,
@@ -30,7 +32,7 @@ class PanicCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                DetailScreen(panicId: "1"), // DetailScreen으로 이동
+                DetailScreen(panicId: panicId), // DetailScreen으로 이동
           ),
         );
       },

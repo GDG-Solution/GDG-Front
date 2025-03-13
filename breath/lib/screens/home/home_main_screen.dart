@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle; // JSON 로드용 패키지
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+
 import './components/category_filter.dart';
 import './components/panic_list.dart';
 import './components/custom_app_bar.dart';
@@ -54,6 +57,51 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
       print("❌ JSON 로딩 오류: $e");
     }
   }
+
+  // static final String baseUrl =
+  //     dotenv.env['API_BASE_URL'] ?? 'http://default-url.com';
+
+  // Future<void> _loadPanicRecords() async {
+  //   final String baseUrl = dotenv.env['BASE_URL'] ?? "";
+  //   final String userId = "test"; // ✅ 특정 사용자 ID (임시값)
+
+  //   try {
+  //     final response = await http.get(Uri.parse("$baseUrl/diary"));
+
+  //     if (response.statusCode == 200) {
+  //       final jsonData = json.decode(response.body);
+  //       List<dynamic> allDiaries =
+  //           jsonData['diaries']; // ✅ API 응답에서 diaries 리스트 추출
+
+  //       setState(() {
+  //         panicRecords = allDiaries
+  //             .where(
+  //                 (record) => record["userId"] == userId) // ✅ 특정 사용자 데이터만 필터링
+  //             .map((record) {
+  //           return {
+  //             "id": record["id"].toString(),
+  //             "userId": record["userId"].toString(),
+  //             "counsel": record["counsel"] ?? "N/A",
+  //             "date": record['date'] != null
+  //                 ? DateTime.parse(record['date']).toString().split(" ")[0]
+  //                 : "N/A",
+  //             "picture": record["picture"] ?? [],
+  //             "category": List<String>.from(record["category"] ?? []),
+  //             "score": record["score"] as int,
+  //             "title": record["title"].toString(),
+  //             "content": record["content"].toString(),
+  //           };
+  //         }).toList();
+  //       });
+
+  //       print("✅ 필터링된 panicRecords: $panicRecords");
+  //     } else {
+  //       throw Exception("❌ 서버 오류: ${response.statusCode}");
+  //     }
+  //   } catch (e) {
+  //     print("❌ home_main API 요청 실패: $e");
+  //   }
+  // }
 
   void _onCategoryChanged(String category) {
     print("선택된 카테고리: $category");
