@@ -1,5 +1,3 @@
-// Q1. 공황이 일어났던 주변을 찍어주세요. 주변 사진 촬영
-
 import 'package:flutter/material.dart';
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
@@ -19,7 +17,6 @@ class RecordPage0 extends StatefulWidget {
 class _RecordPage0State extends State<RecordPage0> {
   @override
   Widget build(BuildContext context) {
-    print("전달받은 painRate: ${widget.painRate}"); // ✅ 콘솔 출력 추가
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
       body: SafeArea(
@@ -36,7 +33,7 @@ class _RecordPage0State extends State<RecordPage0> {
             ),
 
             CustomGaugeBar(
-              currentValue: 1, // ✅ 현재 값 (0~6)
+              currentValue: 1,
             ),
 
             SizedBox(height: 38),

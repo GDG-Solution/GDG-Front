@@ -27,7 +27,7 @@ class _RecordPage4State extends State<RecordPage4> {
   Widget build(BuildContext context) {
     print("📢 데이터 확인:");
     print("고통 수치: ${widget.painRate}");
-    print("사진 파일: ${widget.imageFile != null ? widget.imageFile!.path : '없음'}");
+    print("사진 파일: ${widget.imageFile}");
     print("선택한 증상들: ${widget.selectedSymptoms}");
     print("공황 이유: ${widget.panicReason}");
 
@@ -46,7 +46,7 @@ class _RecordPage4State extends State<RecordPage4> {
             ),
 
             CustomGaugeBar(
-              currentValue: 5, // ✅ 현재 값 (0~6)
+              currentValue: 5,
             ),
 
             SizedBox(height: 38),
@@ -87,7 +87,7 @@ class _RecordPage4State extends State<RecordPage4> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/images/record/record_ox.png"),
-                  fit: BoxFit.cover, // ✅ 기존 코드 유지
+                  fit: BoxFit.cover,
                 ),
               ),
             ),

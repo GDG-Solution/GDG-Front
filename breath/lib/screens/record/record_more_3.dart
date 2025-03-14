@@ -1,4 +1,4 @@
-import 'dart:io'; // ✅ File 객체 사용을 위해 추가
+import 'dart:io';
 import 'package:flutter/material.dart';
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
@@ -9,12 +9,12 @@ import 'record_more_4.dart';
 class RecordPage3 extends StatefulWidget {
   final int painRate;
   final File? imageFile;
-  final List<String> selectedSymptoms; // ✅ 증상 리스트 추가
+  final List<String> selectedSymptoms; // 증상 리스트 추가
 
   RecordPage3({
     required this.painRate,
     this.imageFile,
-    required this.selectedSymptoms, // ✅ 생성자에서 받아오기
+    required this.selectedSymptoms, // 생성자에서 받아오기
   });
 
   @override
@@ -23,11 +23,25 @@ class RecordPage3 extends StatefulWidget {
 
 class _RecordPage3State extends State<RecordPage3> {
   TextEditingController _inputController = TextEditingController();
+  bool nextButtonEnabled = false; // 버튼 활성화 상태
+
+  @override
+  void initState() {
+    super.initState();
+    _inputController.addListener(_updateButtonState);
+  }
 
   @override
   void dispose() {
+    _inputController.removeListener(_updateButtonState);
     _inputController.dispose(); // 메모리 누수 방지
     super.dispose();
+  }
+
+  void _updateButtonState() {
+    setState(() {
+      nextButtonEnabled = _inputController.text.trim().isNotEmpty; // 입력 여부 확인
+    });
   }
 
   @override
@@ -48,7 +62,7 @@ class _RecordPage3State extends State<RecordPage3> {
             ),
 
             CustomGaugeBar(
-              currentValue: 4, // ✅ 현재 값 (0~6)
+              currentValue: 4,
             ),
 
             SizedBox(height: 28),
@@ -79,7 +93,7 @@ class _RecordPage3State extends State<RecordPage3> {
                       fillColor: Color(0xFFF3F3F3),
                     ),
                     maxLines: 4,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -95,23 +109,32 @@ class _RecordPage3State extends State<RecordPage3> {
                   CustomButton(
                     text: "다음",
                     width: 365,
-                    bgColor: Color(0xFFE1F8CC),
-                    textColor: Color(0xFF275220),
-                    borderColor: Color(0xffCBE0B8),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RecordPage4(
-                            painRate: widget.painRate, // ✅ 기존 데이터 유지
-                            imageFile: widget.imageFile, // ✅ 기존 데이터 유지
-                            selectedSymptoms:
-                                widget.selectedSymptoms, // ✅ 기존 데이터 유지
-                            panicReason: _inputController.text, // ✅ 공황 이유 전달
-                          ),
-                        ),
-                      );
-                    },
+                    bgColor: nextButtonEnabled
+                        ? Color(0xFFE1F8CC).withOpacity(0.9) // 입력값 있으면 활성화
+                        : Colors.black.withOpacity(0.1), // 입력 없으면 비활성화 색상
+                    textColor: nextButtonEnabled
+                        ? Color(0xFF275220)
+                        : Color(0xffA1A1A1),
+                    borderColor: nextButtonEnabled
+                        ? Color(0xffCBE0B8)
+                        : Colors.black.withOpacity(0.1),
+                    onPressed: nextButtonEnabled
+                        ? () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RecordPage4(
+                                  painRate: widget.painRate, // 기존 데이터 유지
+                                  imageFile: widget.imageFile, // 기존 데이터 유지
+                                  selectedSymptoms:
+                                      widget.selectedSymptoms, // 기존 데이터 유지
+                                  panicReason:
+                                      _inputController.text.trim(), // 공황 이유 전달
+                                ),
+                              ),
+                            );
+                          }
+                        : () {}, // ✅ 입력 없으면 버튼 비활성화
                   ),
                 ],
               ),
