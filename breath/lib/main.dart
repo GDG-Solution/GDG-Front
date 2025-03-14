@@ -4,11 +4,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:breath/screens/home_screen.dart';
 import 'package:breath/screens/login/login_screen.dart'; // 로그인 화면 추가
 
+import 'package:provider/provider.dart';
+import 'package:breath/screens/record/record_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env"); // .env 파일 로드
 
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (context) => RecordProvider()), // ✅ 전역 Provider
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

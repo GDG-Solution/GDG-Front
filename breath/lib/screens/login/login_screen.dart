@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // bool _passwordValid = true;
 
   Future<void> _login(BuildContext context) async {
-    final String baseUrl = dotenv.env['BASE_URL'] ?? ""; // 환경 변수에서 URL 가져오기
+    final String baseUrl = dotenv.env['API_BASE_URL'] ?? ""; // 환경 변수에서 URL 가져오기
 
     if (baseUrl == null || baseUrl.isEmpty) {
       print("❌ 환경 변수 'BASE_URL'이 설정되지 않았습니다.");

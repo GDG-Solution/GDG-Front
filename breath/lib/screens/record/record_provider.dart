@@ -14,6 +14,7 @@ class RecordProvider with ChangeNotifier {
   void setPainRate(int rate) {
     painRate = rate;
     notifyListeners();
+    print('[Provider] 고통 수치 저장됨');
   }
 
   // ✅ 증상 선택 추가/삭제
@@ -24,24 +25,28 @@ class RecordProvider with ChangeNotifier {
       symptoms.add(symptom);
     }
     notifyListeners();
+    print('[Provider] 증상 선택 추가/삭제됨');
   }
 
   // ✅ 사진 추가 메서드 (이거 없어서 오류 났음)
   void addPicture(String path) {
     picturePaths.add(path);
     notifyListeners();
+    print('[Provider] 사진 추가됨');
   }
 
   // ✅ 사진 삭제 메서드
   void removePicture(String path) {
     picturePaths.remove(path);
     notifyListeners();
+    print('[Provider] 사진 삭제됨');
   }
 
   // ✅ 공황 발생 이유(사용자 입력) 저장
   void setPanicReason(String reason) {
     panicTitle = reason;
     notifyListeners();
+    print('[Provider] 공황 발생 이유 저장됨');
   }
 
   // ✅ 제목과 내용 저장
@@ -49,6 +54,7 @@ class RecordProvider with ChangeNotifier {
     panicTitle = title;
     panicContent = content;
     notifyListeners();
+    print('[Provider] 제목과 내용 저장됨');
   }
 
   // ✅ 최종 JSON 변환
