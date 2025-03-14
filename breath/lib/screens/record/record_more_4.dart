@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 import 'components/custom_gauge_bar.dart';
-import 'record_more_last.dart';
 import 'record_more_loading.dart';
 
 class RecordPage4 extends StatefulWidget {

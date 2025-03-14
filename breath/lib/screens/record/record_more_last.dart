@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './components/custom_button.dart';
-import 'components/custom_navigation_bar.dart';
 
 class RecordPage5 extends StatefulWidget {
   @override

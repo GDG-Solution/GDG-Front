@@ -29,17 +29,12 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
   bool _isLoading = true;
   String? _errorMessage;
 
-  String _userName = "";
   String _userId = "";
 
   Future<void> _loadUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _userId = prefs.getString('id') ?? "Unknown ID";
-      String? savedName = prefs.getString('name');
-      _userName = savedName != null
-          ? utf8.decode(savedName.codeUnits)
-          : "Unknwon User"; // 한글 디코딩
     });
   }
 
@@ -65,7 +60,7 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
       // ✅ 요청 데이터 준비
       Map<String, dynamic> requestData = {
         "userId": _userId,
-        "counselld": "67d2de46670a6a368def835b",
+        "counselId": "67d2de46670a6a368def835b",
         "picture": widget.imageFile != null
             ? await _convertImageToBase64(widget.imageFile!)
             : null,
