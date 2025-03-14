@@ -7,6 +7,10 @@ import './components/end_call_dialog.dart';
 import './components/custom_message_box.dart';
 
 class CallingMain extends StatefulWidget {
+  final String counselId;
+
+  CallingMain({required this.counselId});
+
   @override
   _CallingMainState createState() => _CallingMainState();
 }

@@ -1,33 +1,19 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'record_more_last.dart'; // 완료 페이지
+import 'calling_main.dart'; // 성공 시 이동할 페이지
 
-class RecordLoadingPage extends StatefulWidget {
-  final int painRate;
-  final File? imageFile;
-  final List<String> selectedSymptoms;
-  final String panicReason;
-  final String expectation;
-
-  RecordLoadingPage({
-    required this.painRate,
-    this.imageFile,
-    required this.selectedSymptoms,
-    required this.panicReason,
-    required this.expectation,
-  });
-
+class CallingValidCheck extends StatefulWidget {
   @override
-  _RecordLoadingPageState createState() => _RecordLoadingPageState();
+  _CallingValidCheckState createState() => _CallingValidCheckState();
 }
 
-class _RecordLoadingPageState extends State<RecordLoadingPage> {
+class _CallingValidCheckState extends State<CallingValidCheck> {
   bool _isLoading = true;
   String? _errorMessage;
+  late String counselId; // 응답에서 받아올 counselId
 
   String _userId = "";
 
@@ -41,13 +27,20 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
   @override
   void initState() {
     super.initState();
-    _sendDataToServer();
+    _sendUserIdToServer(); // API 요청 실행
     _loadUserInfo(); // 저장된 사용자 정보 불러오기
+    _initialize(); // 비동기 초기화 함수 실행
   }
 
-  // ✅ 서버에 데이터 전송하는 함수
-  Future<void> _sendDataToServer() async {
+  Future<void> _initialize() async {
+    await _loadUserInfo(); // userId를 먼저 가져온 후 API 요청 실행
+    _sendUserIdToServer();
+  }
+
+  // /counsel API에 userId를 POST 요청하는 함수
+  Future<void> _sendUserIdToServer() async {
     final String baseUrl = dotenv.env['API_BASE_URL'] ?? "";
+
     if (baseUrl.isEmpty) {
       setState(() {
         _isLoading = false;
@@ -57,36 +50,27 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
     }
 
     try {
-      // ✅ 요청 데이터 준비
-      Map<String, dynamic> requestData = {
-        "userId": _userId,
-        "counselId": "67d3f1977b2a675b58017f29",
-        "picture": widget.imageFile != null
-            ? await _convertImageToBase64(widget.imageFile!)
-            : null,
-        "category": widget.selectedSymptoms,
-        "score": widget.painRate,
-        "title": widget.expectation,
-        "content": widget.panicReason,
-      };
-
-      // ✅ POST 요청 보내기
+      print("userId === ${_userId}");
       final response = await http.post(
-        Uri.parse("$baseUrl/diary"),
+        Uri.parse("$baseUrl/counsel"),
         headers: {
           "Content-Type": "application/json",
         },
-        body: jsonEncode(requestData),
+        body: jsonEncode({"userId": _userId}),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // ✅ 성공 시 완료 페이지로 이동
+        counselId = response.body; // counselId 저장
+
+        print("✅ 서버 응답: counselId = $counselId"); // counselId 출력
+
+        // 성공 시 CallingMain 페이지로 이동
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => RecordPage5()),
+          MaterialPageRoute(
+              builder: (context) => CallingMain(counselId: counselId)),
         );
       } else {
-        // ❌ 실패 시 오류 메시지 표시
         setState(() {
           _isLoading = false;
           _errorMessage = "서버 응답 오류: ${response.statusCode}";
@@ -98,12 +82,6 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
         _errorMessage = "서버 요청 실패: $e";
       });
     }
-  }
-
-  // ✅ 이미지를 Base64로 변환하는 함수
-  Future<String> _convertImageToBase64(File imageFile) async {
-    List<int> imageBytes = await imageFile.readAsBytes();
-    return base64Encode(imageBytes);
   }
 
   @override
@@ -118,7 +96,7 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
                   CircularProgressIndicator(color: Color(0xFF275220)),
                   SizedBox(height: 20),
                   Text(
-                    "기록을 저장하는 중...",
+                    "상담을 시작하는 중...",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ],

@@ -44,7 +44,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
           await rootBundle.loadString('assets/data/panic_records.json');
       List<dynamic> jsonData = json.decode(jsonString);
 
-      print("📢 로드된 JSON 데이터: $jsonData"); // JSON 데이터 출력
+      // print("📢 로드된 JSON 데이터: $jsonData"); // JSON 데이터 출력
 
       setState(() {
         panicRecords = jsonData.map((record) {
@@ -70,7 +70,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
         }).toList();
       });
 
-      print("✅ 변환된 panicRecords: $panicRecords"); // 변환된 데이터 출력
+      // print("✅ 변환된 panicRecords: $panicRecords"); // 변환된 데이터 출력
     } catch (e) {
       print("❌ JSON 로딩 오류: $e");
     }
