@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 import 'components/custom_gauge_bar.dart';
-import 'record_more_5.dart';
+import 'record_more_last.dart';
+import 'record_more_loading.dart';
 
 class RecordPage4 extends StatefulWidget {
   final int painRate;
@@ -110,7 +111,13 @@ class _RecordPage4State extends State<RecordPage4> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage5(),
+                          builder: (context) => RecordLoadingPage(
+                            painRate: widget.painRate,
+                            imageFile: widget.imageFile,
+                            selectedSymptoms: widget.selectedSymptoms,
+                            panicReason: widget.panicReason,
+                            expectation: "예상했어요",
+                          ),
                         ),
                       );
                     },
@@ -125,7 +132,13 @@ class _RecordPage4State extends State<RecordPage4> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage5(),
+                          builder: (context) => RecordLoadingPage(
+                            painRate: widget.painRate,
+                            imageFile: widget.imageFile,
+                            selectedSymptoms: widget.selectedSymptoms,
+                            panicReason: widget.panicReason,
+                            expectation: "예상 못했어요",
+                          ),
                         ),
                       );
                     },

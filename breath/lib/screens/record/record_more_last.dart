@@ -15,15 +15,15 @@ class _RecordPage5State extends State<RecordPage5> {
       body: SafeArea(
         child: Column(
           children: [
-            // ✅ 네비게이션 바
-            CustomNavigationBar(
-              onBack: () {
-                Navigator.pop(context);
-              },
-              onClose: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
-            ),
+            // // ✅ 네비게이션 바
+            // CustomNavigationBar(
+            //   onBack: () {
+            //     Navigator.pop(context);
+            //   },
+            //   onClose: () {
+            //     Navigator.of(context).popUntil((route) => route.isFirst);
+            //   },
+            // ),
 
             SizedBox(height: 38),
 
