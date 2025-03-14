@@ -102,6 +102,12 @@ class _RecordPage1State extends State<RecordPage1> {
                             ),
                     ),
                   ),
+                  Center(
+                    child: Image.asset(
+                      "assets/images/record/record_camera.png",
+                      width: 157,
+                    ),
+                  )
                 ],
               ),
             ),
@@ -113,7 +119,7 @@ class _RecordPage1State extends State<RecordPage1> {
                 children: [
                   CustomButton(
                     text: "다음",
-                    width: 272,
+                    width: 365,
                     bgColor: Color(0xFFE1F8CC),
                     textColor: Color(0xFF275220),
                     borderColor: Color(0xffCBE0B8),

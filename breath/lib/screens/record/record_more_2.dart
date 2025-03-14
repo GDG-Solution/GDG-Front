@@ -104,7 +104,7 @@ class _RecordPage2State extends State<RecordPage2> {
                 children: [
                   CustomButton(
                     text: "다음",
-                    width: 272,
+                    width: 365,
                     bgColor: Color(0xFFE1F8CC),
                     textColor: Color(0xFF275220),
                     borderColor: Color(0xffCBE0B8),
