@@ -104,7 +104,7 @@ class _RecordMainState extends State<RecordMain> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                RecordPage0(painRate: 5 - _painRate),
+                                RecordPage0(painRate: _painRate),
                           ),
                         );
                       }

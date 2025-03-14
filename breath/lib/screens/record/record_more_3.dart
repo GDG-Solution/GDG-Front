@@ -1,9 +1,5 @@
-// Q3. 상황적기.
-
+import 'dart:io'; // ✅ File 객체 사용을 위해 추가
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:breath/screens/record/record_provider.dart';
-
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
 import 'components/custom_gauge_bar.dart';
@@ -11,6 +7,16 @@ import 'components/custom_quistion_text.dart';
 import 'record_more_4.dart';
 
 class RecordPage3 extends StatefulWidget {
+  final int painRate;
+  final File? imageFile;
+  final List<String> selectedSymptoms; // ✅ 증상 리스트 추가
+
+  RecordPage3({
+    required this.painRate,
+    this.imageFile,
+    required this.selectedSymptoms, // ✅ 생성자에서 받아오기
+  });
+
   @override
   _RecordPage3State createState() => _RecordPage3State();
 }
@@ -26,8 +32,6 @@ class _RecordPage3State extends State<RecordPage3> {
 
   @override
   Widget build(BuildContext context) {
-    var recordProvider = Provider.of<RecordProvider>(context, listen: false);
-
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
       body: SafeArea(
@@ -66,10 +70,6 @@ class _RecordPage3State extends State<RecordPage3> {
                   // ✅ 입력 필드 추가
                   TextField(
                     controller: _inputController,
-                    onChanged: (value) {
-                      //print("사용자 입력: $value");
-                      recordProvider.setPanicReason(value);
-                    },
                     decoration: InputDecoration(
                       hintText: "여기에 입력해주세요.",
                       border: OutlineInputBorder(
@@ -93,21 +93,6 @@ class _RecordPage3State extends State<RecordPage3> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomButton(
-                    text: "건너뛰기",
-                    width: 88,
-                    bgColor: Color(0xFFDBE3D0),
-                    textColor: Color(0xff728C78),
-                    borderColor: Color(0xffCBE0B8),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RecordPage4(),
-                        ),
-                      );
-                    },
-                  ),
-                  CustomButton(
                     text: "다음",
                     width: 272,
                     bgColor: Color(0xFFE1F8CC),
@@ -117,7 +102,13 @@ class _RecordPage3State extends State<RecordPage3> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage4(),
+                          builder: (context) => RecordPage4(
+                            painRate: widget.painRate, // ✅ 기존 데이터 유지
+                            imageFile: widget.imageFile, // ✅ 기존 데이터 유지
+                            selectedSymptoms:
+                                widget.selectedSymptoms, // ✅ 기존 데이터 유지
+                            panicReason: _inputController.text, // ✅ 공황 이유 전달
+                          ),
                         ),
                       );
                     },
