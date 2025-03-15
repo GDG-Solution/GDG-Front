@@ -6,9 +6,10 @@ import 'components/custom_gauge_bar.dart';
 import 'record_more_1.dart';
 
 class RecordPage0 extends StatefulWidget {
+  final String counselId;
   final int painRate;
 
-  RecordPage0({required this.painRate});
+  RecordPage0({required this.painRate, required this.counselId});
 
   @override
   _RecordPage0State createState() => _RecordPage0State();
@@ -108,8 +109,10 @@ class _RecordPage0State extends State<RecordPage0> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              RecordPage1(painRate: widget.painRate),
+                          builder: (context) => RecordPage1(
+                            counselId: widget.counselId,
+                            painRate: widget.painRate,
+                          ),
                         ),
                       );
                     },

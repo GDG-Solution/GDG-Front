@@ -107,8 +107,10 @@ class _RecordMainState extends State<RecordMain> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                RecordPage0(painRate: _painRate),
+                            builder: (context) => RecordPage0(
+                              counselId: widget.counselId,
+                              painRate: _painRate,
+                            ),
                           ),
                         );
                       }

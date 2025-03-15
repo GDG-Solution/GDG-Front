@@ -9,9 +9,13 @@ import 'record_more_2.dart';
 import 'components/custom_quistion_text.dart';
 
 class RecordPage1 extends StatefulWidget {
+  final String counselId;
   final int painRate;
 
-  RecordPage1({required this.painRate});
+  RecordPage1({
+    required this.counselId,
+    required this.painRate,
+  });
 
   @override
   _RecordPage1State createState() => _RecordPage1State();
@@ -128,6 +132,7 @@ class _RecordPage1State extends State<RecordPage1> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => RecordPage2(
+                            counselId: widget.counselId,
                             painRate: widget.painRate, // 기존 데이터 유지
                             imageFile: _image, // 찍은 이미지 전달 (없으면 null)
                           ),

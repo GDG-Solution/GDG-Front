@@ -7,11 +7,13 @@ import 'components/custom_quistion_text.dart';
 import 'record_more_4.dart';
 
 class RecordPage3 extends StatefulWidget {
+  final String counselId;
   final int painRate;
   final File? imageFile;
   final List<String> selectedSymptoms; // 증상 리스트 추가
 
   RecordPage3({
+    required this.counselId,
     required this.painRate,
     this.imageFile,
     required this.selectedSymptoms, // 생성자에서 받아오기
@@ -124,6 +126,7 @@ class _RecordPage3State extends State<RecordPage3> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => RecordPage4(
+                                  counselId: widget.counselId,
                                   painRate: widget.painRate, // 기존 데이터 유지
                                   imageFile: widget.imageFile, // 기존 데이터 유지
                                   selectedSymptoms:

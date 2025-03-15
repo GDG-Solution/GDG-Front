@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'record_more_last.dart'; // 완료 페이지
 
 class RecordLoadingPage extends StatefulWidget {
+  final String counselId;
   final int painRate;
   final File? imageFile;
   final List<String> selectedSymptoms;
@@ -14,6 +15,7 @@ class RecordLoadingPage extends StatefulWidget {
   final String expectation;
 
   RecordLoadingPage({
+    required this.counselId,
     required this.painRate,
     this.imageFile,
     required this.selectedSymptoms,
@@ -60,7 +62,7 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
       // ✅ 요청 데이터 준비
       Map<String, dynamic> requestData = {
         "userId": _userId,
-        "counselId": "67d3f1977b2a675b58017f29",
+        "counselId": widget.counselId,
         "picture": widget.imageFile != null
             ? await _convertImageToBase64(widget.imageFile!)
             : null,
@@ -108,6 +110,14 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("📢 데이터 확인:");
+    print("- userId: ${_userId}");
+    print("- counselId: ${widget.counselId}");
+    print("- picture: ${widget.imageFile}");
+    print("- category: ${widget.selectedSymptoms}");
+    print("- score: ${widget.painRate}");
+    print("- title: ${widget.expectation}");
+    print("- content: ${widget.panicReason}");
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
       body: Center(

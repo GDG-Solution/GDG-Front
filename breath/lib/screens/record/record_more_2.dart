@@ -8,10 +8,15 @@ import 'components/custom_quistion_text.dart';
 import 'record_more_3.dart';
 
 class RecordPage2 extends StatefulWidget {
+  final String counselId;
   final int painRate;
   final File? imageFile; // RecordPage1에서 전달받은 사진 파일
 
-  RecordPage2({required this.painRate, this.imageFile}); // 생성자 변경
+  RecordPage2({
+    required this.counselId,
+    required this.painRate,
+    this.imageFile,
+  }); // 생성자 변경
 
   @override
   _RecordPage2State createState() => _RecordPage2State();
@@ -123,6 +128,7 @@ class _RecordPage2State extends State<RecordPage2> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => RecordPage3(
+                                    counselId: widget.counselId,
                                     painRate: widget.painRate, // 기존 데이터 유지
                                     imageFile: widget.imageFile, // 기존 데이터 유지
                                     selectedSymptoms:

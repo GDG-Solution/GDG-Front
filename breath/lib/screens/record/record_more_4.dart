@@ -6,12 +6,14 @@ import 'components/custom_gauge_bar.dart';
 import 'record_more_loading.dart';
 
 class RecordPage4 extends StatefulWidget {
+  final String counselId;
   final int painRate;
   final File? imageFile;
   final List<String> selectedSymptoms;
   final String panicReason; // 공황 이유 추가
 
   RecordPage4({
+    required this.counselId,
     required this.painRate,
     this.imageFile,
     required this.selectedSymptoms,
@@ -25,12 +27,6 @@ class RecordPage4 extends StatefulWidget {
 class _RecordPage4State extends State<RecordPage4> {
   @override
   Widget build(BuildContext context) {
-    print("📢 데이터 확인:");
-    print("고통 수치: ${widget.painRate}");
-    print("사진 파일: ${widget.imageFile}");
-    print("선택한 증상들: ${widget.selectedSymptoms}");
-    print("공황 이유: ${widget.panicReason}");
-
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
       body: SafeArea(
@@ -111,6 +107,7 @@ class _RecordPage4State extends State<RecordPage4> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => RecordLoadingPage(
+                            counselId: widget.counselId,
                             painRate: widget.painRate,
                             imageFile: widget.imageFile,
                             selectedSymptoms: widget.selectedSymptoms,
@@ -132,6 +129,7 @@ class _RecordPage4State extends State<RecordPage4> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => RecordLoadingPage(
+                            counselId: widget.counselId,
                             painRate: widget.painRate,
                             imageFile: widget.imageFile,
                             selectedSymptoms: widget.selectedSymptoms,
