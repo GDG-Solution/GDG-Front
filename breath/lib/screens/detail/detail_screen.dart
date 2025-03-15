@@ -29,7 +29,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Future<void> loadPanicRecord() async {
     try {
       final record = await ApiRecordList.fetchPanicRecordById(widget.panicId);
-
+      print("✅ API 응답 데이터: $record"); // API에서 받아온 데이터 출력
       if (record.isNotEmpty) {
         setState(() {
           selectedRecord = {

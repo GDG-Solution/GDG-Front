@@ -6,16 +6,18 @@ class ApiRecordList {
   static final String baseUrl =
       dotenv.env['API_BASE_URL'] ?? 'http://default-url.com';
 
-  // 특정 panicId로 데이터 가져오기
+  // 특정 panicId로 데이터 가져오기 -> 상세 페이지에서 해당 상담 내역 모두
   static Future<Map<String, dynamic>> fetchPanicRecordById(
       String panicId) async {
     final url = Uri.parse("$baseUrl/diary?id=$panicId");
-
     try {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        return json.decode(response.body);
+        String decodedBody = utf8.decode(response.bodyBytes);
+        final decodedData = json.decode(decodedBody);
+
+        return decodedData;
       } else {
         throw Exception("데이터 로드 실패: ${response.statusCode}");
       }
