@@ -8,8 +8,9 @@ import './components/custom_message_box.dart';
 
 class CallingMain extends StatefulWidget {
   final String counselId;
+  final String agentResponse;
 
-  CallingMain({required this.counselId});
+  CallingMain({required this.counselId, required this.agentResponse});
 
   @override
   _CallingMainState createState() => _CallingMainState();
@@ -72,7 +73,7 @@ class _CallingMainState extends State<CallingMain>
                   ),
                 ),
                 SizedBox(height: 0),
-                CustomMessageBox(message: "우연아 앞에 보이는 것들 아무거나 얘기해줘"),
+                CustomMessageBox(message: widget.agentResponse),
               ],
             ),
 
@@ -125,7 +126,7 @@ class _CallingMainState extends State<CallingMain>
           padding: EdgeInsets.only(right: 15),
           child: GestureDetector(
             onTap: () {
-              showEndCallDialog(context);
+              showEndCallDialog(context, widget.counselId);
             },
             child: Image.asset("assets/images/calling/stop_calling.png",
                 width: 36),

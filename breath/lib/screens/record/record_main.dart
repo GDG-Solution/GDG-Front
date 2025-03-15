@@ -4,6 +4,10 @@ import './components/custom_button.dart';
 import './components/pain_level_selector.dart';
 
 class RecordMain extends StatefulWidget {
+  final String counselId;
+
+  RecordMain({required this.counselId});
+
   @override
   _RecordMainState createState() => _RecordMainState();
 }

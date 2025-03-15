@@ -2,38 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'calling_main.dart'; // 성공 시 이동할 페이지
+import '../record/record_main.dart'; // 성공 시 이동할 페이지
 
-class CallingValidCheck extends StatefulWidget {
+class CallingEnd extends StatefulWidget {
+  final String counselId;
+
+  CallingEnd({required this.counselId});
+
   @override
-  _CallingValidCheckState createState() => _CallingValidCheckState();
+  _CallingEndState createState() => _CallingEndState();
 }
 
-class _CallingValidCheckState extends State<CallingValidCheck> {
+class _CallingEndState extends State<CallingEnd> {
   bool _isLoading = true;
   String? _errorMessage;
-  late String counselId; // 상담 고유 키
-  late String agentResponse; // 에이전트 음성 응답
-
-  String _userId = "";
-
-  Future<void> _loadUserInfo() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _userId = prefs.getString('id') ?? "Unknown ID";
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    _initialize();
-  }
-
-  Future<void> _initialize() async {
-    await _loadUserInfo(); // userId를 먼저 가져온 후 API 요청 실행
-    _sendUserIdToServer();
+    _sendUserIdToServer(); // API 요청 실행
   }
 
   // /counsel API에 userId를 POST 요청하는 함수
@@ -41,7 +28,6 @@ class _CallingValidCheckState extends State<CallingValidCheck> {
     final String baseUrl = dotenv.env['API_BASE_URL'] ?? "";
 
     if (baseUrl.isEmpty) {
-      if (!mounted) return;
       setState(() {
         _isLoading = false;
         _errorMessage = "서버 URL이 설정되지 않았습니다.";
@@ -50,44 +36,28 @@ class _CallingValidCheckState extends State<CallingValidCheck> {
     }
 
     try {
-      print("userId === $_userId");
       final response = await http.post(
-        Uri.parse("$baseUrl/counsel"),
+        Uri.parse("$baseUrl/counsel/end"),
         headers: {
           "Content-Type": "application/json",
         },
-        body: jsonEncode({"userId": _userId}),
+        body: jsonEncode({"id": widget.counselId}),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseData = json.decode(response.body);
-
-        // ✅ 변경된 응답 형식에 맞게 데이터 저장
-        counselId = responseData["id"];
-        agentResponse = responseData["content"];
-
-        print("✅ 서버 응답: counselId = $counselId");
-        print("✅ 서버 응답: agentResponse (Base64) = $agentResponse");
-
-        // ✅ CallingMain으로 이동하면서 counselId와 agentResponse 전달
+        // 성공 시 RecordMain 페이지로 이동
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => CallingMain(
-              counselId: counselId,
-              agentResponse: agentResponse,
-            ),
-          ),
+              builder: (context) => RecordMain(counselId: widget.counselId)),
         );
       } else {
-        if (!mounted) return;
         setState(() {
           _isLoading = false;
           _errorMessage = "서버 응답 오류: ${response.statusCode}";
         });
       }
     } catch (e) {
-      if (!mounted) return;
       setState(() {
         _isLoading = false;
         _errorMessage = "서버 요청 실패: $e";
@@ -107,7 +77,7 @@ class _CallingValidCheckState extends State<CallingValidCheck> {
                   CircularProgressIndicator(color: Color(0xFF275220)),
                   SizedBox(height: 20),
                   Text(
-                    "상담을 시작하는 중...",
+                    "상담을 종료하는 중...",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ],
