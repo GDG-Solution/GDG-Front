@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import './components/animated_wave_circle.dart';
@@ -19,10 +22,13 @@ class CallingMain extends StatefulWidget {
 class _CallingMainState extends State<CallingMain>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  String _agentResponse = ""; // ✅ 서버 응답 저장
 
   @override
   void initState() {
     super.initState();
+    _agentResponse = widget.agentResponse; // ✅ 초기 메시지 설정
+
     _controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
@@ -55,14 +61,10 @@ class _CallingMainState extends State<CallingMain>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween, // 상, 중, 하 균등 분배
           children: [
-            // ✅ 1. 상단 영역 (타이머 등)
             SizedBox(height: 10),
-
-            // ✅ 2. 중앙 영역 (캐릭터 + 애니메이션)
             Column(
               children: [
                 Container(
-                  // 캐릭터 영상
                   height: 300,
                   child: Stack(
                     alignment: Alignment.center,
@@ -73,14 +75,19 @@ class _CallingMainState extends State<CallingMain>
                   ),
                 ),
                 SizedBox(height: 0),
-                CustomMessageBox(message: widget.agentResponse),
+                CustomMessageBox(message: _agentResponse), // ✅ 변경된 메시지 반영
               ],
             ),
-
-            // ✅ 3. 하단 영역 (마이크 버튼)
             Padding(
-              padding: EdgeInsets.only(bottom: 100), // 버튼 하단 여백 추가
-              child: MicButton(),
+              padding: EdgeInsets.only(bottom: 100),
+              child: MicButton(
+                counselId: widget.counselId, // ✅ 상담 ID 전달
+                onResponseReceived: (response) {
+                  setState(() {
+                    _agentResponse = response; // ✅ 서버 응답을 반영
+                  });
+                },
+              ),
             ),
           ],
         ),
@@ -88,7 +95,6 @@ class _CallingMainState extends State<CallingMain>
     );
   }
 
-  // ✅ 상단 앱바
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Color(0xFF728C78),
@@ -103,27 +109,24 @@ class _CallingMainState extends State<CallingMain>
           Navigator.pop(context);
         },
       ),
-      title: Expanded(
-        // Row를 중앙 정렬할 수 있도록 확장
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // 내부 요소 중앙 정렬
-          mainAxisSize: MainAxisSize.min, // Row의 크기를 최소화 (전체 AppBar 길이를 먹지 않도록)
-          children: [
-            Image.asset("assets/images/calling/timer_icon.png", width: 18),
-            SizedBox(width: 10), // 컨테이너 대신 SizedBox 사용
-            Text(
-              "05:00",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-              textAlign: TextAlign.center,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset("assets/images/calling/timer_icon.png", width: 18),
+          SizedBox(width: 10),
+          Text(
+            "05:00",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
             ),
-          ],
-        ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
-      centerTitle: true, // AppBar의 title 자체를 중앙으로 배치
+      centerTitle: true,
       actions: [
         Padding(
           padding: EdgeInsets.only(right: 15),
@@ -142,6 +145,11 @@ class _CallingMainState extends State<CallingMain>
 
 // ✅ 마이크 버튼
 class MicButton extends StatefulWidget {
+  final String counselId;
+  final Function(String) onResponseReceived;
+
+  MicButton({required this.counselId, required this.onResponseReceived});
+
   @override
   _MicButtonState createState() => _MicButtonState();
 }
@@ -154,7 +162,7 @@ class _MicButtonState extends State<MicButton> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min, // Column이 내용만큼만 차지하도록 설정
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           _isListening ? _recognizedText : "눌러서 대답하기",
@@ -173,13 +181,6 @@ class _MicButtonState extends State<MicButton> {
             height: 122,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: Colors.greenAccent.withOpacity(0.6),
-              //     blurRadius: 10,
-              //     spreadRadius: 2,
-              //   ),
-              // ],
               color: _isListening
                   ? Color(0xffE1F8CC)
                   : Color(0xffFFFFFF).withOpacity(0.3),
@@ -202,7 +203,10 @@ class _MicButtonState extends State<MicButton> {
         _isListening = false;
       });
       _speech.stop();
-      print("🗣 최종 인식된 텍스트: $_recognizedText"); // 변환된 텍스트 출력
+      print("🗣 최종 인식된 텍스트: $_recognizedText");
+
+      // ✅ 음성을 인식한 후 서버에 요청 보내기
+      await _sendSpeechToServer();
     } else {
       bool available = false;
 
@@ -222,7 +226,7 @@ class _MicButtonState extends State<MicButton> {
       }
 
       if (!available) {
-        print("⚠️ 음성 인식 서비스를 사용할 수 없습니다. (에뮬레이터에서는 정상 작동하지 않을 수 있음)");
+        print("⚠️ 음성 인식 서비스를 사용할 수 없습니다.");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("⚠️ 음성 인식을 사용할 수 없습니다."),
@@ -233,7 +237,7 @@ class _MicButtonState extends State<MicButton> {
 
       setState(() {
         _isListening = true;
-        _recognizedText = "듣고 있어요..."; // 기존 텍스트 초기화
+        _recognizedText = "듣고 있어요...";
       });
 
       _speech.listen(
@@ -241,9 +245,38 @@ class _MicButtonState extends State<MicButton> {
           setState(() {
             _recognizedText = result.recognizedWords;
           });
-          print("🔹 실시간 인식 중: ${result.recognizedWords}"); // 실시간으로 콘솔에 출력
         },
       );
+    }
+  }
+
+// ✅ 서버로 음성 데이터 전송
+  Future<void> _sendSpeechToServer() async {
+    final String baseUrl = dotenv.env['API_BASE_URL'] ?? "";
+
+    try {
+      final response = await http.post(
+        Uri.parse("$baseUrl/counsel/agent/text"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({
+          "counselId": widget.counselId,
+          "content": _recognizedText,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        String responseData = response.body; // JSON이 아니라면 그냥 문자열로 저장
+        print("✅ 서버 응답: $responseData");
+
+        // ✅ 응답을 UI에 반영
+        widget.onResponseReceived(responseData);
+      } else {
+        print("❌ 서버 오류: ${response.body}");
+      }
+    } catch (e) {
+      print("❌ 요청 실패: $e");
     }
   }
 }
