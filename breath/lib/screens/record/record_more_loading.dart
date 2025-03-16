@@ -33,6 +33,19 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
 
   String _userId = "";
 
+  @override
+  void initState() {
+    super.initState();
+    _initialize(); // ✅ 비동기 함수 실행
+  }
+
+// ✅ 비동기 초기화 함수
+  Future<void> _initialize() async {
+    await _loadUserInfo(); // ✅ userId를 먼저 로드
+    _sendDataToServer(); // ✅ 그 다음 서버 요청
+  }
+
+// ✅ userId 불러오기
   Future<void> _loadUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -40,14 +53,7 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _sendDataToServer();
-    _loadUserInfo(); // 저장된 사용자 정보 불러오기
-  }
-
-  // ✅ 서버에 데이터 전송하는 함수
+// ✅ 서버에 데이터 전송
   Future<void> _sendDataToServer() async {
     final String baseUrl = dotenv.env['API_BASE_URL'] ?? "";
     if (baseUrl.isEmpty) {
@@ -61,7 +67,7 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
     try {
       // ✅ 요청 데이터 준비
       Map<String, dynamic> requestData = {
-        "userId": _userId,
+        "userId": _userId, // ✅ 이제 userId가 로드된 후 실행됨
         "counselId": widget.counselId,
         "picture": widget.imageFile != null
             ? await _convertImageToBase64(widget.imageFile!)
@@ -115,14 +121,14 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("📢 데이터 확인:");
-    print("- userId: ${_userId}");
-    print("- counselId: ${widget.counselId}");
-    print("- picture: ${widget.imageFile}");
-    print("- category: ${widget.selectedSymptoms}");
-    print("- score: ${widget.painRate}");
-    print("- title: ${widget.expectation}");
-    print("- content: ${widget.panicReason}");
+    // print("📢 데이터 확인:");
+    // print("- userId: ${_userId}");
+    // print("- counselId: ${widget.counselId}");
+    // print("- picture: ${widget.imageFile}");
+    // print("- category: ${widget.selectedSymptoms}");
+    // print("- score: ${widget.painRate}");
+    // print("- title: ${widget.expectation}");
+    // print("- content: ${widget.panicReason}");
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
       body: Center(

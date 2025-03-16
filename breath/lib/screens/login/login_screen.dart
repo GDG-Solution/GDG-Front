@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         print("❌ 로그인 실패: ${response.body}");
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("❌ 로그인 실패")));
+            .showSnackBar(SnackBar(content: Text("❌ ${response.body}")));
       }
     } catch (e) {
       print("❌ 로그인 요청 오류: $e");
