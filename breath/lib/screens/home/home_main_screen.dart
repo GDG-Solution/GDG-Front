@@ -23,85 +23,87 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
     _loadPanicRecords(); // JSON 데이터 불러오기
   }
 
-  Future<void> _loadPanicRecords() async {
-    try {
-      String jsonString =
-          await rootBundle.loadString('assets/data/panic_records.json');
-      List<dynamic> jsonData = json.decode(jsonString);
-
-      print("📢 로드된 JSON 데이터: $jsonData"); // ✅ JSON 데이터 출력
-
-      setState(() {
-        panicRecords = jsonData.map((record) {
-          return {
-            "id": record["id"].toString(),
-            "userId": record["userId"].toString(),
-            "counselId": record["counselId"].toString(),
-            "date": record['date'] != null
-                ? DateTime.parse(record['date'])
-                    .toString()
-                    .split(" ")[0] // 변환 적용
-                : "N/A",
-            "picture": record["picture"] ?? [],
-            "category":
-                List<String>.from(record["category"]), // List<String> 변환
-            "score": record["score"] as int, // int 변환
-            "title": record["title"].toString(),
-            "content": record["content"].toString(),
-          };
-        }).toList();
-      });
-
-      print("✅ 변환된 panicRecords: $panicRecords"); // ✅ 변환된 데이터 출력
-    } catch (e) {
-      print("❌ JSON 로딩 오류: $e");
-    }
-  }
-
-  // static final String baseUrl =
-  //     dotenv.env['API_BASE_URL'] ?? 'http://default-url.com';
-
   // Future<void> _loadPanicRecords() async {
-  //   final String baseUrl = dotenv.env['BASE_URL'] ?? "";
-  //   final String userId = "test"; // ✅ 특정 사용자 ID (임시값)
-
   //   try {
-  //     final response = await http.get(Uri.parse("$baseUrl/diary"));
+  //     String jsonString =
+  //         await rootBundle.loadString('assets/data/panic_records.json');
+  //     List<dynamic> jsonData = json.decode(jsonString);
 
-  //     if (response.statusCode == 200) {
-  //       final jsonData = json.decode(response.body);
-  //       List<dynamic> allDiaries =
-  //           jsonData['diaries']; // ✅ API 응답에서 diaries 리스트 추출
+  //     print("📢 로드된 JSON 데이터: $jsonData"); // ✅ JSON 데이터 출력
 
-  //       setState(() {
-  //         panicRecords = allDiaries
-  //             .where(
-  //                 (record) => record["userId"] == userId) // ✅ 특정 사용자 데이터만 필터링
-  //             .map((record) {
-  //           return {
-  //             "id": record["id"].toString(),
-  //             "userId": record["userId"].toString(),
-  //             "counsel": record["counsel"] ?? "N/A",
-  //             "date": record['date'] != null
-  //                 ? DateTime.parse(record['date']).toString().split(" ")[0]
-  //                 : "N/A",
-  //             "picture": record["picture"] ?? [],
-  //             "category": List<String>.from(record["category"] ?? []),
-  //             "score": record["score"] as int,
-  //             "title": record["title"].toString(),
-  //             "content": record["content"].toString(),
-  //           };
-  //         }).toList();
-  //       });
+  //     setState(() {
+  //       panicRecords = jsonData.map((record) {
+  //         return {
+  //           "id": record["id"].toString(),
+  //           "userId": record["userId"].toString(),
+  //           "counselId": record["counselId"].toString(),
+  //           "date": record['date'] != null
+  //               ? DateTime.parse(record['date'])
+  //                   .toString()
+  //                   .split(" ")[0] // 변환 적용
+  //               : "N/A",
+  //           "picture": record["picture"] ?? [],
+  //           "category":
+  //               List<String>.from(record["category"]), // List<String> 변환
+  //           "score": record["score"] as int, // int 변환
+  //           "title": record["title"].toString(),
+  //           "content": record["content"].toString(),
+  //         };
+  //       }).toList();
+  //     });
 
-  //       print("✅ 필터링된 panicRecords: $panicRecords");
-  //     } else {
-  //       throw Exception("❌ 서버 오류: ${response.statusCode}");
-  //     }
+  //     print("✅ 변환된 panicRecords: $panicRecords"); // ✅ 변환된 데이터 출력
   //   } catch (e) {
-  //     print("❌ home_main API 요청 실패: $e");
+  //     print("❌ JSON 로딩 오류: $e");
   //   }
   // }
+
+  Future<void> _loadPanicRecords() async {
+    final String baseUrl = dotenv.env['API_BASE_URL'] ?? "";
+    final String userId = "test"; // ✅ 특정 사용자 ID (임시값)
+    //final String userId = prefs.getString('userId');
+
+    try {
+      final response =
+          await http.get(Uri.parse("$baseUrl/diary/user?id=$userId"));
+
+      print("✅ 서버 응답 상태 코드: ${response.statusCode}");
+      print("✅ 서버 응답 본문: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        List<dynamic> allDiaries =
+            jsonData['diaries']; // ✅ API 응답에서 diaries 리스트 추출
+
+        setState(() {
+          panicRecords = allDiaries
+              .where(
+                  (record) => record["userId"] == userId) // ✅ 특정 사용자 데이터만 필터링
+              .map((record) {
+            return {
+              "id": record["id"].toString(),
+              "userId": record["userId"].toString(),
+              "counsel": record["counsel"] ?? "N/A",
+              "date": record['date'] != null
+                  ? DateTime.parse(record['date']).toString().split(" ")[0]
+                  : "N/A",
+              "picture": record["picture"] ?? [],
+              "category": List<String>.from(record["category"] ?? []),
+              "score": record["score"] as int,
+              "title": record["title"].toString(),
+              "content": record["content"].toString(),
+            };
+          }).toList();
+        });
+
+        print("✅ 필터링된 panicRecords: $panicRecords");
+      } else {
+        throw Exception("❌ 서버 오류: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("❌ home_main API 요청 실패: $e");
+    }
+  }
 
   void _onCategoryChanged(String category) {
     print("선택된 카테고리: $category");

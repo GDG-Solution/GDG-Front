@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DetailHeader extends StatelessWidget {
-  const DetailHeader({Key? key}) : super(key: key);
+  final String date;
+
+  const DetailHeader({Key? key, required this.date}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,8 +12,8 @@ class DetailHeader extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Text(
-              "24년 7월 21일",
+            Text(
+              date,
               style: TextStyle(
                   fontSize: 18,
                   color: Colors.white,

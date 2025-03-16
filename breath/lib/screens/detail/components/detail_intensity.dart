@@ -12,17 +12,20 @@ class DetailIntensity extends StatelessWidget {
       padding:
           const EdgeInsets.symmetric(horizontal: 16, vertical: 10), // 내부 여백
       decoration: BoxDecoration(
-        color: Colors.green[800], // 배경색
-        borderRadius: BorderRadius.circular(20),
+        color: Color(0x1A000000), // 배경색
+        borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
             "공포 수치",
-            style: TextStyle(fontSize: 14, color: Colors.white),
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFFC3D1B8)),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 12),
           PainLevelDots(painRate: intensity), // 공용 공포 수치 컴포넌트 사용
         ],
       ),

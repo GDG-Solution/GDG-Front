@@ -3,8 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiRecordList {
-  static final String baseUrl =
-      dotenv.env['API_BASE_URL'] ?? 'http://default-url.com';
+  static final String baseUrl = dotenv.env['API_BASE_URL'] ?? '';
 
   // 특정 panicId로 데이터 가져오기 -> 상세 페이지에서 해당 상담 내역 모두
   static Future<Map<String, dynamic>> fetchPanicRecordById(

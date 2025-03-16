@@ -10,15 +10,18 @@ class DetailRecordMemo extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white, // 배경색
-        borderRadius: BorderRadius.circular(10),
+        color: Color(0xFF3A5F41), // 배경색
+        borderRadius: BorderRadius.circular(14),
         boxShadow: const [
           BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
         ],
       ),
       child: Text(
         memoText,
-        style: const TextStyle(fontSize: 14),
+        style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFFFFFFFF)),
       ),
     );
   }
