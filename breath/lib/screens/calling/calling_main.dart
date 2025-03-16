@@ -103,11 +103,14 @@ class _CallingMainState extends State<CallingMain>
           Navigator.pop(context);
         },
       ),
-      title: Container(
+      title: Expanded(
+        // Row를 중앙 정렬할 수 있도록 확장
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center, // 내부 요소 중앙 정렬
+          mainAxisSize: MainAxisSize.min, // Row의 크기를 최소화 (전체 AppBar 길이를 먹지 않도록)
           children: [
             Image.asset("assets/images/calling/timer_icon.png", width: 18),
-            Container(width: 10),
+            SizedBox(width: 10), // 컨테이너 대신 SizedBox 사용
             Text(
               "05:00",
               style: TextStyle(
@@ -120,7 +123,7 @@ class _CallingMainState extends State<CallingMain>
           ],
         ),
       ),
-      centerTitle: true,
+      centerTitle: true, // AppBar의 title 자체를 중앙으로 배치
       actions: [
         Padding(
           padding: EdgeInsets.only(right: 15),
