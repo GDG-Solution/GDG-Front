@@ -72,6 +72,8 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
         "content": widget.panicReason,
       };
 
+      print("📢 전송할 데이터: ${jsonEncode(requestData)}"); // 🚀 요청 데이터 확인
+
       // ✅ POST 요청 보내기
       final response = await http.post(
         Uri.parse("$baseUrl/diary"),
@@ -81,6 +83,9 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
         body: jsonEncode(requestData),
       );
 
+      print("📢 서버 응답 코드: ${response.statusCode}"); // 🚀 응답 코드 출력
+      print("📢 서버 응답 바디: ${response.body}"); // 🚀 서버 응답 내용 출력
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         // ✅ 성공 시 완료 페이지로 이동
         Navigator.pushReplacement(
@@ -88,10 +93,10 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
           MaterialPageRoute(builder: (context) => RecordPage5()),
         );
       } else {
-        // ❌ 실패 시 오류 메시지 표시
+        // ❌ 실패 시 서버 응답 내용 출력
         setState(() {
           _isLoading = false;
-          _errorMessage = "서버 응답 오류: ${response.statusCode}";
+          _errorMessage = "서버 응답 오류: ${response.statusCode}\n${response.body}";
         });
       }
     } catch (e) {
