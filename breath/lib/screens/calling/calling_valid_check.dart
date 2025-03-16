@@ -60,7 +60,8 @@ class _CallingValidCheckState extends State<CallingValidCheck> {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseData = json.decode(response.body);
+        final String decodedResponse = utf8.decode(response.bodyBytes);
+        final responseData = json.decode(decodedResponse);
 
         // ✅ 변경된 응답 형식에 맞게 데이터 저장
         counselId = responseData["id"];

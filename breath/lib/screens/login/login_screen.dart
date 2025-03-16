@@ -21,14 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _login(BuildContext context) async {
     final String baseUrl = dotenv.env['API_BASE_URL'] ?? ""; // 환경 변수에서 URL 가져오기
 
-    if (baseUrl == null || baseUrl.isEmpty) {
-      print("❌ 환경 변수 'BASE_URL'이 설정되지 않았습니다.");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("⚠️ 서버 설정 오류: 관리자에게 문의하세요.")),
-      );
-      return;
-    }
-
     final String userId = _idController.text.trim();
 
     // ✅ ID와 비밀번호 유효성 검사
