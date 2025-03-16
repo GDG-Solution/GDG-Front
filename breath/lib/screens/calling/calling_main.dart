@@ -67,7 +67,7 @@ class _CallingMainState extends State<CallingMain>
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      AnimatedWaveCircle(controller: _controller),
+                      AnimatedWaveCircle(),
                       CharacterCircle(),
                     ],
                   ),
@@ -170,18 +170,20 @@ class _MicButtonState extends State<MicButton> {
             height: 122,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.greenAccent.withOpacity(0.6),
-                  blurRadius: 10,
-                  spreadRadius: 2,
-                ),
-              ],
-              color: _isListening ? Colors.redAccent : Colors.greenAccent,
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Colors.greenAccent.withOpacity(0.6),
+              //     blurRadius: 10,
+              //     spreadRadius: 2,
+              //   ),
+              // ],
+              color: _isListening
+                  ? Color(0xffE1F8CC)
+                  : Color(0xffFFFFFF).withOpacity(0.3),
             ),
             child: Icon(
               _isListening ? Icons.mic_off : Icons.mic,
-              color: Colors.white,
+              color: _isListening ? Color(0xff35643E) : Color(0xffF1FDEF),
               size: 45,
             ),
           ),
