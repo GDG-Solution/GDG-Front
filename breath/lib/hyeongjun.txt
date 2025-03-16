@@ -1,5 +1,6 @@
 // 🎨 색상 설정 방법
 Color(0xFF000000) // 000000: 색상 코드
+Color(0xFF000000).withOpacity(0.7) // 투명도 70% 적용
 Colors.white
 Colors.red[300]
 Colors.transparent // 투명 색상
@@ -19,10 +20,75 @@ BoxShadow(
 Image.asset("assets/images/record/leaf_left.png", width: 37),
 
 // Text 텍스트
- Text(  date,
+Text(
+        date,
         style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
         )
     ),
+
+// 🫙 Flutter의 LocalStorage 사용
+1. import 해야함
+import 'package:shared_preferences/shared_preferences.dart';
+
+2. User 정보 불러오고 저장하는 함수 정의
+String _userName = "";
+String _userId = "";
+
+Future<void> _loadUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+        _userId = prefs.getString('id') ?? "Unknown ID";
+        String? savedName = prefs.getString('name');
+        _userName = savedName != null
+            ? utf8.decode(savedName.codeUnits)
+            : "Unknwon User"; // 한글 디코딩
+    });
+}
+
+3. initState에 사용자 정보 가져올 수 있도록 해서 페이지 들어가자마자 정보 가져오게 만듦
+@override
+void initState() {
+    super.initState();
+    _loadUserInfo(); // 저장된 사용자 정보 불러오기
+}
+
+4. 사용 ($_userId, $_userName)
+Text("ID: $_userId", style: TextStyle(fontSize: 20)),
+Text("이름: $_userName", style: TextStyle(fontSize: 20)),
+
+// 🎬 화면 전환
+- 페이드인/아웃
+Navigator.of(context).push(
+    PageRouteBuilder(
+        pageBuilder:
+            (context, animation, secondaryAnimation) =>
+                RecordPage1(painRate: widget.painRate),
+        transitionsBuilder:
+            (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+            opacity: animation, // 투명도 애니메이션
+            child: child,
+        );
+        },
+    ),
+);
+
+- 슬라이드 (좌->우)
+Navigator.of(context).push(
+  PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => 
+                RecordPage1(painRate: widget.painRate),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: Tween<Offset>(
+          begin: Offset(1.0, 0.0), // 오른쪽에서 시작
+          end: Offset.zero, // 원래 위치
+        ).animate(animation),
+        child: child,
+      );
+    },
+  ),
+);

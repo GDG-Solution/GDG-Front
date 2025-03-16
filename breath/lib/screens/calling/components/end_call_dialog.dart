@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../record/record_main.dart';
 import './dialog_button.dart';
+import '../calling_end.dart';
 
-void showEndCallDialog(BuildContext context) {
+void showEndCallDialog(BuildContext context, String counselId) {
   showDialog(
     context: context,
     barrierDismissible: true,
@@ -42,7 +42,9 @@ void showEndCallDialog(BuildContext context) {
                       Navigator.of(context).pop();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => RecordMain()),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                CallingEnd(counselId: counselId)),
                       );
                     }),
                   ],

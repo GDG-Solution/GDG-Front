@@ -84,21 +84,30 @@ class PanicCard extends StatelessWidget {
               SizedBox(height: 20),
 
               // 공황 유형 (예: 호흡곤란)
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
-                decoration: BoxDecoration(
-                  color: Color(0xffE1F8CC),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  category,
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff275220)),
-                ),
+              Wrap(
+                spacing: 6, // 카테고리 사이 간격
+                runSpacing: 4, // 줄바꿈 간격
+                children: category.split(', ').map((cat) {
+                  // 쉼표로 분할하여 리스트로 변환
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+                    decoration: BoxDecoration(
+                      color: Color(0xffE1F8CC),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      cat.trim(), // 공백 제거 후 출력
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff275220),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
-              SizedBox(height: 6),
+
+              SizedBox(height: 8),
 
               // 제목
               Text(
@@ -120,15 +129,20 @@ class PanicCard extends StatelessWidget {
                 textAlign: TextAlign.start,
               ),
 
-              SizedBox(height: 8),
+              SizedBox(height: 14),
 
               // 시간 & 아이콘
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  Image.asset(
+                    "assets/icons/home/call_icon.png",
+                    width: 24,
+                    height: 24,
+                  ),
+                  SizedBox(width: 3.5),
                   Text(time,
                       style: TextStyle(fontSize: 12, color: Colors.grey)),
-                  Icon(Icons.phone, color: Colors.grey[700], size: 16),
                 ],
               ),
             ],

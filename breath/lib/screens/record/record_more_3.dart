@@ -1,22 +1,49 @@
-// Q3. 상황적기.
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
+import 'components/custom_gauge_bar.dart';
 import 'components/custom_quistion_text.dart';
+import 'record_more_4.dart';
 
-class RecordPage4 extends StatefulWidget {
+class RecordPage3 extends StatefulWidget {
+  final String counselId;
+  final int painRate;
+  final File? imageFile;
+  final List<String> selectedSymptoms; // 증상 리스트 추가
+
+  RecordPage3({
+    required this.counselId,
+    required this.painRate,
+    this.imageFile,
+    required this.selectedSymptoms, // 생성자에서 받아오기
+  });
+
   @override
-  _RecordPage4State createState() => _RecordPage4State();
+  _RecordPage3State createState() => _RecordPage3State();
 }
 
-class _RecordPage4State extends State<RecordPage4> {
+class _RecordPage3State extends State<RecordPage3> {
   TextEditingController _inputController = TextEditingController();
+  bool nextButtonEnabled = false; // 버튼 활성화 상태
+
+  @override
+  void initState() {
+    super.initState();
+    _inputController.addListener(_updateButtonState);
+  }
 
   @override
   void dispose() {
+    _inputController.removeListener(_updateButtonState);
     _inputController.dispose(); // 메모리 누수 방지
     super.dispose();
+  }
+
+  void _updateButtonState() {
+    setState(() {
+      nextButtonEnabled = _inputController.text.trim().isNotEmpty; // 입력 여부 확인
+    });
   }
 
   @override
@@ -36,30 +63,22 @@ class _RecordPage4State extends State<RecordPage4> {
               },
             ),
 
-            SizedBox(height: 10), // 네비게이션 바 아래 여백 추가
+            CustomGaugeBar(
+              currentValue: 4,
+            ),
+
+            SizedBox(height: 28),
 
             // ✅ 질문 카드
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                  )
-                ],
-              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomQuestionCard(
-                    questionNumber: "Q3",
-                    question: "상황적기",
-                    subText: "상황을 설명해주세요",
+                    questionNumber: 3,
+                    question: "공황이 일어난 이유는 무엇인가요",
+                    subText: "이유를 알면 두려움이 줄어들어요",
                   ),
 
                   SizedBox(height: 20),
@@ -67,9 +86,6 @@ class _RecordPage4State extends State<RecordPage4> {
                   // ✅ 입력 필드 추가
                   TextField(
                     controller: _inputController,
-                    onChanged: (value) {
-                      print("사용자 입력: $value");
-                    },
                     decoration: InputDecoration(
                       hintText: "여기에 입력해주세요.",
                       border: OutlineInputBorder(
@@ -79,7 +95,7 @@ class _RecordPage4State extends State<RecordPage4> {
                       fillColor: Color(0xFFF3F3F3),
                     ),
                     maxLines: 4,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -93,34 +109,35 @@ class _RecordPage4State extends State<RecordPage4> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomButton(
-                    text: "건너뛰기",
-                    width: 88,
-                    bgColor: Color(0xFFDBE3D0),
-                    textColor: Color(0xff728C78),
-                    borderColor: Color(0xffCBE0B8),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RecordPage4(),
-                        ),
-                      );
-                    },
-                  ),
-                  CustomButton(
                     text: "다음",
-                    width: 272,
-                    bgColor: Color(0xFFE1F8CC),
-                    textColor: Color(0xFF275220),
-                    borderColor: Color(0xffCBE0B8),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RecordPage4(),
-                        ),
-                      );
-                    },
+                    width: 365,
+                    bgColor: nextButtonEnabled
+                        ? Color(0xFFE1F8CC).withOpacity(0.9) // 입력값 있으면 활성화
+                        : Colors.black.withOpacity(0.1), // 입력 없으면 비활성화 색상
+                    textColor: nextButtonEnabled
+                        ? Color(0xFF275220)
+                        : Color(0xffA1A1A1),
+                    borderColor: nextButtonEnabled
+                        ? Color(0xffCBE0B8)
+                        : Colors.black.withOpacity(0.1),
+                    onPressed: nextButtonEnabled
+                        ? () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RecordPage4(
+                                  counselId: widget.counselId,
+                                  painRate: widget.painRate, // 기존 데이터 유지
+                                  imageFile: widget.imageFile, // 기존 데이터 유지
+                                  selectedSymptoms:
+                                      widget.selectedSymptoms, // 기존 데이터 유지
+                                  panicReason:
+                                      _inputController.text.trim(), // 공황 이유 전달
+                                ),
+                              ),
+                            );
+                          }
+                        : () {}, // ✅ 입력 없으면 버튼 비활성화
                   ),
                 ],
               ),

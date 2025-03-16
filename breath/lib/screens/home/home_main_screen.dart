@@ -5,6 +5,7 @@ import './components/category_filter.dart';
 import './components/panic_list.dart';
 import './components/custom_app_bar.dart';
 import './components/monthly_panic_count.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeMainScreen extends StatefulWidget {
   @override
@@ -12,12 +13,29 @@ class HomeMainScreen extends StatefulWidget {
 }
 
 class _HomeMainScreenState extends State<HomeMainScreen> {
+  String _userName = "";
+  String _userId = "";
+
+  Future<void> _loadUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userId = prefs.getString('id') ?? "Unknown ID";
+      String? savedName = prefs.getString('name');
+      _userName = savedName != null
+          ? utf8.decode(savedName.codeUnits)
+          : "Unknwon User"; // 한글 디코딩
+    });
+    print("userId: ${_userId}");
+    print("userName: ${_userName}");
+  }
+
   List<Map<String, dynamic>> panicRecords = []; // 데이터를 저장할 리스트
 
   @override
   void initState() {
     super.initState();
     _loadPanicRecords(); // JSON 데이터 불러오기
+    _loadUserInfo(); // 저장된 사용자 정보 불러오기
   }
 
   Future<void> _loadPanicRecords() async {
@@ -26,7 +44,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
           await rootBundle.loadString('assets/data/panic_records.json');
       List<dynamic> jsonData = json.decode(jsonString);
 
-      print("📢 로드된 JSON 데이터: $jsonData"); // ✅ JSON 데이터 출력
+      // print("📢 로드된 JSON 데이터: $jsonData"); // JSON 데이터 출력
 
       setState(() {
         panicRecords = jsonData.map((record) {
@@ -37,19 +55,22 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
             "date": record['date'] != null
                 ? DateTime.parse(record['date'])
                     .toString()
-                    .split(" ")[0] // 변환 적용
+                    .split(" ")[0] // 날짜 변환
                 : "N/A",
             "picture": record["picture"] ?? [],
-            "category":
-                List<String>.from(record["category"]), // List<String> 변환
-            "score": record["score"] as int, // int 변환
+            "category": record["category"] is String
+                ? record["category"].split(', ') // 쉼표로 나눠서 리스트 변환
+                : List<String>.from(record["category"] ?? []), // JSON 배열 처리
+            "score": record["score"] is int
+                ? record["score"]
+                : int.tryParse(record["score"].toString()) ?? 0, // 정수 변환
             "title": record["title"].toString(),
             "content": record["content"].toString(),
           };
         }).toList();
       });
 
-      print("✅ 변환된 panicRecords: $panicRecords"); // ✅ 변환된 데이터 출력
+      // print("✅ 변환된 panicRecords: $panicRecords"); // 변환된 데이터 출력
     } catch (e) {
       print("❌ JSON 로딩 오류: $e");
     }
