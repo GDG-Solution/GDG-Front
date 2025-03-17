@@ -9,7 +9,7 @@ class PanicCard extends StatelessWidget {
   final String time;
   final String date;
   final String day;
-  final String category;
+  final List<String> category;
   final int painRate;
 
   const PanicCard({
@@ -86,21 +86,29 @@ class PanicCard extends StatelessWidget {
               ),
               SizedBox(height: 20),
 
-              // 공황 유형 (예: 호흡곤란)
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
-                decoration: BoxDecoration(
-                  color: Color(0xffE1F8CC),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  category,
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff275220)),
-                ),
+              // 카테고리 태그 리스트
+              Wrap(
+                spacing: 6.0, // 태그 간격
+                runSpacing: 0,
+                children: category.map((tag) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+                    decoration: BoxDecoration(
+                      color: Color(0xffE1F8CC),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      tag,
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff275220)),
+                    ),
+                  );
+                }).toList(),
               ),
+
               SizedBox(height: 6),
 
               // 제목

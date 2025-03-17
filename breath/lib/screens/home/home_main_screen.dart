@@ -23,55 +23,22 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
     _loadPanicRecords(); // JSON 데이터 불러오기
   }
 
-  // Future<void> _loadPanicRecords() async {
-  //   try {
-  //     String jsonString =
-  //         await rootBundle.loadString('assets/data/panic_records.json');
-  //     List<dynamic> jsonData = json.decode(jsonString);
-
-  //     print("📢 로드된 JSON 데이터: $jsonData"); // ✅ JSON 데이터 출력
-
-  //     setState(() {
-  //       panicRecords = jsonData.map((record) {
-  //         return {
-  //           "id": record["id"].toString(),
-  //           "userId": record["userId"].toString(),
-  //           "counselId": record["counselId"].toString(),
-  //           "date": record['date'] != null
-  //               ? DateTime.parse(record['date'])
-  //                   .toString()
-  //                   .split(" ")[0] // 변환 적용
-  //               : "N/A",
-  //           "picture": record["picture"] ?? [],
-  //           "category":
-  //               List<String>.from(record["category"]), // List<String> 변환
-  //           "score": record["score"] as int, // int 변환
-  //           "title": record["title"].toString(),
-  //           "content": record["content"].toString(),
-  //         };
-  //       }).toList();
-  //     });
-
-  //     print("✅ 변환된 panicRecords: $panicRecords"); // ✅ 변환된 데이터 출력
-  //   } catch (e) {
-  //     print("❌ JSON 로딩 오류: $e");
-  //   }
-  // }
-
   Future<void> _loadPanicRecords() async {
     final String baseUrl = dotenv.env['API_BASE_URL'] ?? "";
     final String userId = "test"; // ✅ 특정 사용자 ID (임시값)
     //final String userId = prefs.getString('userId');
 
     try {
-      final response =
-          await http.get(Uri.parse("$baseUrl/diary/user?id=$userId"));
+      final response = await http.get(
+        Uri.parse("$baseUrl/diary/user?id=$userId"),
+      );
 
       print("✅ 서버 응답 상태 코드: ${response.statusCode}");
       print("✅ 서버 응답 본문: ${response.body}");
 
       if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
+        final jsonData = json.decode(utf8.decode(response.bodyBytes));
+
         List<dynamic> allDiaries =
             jsonData['diaries']; // ✅ API 응답에서 diaries 리스트 추출
 
@@ -83,15 +50,19 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
             return {
               "id": record["id"].toString(),
               "userId": record["userId"].toString(),
-              "counsel": record["counsel"] ?? "N/A",
+              "counsel": record["counsel"] ?? {},
               "date": record['date'] != null
                   ? DateTime.parse(record['date']).toString().split(" ")[0]
                   : "N/A",
               "picture": record["picture"] ?? [],
-              "category": List<String>.from(record["category"] ?? []),
-              "score": record["score"] as int,
-              "title": record["title"].toString(),
-              "content": record["content"].toString(),
+              "category": (record["category"] as List<dynamic>?)
+                      ?.map<String>((e) => e.toString())
+                      .toList() ??
+                  [],
+              "score": record["score"] ?? 0,
+              "isExpected": record["isExpected"] ?? false,
+              "title": record["title"] ?? "제목 없음",
+              "content": record["content"] ?? "내용 없음",
             };
           }).toList();
         });

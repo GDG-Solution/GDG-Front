@@ -28,8 +28,7 @@ class PanicList extends StatelessWidget {
               time: record['time'] as String? ?? "00:00",
               date: record['date']?.toString() ?? "N/A", // ✅ null-safe 처리
               day: record['day'] as String? ?? "-",
-              category:
-                  (record['category'] as List<String>?)?.join(", ") ?? "-",
+              category: List<String>.from(record['category'] ?? []),
               painRate: record['score'] as int? ?? 0, // ✅ 0으로 설정
             ),
           );
