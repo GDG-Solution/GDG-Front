@@ -8,6 +8,7 @@ import './components/panic_list.dart';
 import './components/custom_app_bar.dart';
 import './components/monthly_panic_count.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class HomeMainScreen extends StatefulWidget {
   @override
@@ -69,7 +70,11 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
               "userId": record["userId"].toString(),
               "counsel": record["counsel"] ?? {},
               "date": record['date'] != null
-                  ? DateTime.parse(record['date']).toString().split(" ")[0]
+                  ? DateFormat('MM월 dd일').format(DateTime.parse(record['date']))
+                  : "N/A",
+              "dateTime": record['date'] != null
+                  ? DateFormat('a hh시 mm분')
+                      .format(DateTime.parse(record['date']))
                   : "N/A",
               "picture": record["picture"] ?? [],
               "category": (record["category"] as List<dynamic>?)

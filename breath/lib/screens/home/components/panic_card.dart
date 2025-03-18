@@ -10,6 +10,7 @@ class PanicCard extends StatelessWidget {
   final String description;
   final String time;
   final String date;
+  final String dateTime;
   final String day;
   final List<String> category;
   final int painRate;
@@ -20,6 +21,7 @@ class PanicCard extends StatelessWidget {
     required this.description,
     required this.time,
     required this.date,
+    required this.dateTime,
     required this.day,
     required this.category,
     required this.painRate,
@@ -63,7 +65,7 @@ class PanicCard extends StatelessWidget {
                       Text(date,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold)),
-                      Text(day,
+                      Text(dateTime,
                           style: TextStyle(fontSize: 12, color: Colors.grey)),
                     ],
                   ),
