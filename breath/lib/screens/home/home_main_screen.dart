@@ -37,8 +37,9 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
   @override
   void initState() {
     super.initState();
-    _loadPanicRecords(); // JSON 데이터 불러오기
-    _loadUserInfo(); // 저장된 사용자 정보 불러오기
+    _loadUserInfo().then((_) {
+      _loadPanicRecords(); // JSON 데이터 불러오기
+    });
   }
 
   Future<void> _loadPanicRecords() async {
