@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../../components/pain_level_dots.dart';
+
 import '../../detail/detail_screen.dart'; // DetailScreen import 추가
 
 class PanicCard extends StatelessWidget {
@@ -84,28 +86,8 @@ class PanicCard extends StatelessWidget {
               ),
               SizedBox(height: 20),
 
-              // 카테고리 태그 리스트
-              Wrap(
-                spacing: 6.0, // 태그 간격
-                runSpacing: 0,
-                children: category.map((tag) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
-                    decoration: BoxDecoration(
-                      color: Color(0xffE1F8CC),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      tag,
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff275220)),
-                    ),
-                  );
-                }).toList(),
-              ),
+              // 카테고리 태그 리스트 (1줄만 표시 & 초과 개수 표현)
+              _buildCategoryTags(),
 
               SizedBox(height: 6),
 
@@ -144,6 +126,60 @@ class PanicCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryTags() {
+    List<Widget> tagWidgets = [];
+    double currentWidth = 0.0;
+    const double maxWidth = 200.0; // 최대 너비 설정 (적절히 조정 가능)
+
+    for (String tag in category) {
+      TextPainter painter = TextPainter(
+        text: TextSpan(
+          text: tag,
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        ),
+        maxLines: 1,
+        textDirection: TextDirection.ltr,
+      )..layout();
+
+      double tagWidth = painter.width + 24; // 텍스트 폭 + 패딩 고려
+
+      if (currentWidth + tagWidth > maxWidth) {
+        int remainingCount = category.length - tagWidgets.length;
+        if (remainingCount > 0) {
+          tagWidgets.add(_buildTag("+ 외 $remainingCount 개"));
+        }
+        break;
+      }
+
+      tagWidgets.add(_buildTag(tag));
+      currentWidth += tagWidth;
+    }
+
+    return Wrap(
+      spacing: 6.0,
+      runSpacing: 0,
+      children: tagWidgets,
+    );
+  }
+
+  Widget _buildTag(String text) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+      decoration: BoxDecoration(
+        color: Color(0xffE1F8CC),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: Color(0xff275220)),
       ),
     );
   }
