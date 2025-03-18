@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../home_screen.dart';
 import './components/custom_button.dart';
 
 class RecordPage5 extends StatefulWidget {
@@ -84,7 +85,13 @@ class _RecordPage5State extends State<RecordPage5> {
                       borderColor: Color(0xff0000001A),
                       onPressed: () {
                         Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
+                            .popUntil((route) => route.isFirst); // 첫 페이지로 돌아가기
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HomeScreen()), // 새로 고침된 첫 페이지로 이동
+                        );
                       },
                     ),
                   ],
