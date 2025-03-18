@@ -37,8 +37,6 @@ class PanicCard extends StatelessWidget {
         );
       },
       child: Container(
-        width: 140,
-        height: 170,
         margin: EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -92,7 +90,7 @@ class PanicCard extends StatelessWidget {
                 runSpacing: 0,
                 children: category.map((tag) {
                   return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                    margin: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
                     decoration: BoxDecoration(
                       color: Color(0xffE1F8CC),
@@ -116,6 +114,7 @@ class PanicCard extends StatelessWidget {
                 title,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
+
               SizedBox(height: 4),
 
               // 설명

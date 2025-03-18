@@ -158,14 +158,6 @@ class _DetailScreenState extends State<DetailScreen> {
                         children: [
                           DetailIntensity(
                               intensity: selectedRecord?["score"] ?? 0),
-                          // DetailPredictionToggle(
-                          //   isPredicted: isPredicted,
-                          //   onChanged: (value) {
-                          //     setState(() {
-                          //       isPredicted = value;
-                          //     });
-                          //   },
-                          //),
                         ],
                       ),
                       const SizedBox(height: 16),
