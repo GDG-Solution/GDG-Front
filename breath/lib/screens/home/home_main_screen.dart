@@ -43,8 +43,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
 
   Future<void> _loadPanicRecords() async {
     final String baseUrl = dotenv.env['API_BASE_URL'] ?? "";
-    final String userId = "test"; // ✅ 특정 사용자 ID (임시값)
-    //final String userId = prefs.getString('userId');
+    final String userId = _userId; // ✅ 특정 사용자 ID (임시값)
 
     try {
       final response = await http.get(
@@ -57,44 +56,56 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
       if (response.statusCode == 200) {
         final jsonData = json.decode(utf8.decode(response.bodyBytes));
 
-        List<dynamic> allDiaries =
-            jsonData['diaries']; // ✅ API 응답에서 diaries 리스트 추출
+        // 확인: diaries가 없거나 빈 리스트일 경우, panicRecords에 빈 리스트 할당
+        List<dynamic> allDiaries = jsonData['diaries'] ?? [];
 
-        setState(() {
-          panicRecords = allDiaries
-              .where(
-                  (record) => record["userId"] == userId) // ✅ 특정 사용자 데이터만 필터링
-              .map((record) {
-            return {
-              "id": record["id"].toString(),
-              "userId": record["userId"].toString(),
-              "counsel": record["counsel"] ?? {},
-              "date": record['date'] != null
-                  ? DateFormat('MM월 dd일').format(DateTime.parse(record['date']))
-                  : "N/A",
-              "dateTime": record['date'] != null
-                  ? DateFormat('a hh시 mm분')
-                      .format(DateTime.parse(record['date']))
-                  : "N/A",
-              "picture": record["picture"] ?? [],
-              "category": (record["category"] as List<dynamic>?)
-                      ?.map<String>((e) => e.toString())
-                      .toList() ??
-                  [],
-              "score": record["score"] ?? 0,
-              "isExpected": record["isExpected"] ?? false,
-              "title": record["title"] ?? "제목 없음",
-              "content": record["content"] ?? "내용 없음",
-            };
-          }).toList();
-        });
+        // 데이터가 없을 경우
+        if (allDiaries.isEmpty) {
+          setState(() {
+            panicRecords = [];
+          });
+          print("❌ 기록이 없습니다.");
+        } else {
+          setState(() {
+            panicRecords = allDiaries
+                .where(
+                    (record) => record["userId"] == userId) // 특정 사용자 데이터만 필터링
+                .map((record) {
+              return {
+                "id": record["id"].toString(),
+                "userId": record["userId"].toString(),
+                "counsel": record["counsel"] ?? {},
+                "date": record['date'] != null
+                    ? DateFormat('MM월 dd일')
+                        .format(DateTime.parse(record['date']))
+                    : "N/A",
+                "dateTime": record['date'] != null
+                    ? DateFormat('a hh시 mm분')
+                        .format(DateTime.parse(record['date']))
+                    : "N/A",
+                "picture": record["picture"] ?? [],
+                "category": (record["category"] as List<dynamic>?)
+                        ?.map<String>((e) => e.toString())
+                        .toList() ??
+                    [],
+                "score": record["score"] ?? 0,
+                "isExpected": record["isExpected"] ?? false,
+                "title": record["title"] ?? "제목 없음",
+                "content": record["content"] ?? "내용 없음",
+              };
+            }).toList();
+          });
 
-        print("✅ 필터링된 panicRecords: $panicRecords");
+          print("✅ 필터링된 panicRecords: $panicRecords");
+        }
       } else {
         throw Exception("❌ 서버 오류: ${response.statusCode}");
       }
     } catch (e) {
       print("❌ home_main API 요청 실패: $e");
+      setState(() {
+        panicRecords = []; // 데이터 오류 시 비어 있는 리스트로 초기화
+      });
     }
   }
 
@@ -115,28 +126,35 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
             colors: [Color(0xFF375E43), Color(0xFF3A413B)],
           ),
         ),
-        child: panicRecords.isEmpty
-            ? Center(
-                child: CircularProgressIndicator()) // ✅ 데이터 로딩 중일 때 로딩 인디케이터 표시
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 100),
-                  MonthlyPanicCount(count: panicRecords.length),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12.0),
-                    child:
-                        CategoryFilter(onCategorySelected: _onCategoryChanged),
-                  ),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: SizedBox(
-                      height: 360,
-                      child: PanicList(panicRecords: panicRecords),
-                    ),
-                  ),
-                ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 100),
+            MonthlyPanicCount(count: panicRecords.length),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: CategoryFilter(onCategorySelected: _onCategoryChanged),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                height: 360,
+                child: panicRecords.isEmpty
+                    ? Center(
+                        child: Text(
+                          "아직 기록이 없습니다 😊",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ) // ✅ 데이터가 없을 경우, "아직 기록이 없습니다." 메시지 표시
+                    : PanicList(panicRecords: panicRecords),
               ),
+            ),
+          ],
+        ),
       ),
     );
   }
