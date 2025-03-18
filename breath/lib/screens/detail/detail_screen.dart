@@ -1,6 +1,5 @@
 import 'package:breath/service/api_record_list.dart';
 import 'package:flutter/material.dart';
-import 'package:breath/service/api_record_list.dart';
 import 'package:intl/intl.dart';
 
 import 'components/detail_header.dart';

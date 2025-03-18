@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:breath/screens/home_screen.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:breath/screens/login/login_screen.dart';
 
 void main() async {
