@@ -112,15 +112,20 @@ class PanicCard extends StatelessWidget {
                 textAlign: TextAlign.start,
               ),
 
-              SizedBox(height: 8),
+              SizedBox(height: 14),
 
               // 시간 & 아이콘
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  Image.asset(
+                    "assets/icons/home/call_icon.png",
+                    width: 24,
+                    height: 24,
+                  ),
+                  SizedBox(width: 3.5),
                   Text(time,
                       style: TextStyle(fontSize: 12, color: Colors.grey)),
-                  Icon(Icons.phone, color: Colors.grey[700], size: 16),
                 ],
               ),
             ],

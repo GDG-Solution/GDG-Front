@@ -1,31 +1,51 @@
-// Q1. 공황이 일어났던 주변을 찍어주세요. 주변 사진 촬영
-
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart'; // 이미지 선택을 위한 패키지
+
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
-
+import 'components/custom_gauge_bar.dart';
 import 'record_more_2.dart';
 import 'components/custom_quistion_text.dart';
 
-class RecordPage2 extends StatefulWidget {
+class RecordPage1 extends StatefulWidget {
+  final String counselId;
   final int painRate;
 
-  RecordPage2({required this.painRate});
+  RecordPage1({
+    required this.counselId,
+    required this.painRate,
+  });
 
   @override
-  _RecordPage2State createState() => _RecordPage2State();
+  _RecordPage1State createState() => _RecordPage1State();
 }
 
-class _RecordPage2State extends State<RecordPage2> {
+class _RecordPage1State extends State<RecordPage1> {
+  File? _image; // 찍은 사진을 저장할 변수
+  final picker = ImagePicker(); // 📸 이미지 선택기 인스턴스
+
+  // ✅ 카메라 실행 함수
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.camera); // 📸 카메라 실행
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path); // 선택한 이미지 저장
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("전달받은 painRate: ${widget.painRate}"); // ✅ 콘솔 출력 추가
+    print("전달받은 painRate: ${widget.painRate}");
+
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
       body: SafeArea(
         child: Column(
           children: [
-            // ✅ 네비게이션 바
             CustomNavigationBar(
               onBack: () {
                 Navigator.pop(context);
@@ -34,115 +54,76 @@ class _RecordPage2State extends State<RecordPage2> {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
             ),
-
-            // ✅ 제목
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Align(
-                // ✅ Align 추가하여 좌측 정렬 강제
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "구체적인 기록을 위해\n4 가지 질문에 답해주세요",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff275220),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
-
-            // ✅ 질문 카드
+            CustomGaugeBar(currentValue: 2),
+            SizedBox(height: 28),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                  )
-                ],
-              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomQuestionCard(
-                    questionNumber: "Q1",
-                    question: "공황이 일어났던 주변을 찍어주세요",
+                    questionNumber: 1,
+                    question: "공황이 일어난 환경을 기록해보세요",
                     subText: "찍기 어렵다면 패스해도 좋아요",
                   ),
-
                   SizedBox(height: 20),
 
-                  // ✅ 카메라 박스
+                  // ✅ 사진 촬영 영역
                   GestureDetector(
-                    onTap: () {
-                      print("카메라 열기");
-                    },
+                    onTap: _pickImage, // 📸 카메라 실행
                     child: Container(
                       width: double.infinity,
-                      height: 160,
+                      height: 250,
                       decoration: BoxDecoration(
-                        color: Color(0xFFF3F3F3),
+                        color: Color(0xFFE1F8CC),
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.camera_alt, color: Colors.grey, size: 40),
-                          SizedBox(height: 8),
-                          Text(
-                            "주변 배경을 찍어주세요",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff626262),
+                      child: _image == null
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.camera_alt,
+                                    color: Color(0xff428C37), size: 40),
+                                SizedBox(height: 8),
+                                Text(
+                                  "이곳을 터치해서 사진을 찍어봐",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff428C37),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.file(
+                                _image!, // 촬영한 이미지 표시
+                                width: double.infinity,
+                                height: 250,
+                                fit: BoxFit.cover, // 이미지가 꽉 차게 표시됨
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
+                  Center(
+                    child: Image.asset(
+                      "assets/images/record/record_camera.png",
+                      width: 157,
+                    ),
+                  )
                 ],
               ),
             ),
-
             Spacer(),
-
-            // ✅ 하단 버튼 (CustomButton 활용)
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomButton(
-                    text: "건너뛰기",
-                    width: 88,
-                    bgColor: Color(0xFFDBE3D0),
-                    textColor: Color(0xff728C78),
-                    borderColor: Color(0xffCBE0B8),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RecordPage3(),
-                        ),
-                      );
-                    },
-                  ),
-                  CustomButton(
                     text: "다음",
-                    width: 272,
+                    width: 365,
                     bgColor: Color(0xFFE1F8CC),
                     textColor: Color(0xFF275220),
                     borderColor: Color(0xffCBE0B8),
@@ -150,7 +131,11 @@ class _RecordPage2State extends State<RecordPage2> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecordPage3(),
+                          builder: (context) => RecordPage2(
+                            counselId: widget.counselId,
+                            painRate: widget.painRate, // 기존 데이터 유지
+                            imageFile: _image, // 찍은 이미지 전달 (없으면 null)
+                          ),
                         ),
                       );
                     },

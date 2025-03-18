@@ -1,20 +1,41 @@
-// Q2. 증상을 모두 선택해주세요. 증상 선택
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
-import 'components/custom_quistion_text.dart';
 
+import 'components/custom_gauge_bar.dart';
+import 'components/custom_quistion_text.dart';
 import 'record_more_3.dart';
 
-class RecordPage3 extends StatefulWidget {
+class RecordPage2 extends StatefulWidget {
+  final String counselId;
+  final int painRate;
+  final File? imageFile; // RecordPage1에서 전달받은 사진 파일
+
+  RecordPage2({
+    required this.counselId,
+    required this.painRate,
+    this.imageFile,
+  }); // 생성자 변경
+
   @override
-  _RecordPage3State createState() => _RecordPage3State();
+  _RecordPage2State createState() => _RecordPage2State();
 }
 
-class _RecordPage3State extends State<RecordPage3> {
-  // 선택된 증상 관리
+class _RecordPage2State extends State<RecordPage2> {
   List<String> selectedSymptoms = [];
+  bool nextButtonEnabled = false; // 버튼 활성화 상태
+
+  void _toggleSymptom(String symptom) {
+    setState(() {
+      if (selectedSymptoms.contains(symptom)) {
+        selectedSymptoms.remove(symptom);
+      } else {
+        selectedSymptoms.add(symptom);
+      }
+      nextButtonEnabled = selectedSymptoms.isNotEmpty; // 증상이 선택되었는지 확인
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +44,6 @@ class _RecordPage3State extends State<RecordPage3> {
       body: SafeArea(
         child: Column(
           children: [
-            // 네비게이션 바 추가
             CustomNavigationBar(
               onBack: () {
                 Navigator.pop(context);
@@ -32,57 +52,33 @@ class _RecordPage3State extends State<RecordPage3> {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
             ),
-
-            SizedBox(height: 10), // 네비게이션 바 아래 여백 추가
-
-            // 질문 카드
+            CustomGaugeBar(currentValue: 3),
+            SizedBox(height: 28),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                  )
-                ],
-              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomQuestionCard(
-                    questionNumber: "Q2",
+                    questionNumber: 2,
                     question: "증상을 모두 선택해주세요",
-                    subText: "강도가 약해도 선택해주세요",
+                    subText: "약한 증상도 선택해주세요",
                   ),
                   SizedBox(height: 20),
-
-                  // 증상 선택 리스트
                   Wrap(
                     spacing: 12,
                     runSpacing: 12,
                     children: symptomList.map((symptom) {
                       bool isSelected = selectedSymptoms.contains(symptom);
                       return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (isSelected) {
-                              selectedSymptoms.remove(symptom);
-                            } else {
-                              selectedSymptoms.add(symptom);
-                            }
-                          });
-                        },
+                        onTap: () => _toggleSymptom(symptom),
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               vertical: 14, horizontal: 20),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Color(0xFF90DD85)
-                                : Colors.transparent,
+                                ? Color(0xFFFFFFFF)
+                                : Color(0xffF9FEF3),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: Color(0xFFE1F8CC),
@@ -108,45 +104,40 @@ class _RecordPage3State extends State<RecordPage3> {
                 ],
               ),
             ),
-
-            Spacer(), // 남은 공간 차지하여 하단 버튼 고정
-
-            // 하단 버튼 추가 (CustomButton 사용)
+            Spacer(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomButton(
-                    text: "건너뛰기",
-                    width: 88,
-                    bgColor: Color(0xFFDBE3D0),
-                    textColor: Color(0xff728C78),
-                    borderColor: Color(0xffCBE0B8),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RecordPage4(),
-                        ),
-                      );
-                    },
-                  ),
-                  CustomButton(
-                    text: "다음",
-                    width: 272,
-                    bgColor: Color(0xFFE1F8CC),
-                    textColor: Color(0xFF275220),
-                    borderColor: Color(0xffCBE0B8),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RecordPage4(),
-                        ),
-                      );
-                    },
-                  ),
+                      text: "다음",
+                      width: 365,
+                      bgColor: nextButtonEnabled
+                          ? Color(0xFFE1F8CC)
+                          : Colors.black.withOpacity(0.1),
+                      textColor: nextButtonEnabled
+                          ? Color(0xFF275220)
+                          : Color(0xffA1A1A1),
+                      borderColor: nextButtonEnabled
+                          ? Color(0xffCBE0B8)
+                          : Colors.black.withOpacity(0.1),
+                      onPressed: nextButtonEnabled
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RecordPage3(
+                                    counselId: widget.counselId,
+                                    painRate: widget.painRate, // 기존 데이터 유지
+                                    imageFile: widget.imageFile, // 기존 데이터 유지
+                                    selectedSymptoms:
+                                        selectedSymptoms, // 증상 리스트 전달
+                                  ),
+                                ),
+                              );
+                            }
+                          : () {}), // 버튼 비활성화
                 ],
               ),
             ),
@@ -156,7 +147,7 @@ class _RecordPage3State extends State<RecordPage3> {
     );
   }
 
-// 증상 리스트
+  // ✅ 증상 리스트
   final List<String> symptomList = [
     "가슴통증",
     "호흡곤란",

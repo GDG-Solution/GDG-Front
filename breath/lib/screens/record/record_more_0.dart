@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'record_more_0.dart';
 import './components/custom_button.dart';
-import './components/pain_level_selector.dart';
+import './components/custom_navigation_bar.dart';
 
-class RecordMain extends StatefulWidget {
+import 'components/custom_gauge_bar.dart';
+import 'record_more_1.dart';
+
+class RecordPage0 extends StatefulWidget {
   final String counselId;
+  final int painRate;
 
-  RecordMain({required this.counselId});
+  RecordPage0({required this.painRate, required this.counselId});
 
   @override
-  _RecordMainState createState() => _RecordMainState();
+  _RecordPage0State createState() => _RecordPage0State();
 }
 
-class _RecordMainState extends State<RecordMain> {
-  int _painRate = -1; // 선택된 인덱스 (-1: 아무것도 선택되지 않음)
-
+class _RecordPage0State extends State<RecordPage0> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,27 +23,40 @@ class _RecordMainState extends State<RecordMain> {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(height: 50),
+            // ✅ 네비게이션 바
+            CustomNavigationBar(
+              onBack: () {
+                Navigator.pop(context);
+              },
+              onClose: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+            ),
+
+            CustomGaugeBar(
+              currentValue: 1,
+            ),
+
+            SizedBox(height: 38),
 
             // ✅ 상단 메시지
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("assets/images/record/leaf_left.png", width: 37),
-                SizedBox(width: 8),
                 Column(
                   children: [
                     Text(
-                      "오늘도 이겨냈어요!",
+                      "분석을 위해\n더 정확한 기록이 필요해요",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
                         color: Color(0xff275220),
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 5),
                     Text(
-                      "분석을 위해 고통 수치를 선택해주세요",
+                      "기록하면 트로피를 드려요",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -51,34 +65,23 @@ class _RecordMainState extends State<RecordMain> {
                     ),
                   ],
                 ),
-                SizedBox(width: 8),
-                Image.asset("assets/images/record/leaf_right.png", width: 37),
               ],
             ),
 
-            SizedBox(height: 38),
+            SizedBox(height: 70),
 
-            // ✅ 캐릭터 박스
             Container(
-              width: 148,
-              height: 112,
+              width: 259.53,
+              height: 264,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(
-                      "assets/images/record/record_poco.png"), // 이미지 경로
+                  image: AssetImage("assets/images/record/record_medal.png"),
                   fit: BoxFit.cover, // 이미지가 컨테이너에 맞게 채워지도록 설정
                 ),
               ),
             ),
 
-            // ✅ 선택 리스트 (컴포넌트 사용)
-            PainLevelSelector(
-              onSelected: (painRate) {
-                setState(() {
-                  _painRate = painRate;
-                });
-              },
-            ),
+            Spacer(),
 
             // ✅ 하단 버튼
             Padding(
@@ -103,17 +106,15 @@ class _RecordMainState extends State<RecordMain> {
                     textColor: Color(0xFF275220),
                     borderColor: Color(0xffCBE0B8),
                     onPressed: () {
-                      if (_painRate != -1) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RecordPage0(
-                              counselId: widget.counselId,
-                              painRate: _painRate,
-                            ),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecordPage1(
+                            counselId: widget.counselId,
+                            painRate: widget.painRate,
                           ),
-                        );
-                      }
+                        ),
+                      );
                     },
                   ),
                 ],

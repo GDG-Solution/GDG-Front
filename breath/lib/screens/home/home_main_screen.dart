@@ -8,6 +8,7 @@ import './components/category_filter.dart';
 import './components/panic_list.dart';
 import './components/custom_app_bar.dart';
 import './components/monthly_panic_count.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeMainScreen extends StatefulWidget {
   @override
@@ -15,12 +16,29 @@ class HomeMainScreen extends StatefulWidget {
 }
 
 class _HomeMainScreenState extends State<HomeMainScreen> {
+  String _userName = "";
+  String _userId = "";
+
+  Future<void> _loadUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userId = prefs.getString('id') ?? "Unknown ID";
+      String? savedName = prefs.getString('name');
+      _userName = savedName != null
+          ? utf8.decode(savedName.codeUnits)
+          : "Unknwon User"; // 한글 디코딩
+    });
+    print("userId: ${_userId}");
+    print("userName: ${_userName}");
+  }
+
   List<Map<String, dynamic>> panicRecords = []; // 데이터를 저장할 리스트
 
   @override
   void initState() {
     super.initState();
     _loadPanicRecords(); // JSON 데이터 불러오기
+    _loadUserInfo(); // 저장된 사용자 정보 불러오기
   }
 
   Future<void> _loadPanicRecords() async {
