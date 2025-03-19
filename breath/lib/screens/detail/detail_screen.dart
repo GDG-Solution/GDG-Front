@@ -8,6 +8,7 @@ import '../../../components/tag_list.dart';
 import 'components/detail_intensity.dart';
 import 'components/detail_record.dart';
 import 'components/detail_call_alert.dart';
+import 'components/custom_detail_app_bar.dart';
 
 class DetailScreen extends StatefulWidget {
   final String panicId; // 특정 공황 기록을 불러오기 위한 ID
@@ -73,6 +74,8 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomDetailAppBar(title: "기록 분석"),
+      extendBodyBehindAppBar: true,
       body: isLoading
           ? const Center(child: CircularProgressIndicator()) // 데이터 로딩 중
           : Stack(
@@ -92,12 +95,14 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                 ),
+
                 // 전체 화면 스크롤
                 SingleChildScrollView(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: 100),
                       // ✅ 커스텀 헤더
                       DetailHeader(
                         date: formatDate(selectedRecord?["date"]),
