@@ -51,7 +51,7 @@ class PanicCard extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(16, 30, 16, 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -64,9 +64,9 @@ class PanicCard extends StatelessWidget {
                     children: [
                       Text(date,
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)),
-                      Text(dateTime,
-                          style: TextStyle(fontSize: 12, color: Colors.grey)),
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+                      // Text(dateTime,
+                      //     style: TextStyle(fontSize: 12, color: Colors.grey)),
                     ],
                   ),
                   PainLevelDots(
@@ -74,7 +74,7 @@ class PanicCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 16),
 
               // 이미지 공간
               Container(
@@ -146,7 +146,7 @@ class PanicCard extends StatelessWidget {
       TextPainter painter = TextPainter(
         text: TextSpan(
           text: tag,
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         ),
         maxLines: 1,
         textDirection: TextDirection.ltr,

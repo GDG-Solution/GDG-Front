@@ -79,7 +79,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                 "userId": record["userId"].toString(),
                 "counsel": record["counsel"] ?? {},
                 "date": record['date'] != null
-                    ? DateFormat('MM월 dd일')
+                    ? DateFormat('yy.MM.dd')
                         .format(DateTime.parse(record['date']))
                     : "N/A",
                 "dateTime": record['date'] != null
