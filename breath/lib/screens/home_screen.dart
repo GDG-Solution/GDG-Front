@@ -18,6 +18,18 @@ class _HomeScreenState extends State<HomeScreen> {
     CalendarScreen(),
   ];
 
+  /// 선택된 화면의 배경색 반환
+  Color getBackgroundColor() {
+    switch (_selectedIndex) {
+      case 0:
+        return Color(0xFF3A413B); // HomeMainScreen 배경색 (예제)
+      case 1:
+        return Colors.blue.shade100; // CalendarScreen 배경색 (예제)
+      default:
+        return Colors.white;
+    }
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -27,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: getBackgroundColor(), // ✅ 현재 선택된 화면의 배경색 적용
       body: _screens[_selectedIndex], // 선택된 화면 보여주기
       bottomNavigationBar: CustomBottomBar(
         currentIndex: _selectedIndex,
