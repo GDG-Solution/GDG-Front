@@ -33,8 +33,12 @@ class _DetailScreenState extends State<DetailScreen> {
   String formatDate(String? dateString) {
     try {
       if (dateString == null || dateString.isEmpty) return "날짜 없음";
+
       DateTime date = DateTime.parse(dateString);
-      return DateFormat("yy년 M월 d일").format(date); // "24년 7월 21일" 형식으로 변환
+
+      // "오전 --, MM.dd." 형태로 변환
+      String formattedDate = DateFormat("a hh시 mm분, MM.dd.").format(date);
+      return formattedDate;
     } catch (e) {
       return "날짜 없음"; // 날짜 변환 실패 시 기본값
     }
@@ -145,7 +149,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            "작성 날짜: ${selectedRecord?["date"] ?? ""}",
+                            "${formatDate(selectedRecord?["date"])} 작성" ?? "",
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.white70,
