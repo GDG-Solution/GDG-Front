@@ -29,15 +29,30 @@ class _DetailScreenState extends State<DetailScreen> {
     loadPanicRecord(); // API 데이터 로드
   }
 
-  // 날짜 변환 함수
-  String formatDate(String? dateString) {
+  // 날짜 변환 함수 1 (yy년 MM월 dd일)
+  String formatDate1(String? dateString) {
+    try {
+      if (dateString == null || dateString.isEmpty) return "날짜 없음";
+
+      DateTime date = DateTime.parse(dateString);
+
+      // "yy년 MM월 dd일" 형태로 변환
+      String formattedDate = DateFormat("yy년 MM월 dd일").format(date);
+      return formattedDate;
+    } catch (e) {
+      return "날짜 없음"; // 날짜 변환 실패 시 기본값
+    }
+  }
+
+  // 날짜 변환 함수 2 (a hh:mm, MM.dd)
+  String formatDate2(String? dateString) {
     try {
       if (dateString == null || dateString.isEmpty) return "날짜 없음";
 
       DateTime date = DateTime.parse(dateString);
 
       // "오전 --, MM.dd." 형태로 변환
-      String formattedDate = DateFormat("a hh시 mm분, MM.dd.").format(date);
+      String formattedDate = DateFormat("a hh:mm, MM.dd").format(date);
       return formattedDate;
     } catch (e) {
       return "날짜 없음"; // 날짜 변환 실패 시 기본값
@@ -60,6 +75,7 @@ class _DetailScreenState extends State<DetailScreen> {
             "picture": record["picture"] ?? [],
             "category": List<String>.from(record["category"] ?? []),
             "score": record["score"] ?? 0,
+            "expected": record["expected"] ?? false,
             "title": record["title"] ?? "",
             "content": record["content"] ?? "",
           };
@@ -109,7 +125,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       SizedBox(height: 50),
                       // ✅ 커스텀 헤더
                       DetailHeader(
-                        date: formatDate(selectedRecord?["date"]),
+                        date: formatDate1(selectedRecord?["date"]),
                       ),
                       const SizedBox(height: 16),
 
@@ -149,7 +165,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            "${formatDate(selectedRecord?["date"])} 작성" ?? "",
+                            "${formatDate2(selectedRecord?["date"])} 작성" ?? "",
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.white70,
@@ -166,6 +182,16 @@ class _DetailScreenState extends State<DetailScreen> {
                         children: [
                           DetailIntensity(
                               intensity: selectedRecord?["score"] ?? 0),
+                          Text(
+                            selectedRecord?["expected"] == true
+                                ? "예상됨"
+                                : "예상되지 않음",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 16),
