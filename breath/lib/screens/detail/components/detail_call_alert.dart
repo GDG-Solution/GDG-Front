@@ -6,7 +6,7 @@ class DetailCallAlert extends StatelessWidget {
   const DetailCallAlert({Key? key, required this.callDurationSeconds})
       : super(key: key);
 
-// 초를 "MM:SS" 형식으로 변환하는 함수
+  // 초를 "MM:SS" 형식으로 변환하는 함수
   String formatDuration(int seconds) {
     int minutes = seconds ~/ 60;
     int remainingSeconds = seconds % 60;
@@ -18,24 +18,47 @@ class DetailCallAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding:
+          const EdgeInsets.symmetric(vertical: 12, horizontal: 16), // 위아래 여백 추가
       decoration: BoxDecoration(
-        color: Colors.green[100],
+        color: Color(0xFFE1F8CC), // 밝은 초록색 배경
         borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         children: [
-          const Icon(Icons.warning_amber_rounded, color: Colors.green),
-          const SizedBox(width: 8),
-          const Expanded(
+          // 전화 아이콘
+          Icon(
+            Icons.call,
+            color: Color(0xFF275220), // 어두운 초록색
+            size: 20,
+          ),
+          const SizedBox(width: 10), // 아이콘과 텍스트 사이의 간격
+          // "평소보다 통화 시간이 길어요" 텍스트
+          Expanded(
             child: Text(
               "평소보다 통화 시간이 길어요",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF275220),
+                fontSize: 14,
+              ),
             ),
           ),
+          // 변환된 통화 시간
           Text(
-            formatDuration(callDurationSeconds), // 변환된 통화 시간 출력
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            formatDuration(callDurationSeconds),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              color: Color(0xFF275220),
+            ),
           ),
         ],
       ),

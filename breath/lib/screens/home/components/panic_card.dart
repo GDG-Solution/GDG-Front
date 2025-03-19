@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
+
 import '../../../components/pain_level_dots.dart';
+
 import '../../detail/detail_screen.dart'; // DetailScreen import 추가
 
 class PanicCard extends StatelessWidget {
+  final String panicId;
   final String title;
   final String description;
   final String time;
   final String date;
+  final String dateTime;
   final String day;
-  final String category;
+  final List<String> category;
   final int painRate;
 
   const PanicCard({
+    required this.panicId,
     required this.title,
     required this.description,
     required this.time,
     required this.date,
+    required this.dateTime,
     required this.day,
     required this.category,
     required this.painRate,
@@ -29,13 +35,12 @@ class PanicCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailScreen(), // DetailScreen으로 이동
+            builder: (context) =>
+                DetailScreen(panicId: panicId), // DetailScreen으로 이동
           ),
         );
       },
       child: Container(
-        width: 140,
-        height: 170,
         margin: EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -46,7 +51,7 @@ class PanicCard extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(16, 30, 16, 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -59,9 +64,9 @@ class PanicCard extends StatelessWidget {
                     children: [
                       Text(date,
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)),
-                      Text(day,
-                          style: TextStyle(fontSize: 12, color: Colors.grey)),
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+                      // Text(dateTime,
+                      //     style: TextStyle(fontSize: 12, color: Colors.grey)),
                     ],
                   ),
                   PainLevelDots(
@@ -69,7 +74,7 @@ class PanicCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 16),
 
               // 이미지 공간
               Container(
@@ -83,37 +88,17 @@ class PanicCard extends StatelessWidget {
               ),
               SizedBox(height: 20),
 
-              // 공황 유형 (예: 호흡곤란)
-              Wrap(
-                spacing: 6, // 카테고리 사이 간격
-                runSpacing: 4, // 줄바꿈 간격
-                children: category.split(', ').map((cat) {
-                  // 쉼표로 분할하여 리스트로 변환
-                  return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
-                    decoration: BoxDecoration(
-                      color: Color(0xffE1F8CC),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      cat.trim(), // 공백 제거 후 출력
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff275220),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
+              // 카테고리 태그 리스트 (1줄만 표시 & 초과 개수 표현)
+              _buildCategoryTags(),
 
-              SizedBox(height: 8),
+              SizedBox(height: 6),
 
               // 제목
               Text(
                 title,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
+
               SizedBox(height: 4),
 
               // 설명
@@ -148,6 +133,60 @@ class PanicCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryTags() {
+    List<Widget> tagWidgets = [];
+    double currentWidth = 0.0;
+    const double maxWidth = 200.0; // 최대 너비 설정 (적절히 조정 가능)
+
+    for (String tag in category) {
+      TextPainter painter = TextPainter(
+        text: TextSpan(
+          text: tag,
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+        ),
+        maxLines: 1,
+        textDirection: TextDirection.ltr,
+      )..layout();
+
+      double tagWidth = painter.width + 24; // 텍스트 폭 + 패딩 고려
+
+      if (currentWidth + tagWidth > maxWidth) {
+        int remainingCount = category.length - tagWidgets.length;
+        if (remainingCount > 0) {
+          tagWidgets.add(_buildTag("+ 외 $remainingCount 개"));
+        }
+        break;
+      }
+
+      tagWidgets.add(_buildTag(tag));
+      currentWidth += tagWidth;
+    }
+
+    return Wrap(
+      spacing: 6.0,
+      runSpacing: 0,
+      children: tagWidgets,
+    );
+  }
+
+  Widget _buildTag(String text) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+      decoration: BoxDecoration(
+        color: Color(0xffE1F8CC),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: Color(0xff275220)),
       ),
     );
   }

@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:flutter_tts/flutter_tts.dart'; // TTS 패키지 임포트
 
 import './components/animated_wave_circle.dart';
 import './components/character_circle.dart';
@@ -22,12 +23,13 @@ class CallingMain extends StatefulWidget {
 class _CallingMainState extends State<CallingMain>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  String _agentResponse = ""; // ✅ 서버 응답 저장
+  String _agentResponse = ""; // 서버 응답 저장
+  FlutterTts _flutterTts = FlutterTts(); // TTS 객체 생성
 
   @override
   void initState() {
     super.initState();
-    _agentResponse = widget.agentResponse; // ✅ 초기 메시지 설정
+    _agentResponse = widget.agentResponse; // 초기 메시지 설정
 
     _controller = AnimationController(
       vsync: this,
@@ -35,6 +37,9 @@ class _CallingMainState extends State<CallingMain>
       lowerBound: 1.0,
       upperBound: 1.2,
     )..repeat(reverse: true);
+
+    _flutterTts.setLanguage("ko-KR"); // 한국어 설정
+    _flutterTts.setSpeechRate(0.8); // 속도
   }
 
   @override
@@ -46,7 +51,7 @@ class _CallingMainState extends State<CallingMain>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(context), // ✅ 상단 앱바
+      appBar: _buildAppBar(context), // 상단 앱바
       body: Container(
         decoration: BoxDecoration(
           gradient: RadialGradient(
@@ -75,17 +80,18 @@ class _CallingMainState extends State<CallingMain>
                   ),
                 ),
                 SizedBox(height: 0),
-                CustomMessageBox(message: _agentResponse), // ✅ 변경된 메시지 반영
+                CustomMessageBox(message: _agentResponse), // 변경된 메시지 반영
               ],
             ),
             Padding(
               padding: EdgeInsets.only(bottom: 100),
               child: MicButton(
-                counselId: widget.counselId, // ✅ 상담 ID 전달
+                counselId: widget.counselId, // 상담 ID 전달
                 onResponseReceived: (response) {
                   setState(() {
-                    _agentResponse = response; // ✅ 서버 응답을 반영
+                    _agentResponse = response; // 서버 응답을 반영
                   });
+                  _speakResponse(response); // 음성으로 응답 읽기
                 },
               ),
             ),
@@ -141,9 +147,14 @@ class _CallingMainState extends State<CallingMain>
       ],
     );
   }
+
+  // 음성으로 응답 읽기
+  void _speakResponse(String response) async {
+    await _flutterTts.speak(response); // 서버에서 받은 응답을 음성으로 읽기
+  }
 }
 
-// ✅ 마이크 버튼
+// 마이크 버튼
 class MicButton extends StatefulWidget {
   final String counselId;
   final Function(String) onResponseReceived;
@@ -196,7 +207,7 @@ class _MicButtonState extends State<MicButton> {
     );
   }
 
-  // ✅ 마이크 ON/OFF 함수
+  // 마이크 ON/OFF 함수
   void _toggleListening() async {
     if (_isListening) {
       setState(() {
@@ -205,7 +216,7 @@ class _MicButtonState extends State<MicButton> {
       _speech.stop();
       print("🗣 최종 인식된 텍스트: $_recognizedText");
 
-      // ✅ 음성을 인식한 후 서버에 요청 보내기
+      // 음성 인식 후 서버로 요청 보내기
       await _sendSpeechToServer();
     } else {
       bool available = false;
@@ -250,7 +261,7 @@ class _MicButtonState extends State<MicButton> {
     }
   }
 
-// ✅ 서버로 음성 데이터 전송
+  // 서버로 음성 데이터 전송
   Future<void> _sendSpeechToServer() async {
     final String baseUrl = dotenv.env['API_BASE_URL'] ?? "";
 
@@ -270,7 +281,7 @@ class _MicButtonState extends State<MicButton> {
         String responseData = response.body; // JSON이 아니라면 그냥 문자열로 저장
         print("✅ 서버 응답: $responseData");
 
-        // ✅ 응답을 UI에 반영
+        // 응답을 UI에 반영
         widget.onResponseReceived(responseData);
       } else {
         print("❌ 서버 오류: ${response.body}");

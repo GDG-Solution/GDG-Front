@@ -12,11 +12,11 @@ class DetailImage extends StatelessWidget {
       child: Image.network(
         imageUrl,
         width: double.infinity,
-        height: 110,
+        height: 200,
         fit: BoxFit.cover, // 이미지 꽉 채우기
         errorBuilder: (context, error, stackTrace) => Container(
           width: double.infinity,
-          height: 110,
+          height: 200,
           color: Colors.grey[300],
           child: const Icon(Icons.image, color: Colors.grey, size: 40),
         ),
