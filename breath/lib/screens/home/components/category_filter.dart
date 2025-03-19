@@ -13,15 +13,16 @@ class _CategoryFilterState extends State<CategoryFilter> {
   String selectedCategory = "전체";
   final List<String> categories = [
     "전체",
+    "가슴통증",
     "호흡곤란",
-    "숨 가쁨",
-    "질식",
-    "두근거림",
-    "어지러움",
-    "땀남",
+    "복통",
+    "구역질",
+    "비현실감",
+    "열감/오한",
     "떨림",
-    "메스꺼움",
-    "가슴통증"
+    "어지러움",
+    "두근거림",
+    "죽음에 대한 공포"
   ];
 
   @override

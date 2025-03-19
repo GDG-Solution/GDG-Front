@@ -27,8 +27,7 @@ class CustomDetailAppBar extends StatelessWidget
       backgroundColor: Colors.transparent, // 상단바 배경색
       elevation: 0,
       actions: [
-        // 오른쪽에 다른 아이콘들을 추가하고 싶다면 여기에 추가
-        // IconButton(icon: Icon(Icons.share), onPressed: () {}),
+        // 캘린더 추가 예정
       ],
     );
   }

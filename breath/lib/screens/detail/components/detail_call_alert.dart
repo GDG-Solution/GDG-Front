@@ -6,7 +6,7 @@ class DetailCallAlert extends StatelessWidget {
   const DetailCallAlert({Key? key, required this.callDurationSeconds})
       : super(key: key);
 
-// 초를 "MM:SS" 형식으로 변환하는 함수
+  // 초를 "MM:SS" 형식으로 변환하는 함수
   String formatDuration(int seconds) {
     int minutes = seconds ~/ 60;
     int remainingSeconds = seconds % 60;

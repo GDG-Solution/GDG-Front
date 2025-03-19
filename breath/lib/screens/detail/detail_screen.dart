@@ -102,7 +102,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 100),
+                      SizedBox(height: 50),
                       // ✅ 커스텀 헤더
                       DetailHeader(
                         date: formatDate(selectedRecord?["date"]),

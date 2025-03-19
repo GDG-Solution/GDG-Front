@@ -18,6 +18,7 @@ class HomeMainScreen extends StatefulWidget {
 class _HomeMainScreenState extends State<HomeMainScreen> {
   String _userName = "";
   String _userId = "";
+  String selectedCategory = "전체";
 
   Future<void> _loadUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
@@ -33,6 +34,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
   }
 
   List<Map<String, dynamic>> panicRecords = []; // 데이터를 저장할 리스트
+  List<Map<String, dynamic>> filteredRecords = []; // 필터링된 데이터 리스트
 
   @override
   void initState() {
@@ -95,8 +97,15 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                 "content": record["content"] ?? "내용 없음",
               };
             }).toList();
-          });
 
+            // 카테고리 필터링
+            filteredRecords = selectedCategory == "전체"
+                ? panicRecords
+                : panicRecords
+                    .where((record) => record["category"]
+                        .contains(selectedCategory)) // 선택된 카테고리로 필터링
+                    .toList();
+          });
           print("✅ 필터링된 panicRecords: $panicRecords");
         }
       } else {
@@ -111,7 +120,15 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
   }
 
   void _onCategoryChanged(String category) {
-    print("선택된 카테고리: $category");
+    setState(() {
+      selectedCategory = category;
+      // 선택된 카테고리에 맞게 필터링
+      filteredRecords = selectedCategory == "전체"
+          ? panicRecords
+          : panicRecords
+              .where((record) => record["category"].contains(selectedCategory))
+              .toList();
+    });
   }
 
   @override
@@ -136,10 +153,11 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: CategoryFilter(onCategorySelected: _onCategoryChanged),
             ),
+            SizedBox(height: 50),
             Align(
               alignment: Alignment.topCenter,
               child: SizedBox(
-                height: 360,
+                height: 400,
                 child: panicRecords.isEmpty
                     ? Center(
                         child: Text(
@@ -151,7 +169,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                           ),
                         ),
                       ) // ✅ 데이터가 없을 경우, "아직 기록이 없습니다." 메시지 표시
-                    : PanicList(panicRecords: panicRecords),
+                    : PanicList(panicRecords: filteredRecords),
               ),
             ),
           ],
