@@ -16,6 +16,7 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   List<Map<String, dynamic>> recordsForSameDate = []; // 같은 날짜의 여러 기록 저장
   bool isLoading = true; // 로딩 상태
+  late Map<String, dynamic> selectedRecord; // 선택된 다이어리 데이터
 
   @override
   void initState() {
@@ -26,7 +27,8 @@ class _DetailScreenState extends State<DetailScreen> {
   // API 호출하여 공황 기록 데이터 가져오기
   Future<void> loadPanicRecord() async {
     try {
-      List<Map<String, dynamic>> records = await ApiService.fetchPanicRecords();
+      List<Map<String, dynamic>> records =
+          await ApiService.fetchPanicRecords(widget.panicId);
 
       // 현재 선택한 기록 찾기
       final selectedRecord = records.firstWhere(

@@ -5,6 +5,7 @@ import './components/category_filter.dart';
 import './components/panic_list.dart';
 import './components/custom_app_bar.dart';
 import './components/monthly_panic_count.dart';
+import '../../services/api_service.dart';
 
 class HomeMainScreen extends StatefulWidget {
   @override
@@ -20,33 +21,18 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
     _loadPanicRecords(); // JSON 데이터 불러오기
   }
 
+// 서버에서 panicRecords를 요청하는 함수
   Future<void> _loadPanicRecords() async {
-    try {
-      String jsonString =
-          await rootBundle.loadString('assets/data/panic_records.json');
-      List<dynamic> jsonData = json.decode(jsonString);
+    final String userId = "Aodwns";
 
-      print("📢 로드된 JSON 데이터: $jsonData"); // ✅ JSON 데이터 출력
+    try {
+      List<Map<String, dynamic>> records =
+          await ApiService.fetchPanicRecords(userId);
+
+      print("📢 로드된 데이터: $records"); // 데이터 출력
 
       setState(() {
-        panicRecords = jsonData.map((record) {
-          return {
-            "id": record["id"].toString(),
-            "userId": record["userId"].toString(),
-            "counselId": record["counselId"].toString(),
-            "date": record['date'] != null
-                ? DateTime.parse(record['date'])
-                    .toString()
-                    .split(" ")[0] // 변환 적용
-                : "N/A",
-            "picture": record["picture"] ?? [],
-            "category":
-                List<String>.from(record["category"]), // List<String> 변환
-            "score": record["score"] as int, // int 변환
-            "title": record["title"].toString(),
-            "content": record["content"].toString(),
-          };
-        }).toList();
+        panicRecords = records; // 서버에서 받은 데이터로 panicRecords 갱신
       });
 
       print("✅ 변환된 panicRecords: $panicRecords"); // ✅ 변환된 데이터 출력

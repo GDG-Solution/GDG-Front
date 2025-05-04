@@ -6,9 +6,11 @@ class ApiService {
   static final String baseUrl = dotenv.env['BASE_URL'] ?? "";
 
   // 공황 기록 리스트 가져오기 (GET 요청)
-  static Future<List<Map<String, dynamic>>> fetchPanicRecords() async {
+  static Future<List<Map<String, dynamic>>> fetchPanicRecords(
+      String userId) async {
     try {
-      final response = await http.get(Uri.parse("$baseUrl/diary"));
+      final response = await http
+          .get(Uri.parse("$baseUrl/diary/user?id=$userId")); // 다이어리 리스트 조회
 
       if (response.statusCode == 200) {
         List<dynamic> jsonData = json.decode(response.body);
