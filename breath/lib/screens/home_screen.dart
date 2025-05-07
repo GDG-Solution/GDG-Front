@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import '../widgets/custom_bottom_bar.dart';
 import '../widgets/custom_bottom_nav.dart';
 import './home/home_main_screen.dart'; // 홈 UI 화면 추가
-import './calendar/calendar_screen.dart'; // 검색 화면 추가
+import './callAnalysis/call_analysis.dart'; // 전화 분석 추가
 import './calling/calling_valid_check.dart'; // calling_main.dart 파일 import
 
 class HomeScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _screens = [
     HomeMainScreen(),
-    CalendarScreen(),
+    CallAnalysisScreen(),
   ];
 
   /// 선택된 화면의 배경색 반환
