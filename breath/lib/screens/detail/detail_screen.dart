@@ -6,6 +6,7 @@ import 'components/detail_header.dart';
 import 'components/detail_image.dart';
 import '../../../components/tag_list.dart';
 import 'components/detail_intensity.dart';
+import 'components/detail_expected.dart';
 import 'components/detail_record.dart';
 import 'components/detail_call_alert.dart';
 import 'components/custom_detail_app_bar.dart';
@@ -182,15 +183,8 @@ class _DetailScreenState extends State<DetailScreen> {
                         children: [
                           DetailIntensity(
                               intensity: selectedRecord?["score"] ?? 0),
-                          Text(
-                            selectedRecord?["expected"] == true
-                                ? "예상됨"
-                                : "예상되지 않음",
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          DetailExpected(
+                            expected: selectedRecord?["expected"] ?? false,
                           ),
                         ],
                       ),
