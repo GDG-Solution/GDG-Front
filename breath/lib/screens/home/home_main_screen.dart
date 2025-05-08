@@ -22,15 +22,19 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
 
   Future<void> _loadUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
+
+    final id = prefs.getString('id');
+    final encodedName = prefs.getString('name');
+
     setState(() {
-      _userId = prefs.getString('id') ?? "Unknown ID";
-      String? savedName = prefs.getString('name');
-      _userName = savedName != null
-          ? utf8.decode(savedName.codeUnits)
-          : "Unknwon User"; // 한글 디코딩
+      _userId = id ?? "Unknown ID";
+      _userName = (encodedName != null)
+          ? utf8.decode(base64Decode(encodedName))
+          : "Unknown User";
     });
-    print("userId: ${_userId}");
-    print("userName: ${_userName}");
+
+    print("userId: $_userId");
+    print("userName: $_userName");
   }
 
   List<Map<String, dynamic>> panicRecords = []; // 데이터를 저장할 리스트
