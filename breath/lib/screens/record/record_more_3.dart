@@ -24,25 +24,31 @@ class RecordPage3 extends StatefulWidget {
 }
 
 class _RecordPage3State extends State<RecordPage3> {
-  TextEditingController _inputController = TextEditingController();
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _contentController = TextEditingController();
+
   bool nextButtonEnabled = false; // 버튼 활성화 상태
 
   @override
   void initState() {
     super.initState();
-    _inputController.addListener(_updateButtonState);
+    _titleController.addListener(_updateButtonState);
+    _contentController.addListener(_updateButtonState);
   }
 
   @override
   void dispose() {
-    _inputController.removeListener(_updateButtonState);
-    _inputController.dispose(); // 메모리 누수 방지
+    _titleController.removeListener(_updateButtonState);
+    _contentController.removeListener(_updateButtonState);
+    _titleController.dispose();
+    _contentController.dispose();
     super.dispose();
   }
 
   void _updateButtonState() {
     setState(() {
-      nextButtonEnabled = _inputController.text.trim().isNotEmpty; // 입력 여부 확인
+      nextButtonEnabled = _titleController.text.trim().isNotEmpty &&
+          _contentController.text.trim().isNotEmpty;
     });
   }
 
@@ -83,11 +89,25 @@ class _RecordPage3State extends State<RecordPage3> {
 
                   SizedBox(height: 20),
 
-                  // ✅ 입력 필드 추가
+                  // ✅ 제목 필드 추가
                   TextField(
-                    controller: _inputController,
+                    controller: _titleController,
                     decoration: InputDecoration(
-                      hintText: "여기에 입력해주세요.",
+                      hintText: "제목을 적어주세요",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      filled: true,
+                      fillColor: Color(0xFFF3F3F3),
+                    ),
+                    maxLines: 1,
+                  ),
+
+                  // ✅ 내용 필드 추가
+                  TextField(
+                    controller: _contentController,
+                    decoration: InputDecoration(
+                      hintText: "ex) 거리에 갑자기 사람들이 많아지니까 가슴이 너무 답답했어",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -131,8 +151,10 @@ class _RecordPage3State extends State<RecordPage3> {
                                   imageFile: widget.imageFile, // 기존 데이터 유지
                                   selectedSymptoms:
                                       widget.selectedSymptoms, // 기존 데이터 유지
-                                  panicReason:
-                                      _inputController.text.trim(), // 공황 이유 전달
+                                  title:
+                                      _titleController.text.trim(), // 공황 이유 전달
+                                  panicReason: _contentController.text
+                                      .trim(), // 공황 이유 전달
                                 ),
                               ),
                             );

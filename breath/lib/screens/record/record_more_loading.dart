@@ -11,14 +11,16 @@ class RecordLoadingPage extends StatefulWidget {
   final int painRate;
   final File? imageFile;
   final List<String> selectedSymptoms;
+  final String title;
   final String panicReason;
-  final String expectation;
+  final bool expectation;
 
   RecordLoadingPage({
     required this.counselId,
     required this.painRate,
     this.imageFile,
     required this.selectedSymptoms,
+    required this.title,
     required this.panicReason,
     required this.expectation,
   });
@@ -74,7 +76,8 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
             : null,
         "category": widget.selectedSymptoms,
         "score": widget.painRate,
-        "title": widget.expectation,
+        "expected": widget.expectation,
+        "title": widget.title,
         "content": widget.panicReason,
       };
 

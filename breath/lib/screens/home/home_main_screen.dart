@@ -92,7 +92,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                         .toList() ??
                     [],
                 "score": record["score"] ?? 0,
-                "isExpected": record["isExpected"] ?? false,
+                "expected": record["expected"] ?? false,
                 "title": record["title"] ?? "제목 없음",
                 "content": record["content"] ?? "내용 없음",
               };
