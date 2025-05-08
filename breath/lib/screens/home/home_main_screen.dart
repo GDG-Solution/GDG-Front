@@ -135,7 +135,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar(userName: _userName),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
