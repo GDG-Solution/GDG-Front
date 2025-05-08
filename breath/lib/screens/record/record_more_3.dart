@@ -89,33 +89,79 @@ class _RecordPage3State extends State<RecordPage3> {
 
                   SizedBox(height: 20),
 
-                  // ✅ 제목 필드 추가
+                  // 제목 TextField
                   TextField(
                     controller: _titleController,
                     decoration: InputDecoration(
                       hintText: "제목을 적어주세요",
+                      hintStyle: TextStyle(color: Colors.grey),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide:
+                            BorderSide(color: Color(0xFF90DD85), width: 1),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide:
+                            BorderSide(color: Color(0xFF90DD85), width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide:
+                            BorderSide(color: Color(0xFF98D87A), width: 2),
                       ),
                       filled: true,
-                      fillColor: Color(0xFFF3F3F3),
+                      fillColor: Color(0xFFFFFFFF),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     ),
                     maxLines: 1,
                   ),
 
-                  // ✅ 내용 필드 추가
-                  TextField(
-                    controller: _contentController,
-                    decoration: InputDecoration(
-                      hintText: "ex) 거리에 갑자기 사람들이 많아지니까 가슴이 너무 답답했어",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  SizedBox(height: 16),
+
+                  // 내용 TextField + 글자 수
+                  Stack(
+                    children: [
+                      TextField(
+                        controller: _contentController,
+                        maxLength: 100,
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                          hintText: "ex) 거리에 갑자기 사람들이 많아지니까 머리가 너무 아팠어",
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide:
+                                BorderSide(color: Color(0xFF90DD85), width: 1),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide:
+                                BorderSide(color: Color(0xFF90DD85), width: 1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide:
+                                BorderSide(color: Color(0xFF98D87A), width: 2),
+                          ),
+                          filled: true,
+                          fillColor: Color(0xFFFFFFFF),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          counterText: "", // 하단 기본 카운터 숨기기
+                        ),
                       ),
-                      filled: true,
-                      fillColor: Color(0xFFF3F3F3),
-                    ),
-                    maxLines: 4,
-                  ),
+                      Positioned(
+                        bottom: 8,
+                        right: 12,
+                        child: Text(
+                          "${_contentController.text.length}/100",
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
