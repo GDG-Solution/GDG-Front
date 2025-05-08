@@ -27,7 +27,7 @@ class CustomBottomBar extends StatelessWidget {
                 _buildNavItem(
                     "assets/icons/bottom/first_active.png", "공황기록", 0),
                 SizedBox(width: 50),
-                _buildNavItem("assets/icons/bottom/second.png", "전화내용", 1),
+                _buildNavItem("assets/icons/bottom/second.png", "전화분석", 1),
               ],
             ),
           ),

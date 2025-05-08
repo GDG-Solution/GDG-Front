@@ -3,6 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:breath/screens/login/login_screen.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String userName; // 사용자 이름을 받는 변수
+
+  CustomAppBar({Key? key, required this.userName}) : super(key: key);
+
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
@@ -25,41 +29,47 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         onTap: () {
           // 프로필 버튼
         },
-        child: Image.asset(
-          "assets/icons/home/profile_icon.png",
-          width: 40,
-          height: 40,
+        child: Row(
+          children: [
+            Image.asset(
+              "assets/icons/home/profile_icon.png",
+              width: 40,
+              height: 40,
+            ),
+            SizedBox(width: 10),
+            Text(
+              userName, // 여기서 사용자 이름을 표시
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.logout),
+          icon: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              SizedBox(width: 5),
+              Text(
+                'Logout',
+                style: TextStyle(
+                  color: Colors.white, // 텍스트 색상
+                  fontSize: 16, // 텍스트 크기
+                ),
+              ),
+            ],
+          ),
           onPressed: () => _logout(context), // 로그아웃 버튼
         ),
-        GestureDetector(
-          onTap: () {
-            // 공황 기록 버튼
-          },
-          child: Image.asset(
-            "assets/icons/home/more_icon.png",
-            width: 32,
-            height: 32,
-            color: Colors.white,
-          ),
-        ),
-        SizedBox(width: 20),
-        GestureDetector(
-          onTap: () {
-            // 알림 버튼
-          },
-          child: Image.asset(
-            "assets/icons/home/alert_icon.png",
-            width: 32,
-            height: 32,
-            color: Colors.white,
-          ),
-        ),
-        SizedBox(width: 14),
+        SizedBox(width: 5),
       ],
     );
   }
