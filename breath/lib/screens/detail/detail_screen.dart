@@ -73,7 +73,7 @@ class _DetailScreenState extends State<DetailScreen> {
             "userId": record["userId"] ?? "",
             "counsel": record["counsel"] ?? {},
             "date": record["date"] ?? "",
-            "picture": record["picture"] ?? [],
+            "imageUrl": record["imageUrl"] ?? [],
             "category": List<String>.from(record["category"] ?? []),
             "score": record["score"] ?? 0,
             "expected": record["expected"] ?? false,
@@ -132,10 +132,11 @@ class _DetailScreenState extends State<DetailScreen> {
 
                       // ✅ 이미지
                       DetailImage(
-                        imageUrl: (selectedRecord?["picture"] as List<dynamic>?)
+                        imageUrl: (selectedRecord?["imageUrl"]
+                                        as List<dynamic>?)
                                     ?.isNotEmpty ==
                                 true
-                            ? selectedRecord!["picture"][0]
+                            ? selectedRecord!["imageUrl"][0]
                             : "https://source.unsplash.com/400x200/?city,people",
                       ),
 

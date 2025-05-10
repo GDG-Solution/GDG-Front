@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'record_more_last.dart'; // 완료 페이지
+import 'record_more_last.dart';
+import 'package:http_parser/http_parser.dart';
 
 class RecordLoadingPage extends StatefulWidget {
   final String counselId;
@@ -32,22 +33,19 @@ class RecordLoadingPage extends StatefulWidget {
 class _RecordLoadingPageState extends State<RecordLoadingPage> {
   bool _isLoading = true;
   String? _errorMessage;
-
   String _userId = "";
 
   @override
   void initState() {
     super.initState();
-    _initialize(); // ✅ 비동기 함수 실행
+    _initialize();
   }
 
-// ✅ 비동기 초기화 함수
   Future<void> _initialize() async {
-    await _loadUserInfo(); // ✅ userId를 먼저 로드
-    _sendDataToServer(); // ✅ 그 다음 서버 요청
+    await _loadUserInfo();
+    await _sendDiaryData();
   }
 
-// ✅ userId 불러오기
   Future<void> _loadUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -55,8 +53,7 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
     });
   }
 
-// ✅ 서버에 데이터 전송
-  Future<void> _sendDataToServer() async {
+  Future<void> _sendDiaryData() async {
     final String baseUrl = dotenv.env['API_BASE_URL'] ?? "";
     if (baseUrl.isEmpty) {
       setState(() {
@@ -67,13 +64,10 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
     }
 
     try {
-      // ✅ 요청 데이터 준비
+      // 1단계: JSON 데이터 전송
       Map<String, dynamic> requestData = {
-        "userId": _userId, // ✅ 이제 userId가 로드된 후 실행됨
+        "userId": _userId,
         "counselId": widget.counselId,
-        "picture": widget.imageFile != null
-            ? await _convertImageToBase64(widget.imageFile!)
-            : null,
         "category": widget.selectedSymptoms,
         "score": widget.painRate,
         "expected": widget.expectation,
@@ -81,28 +75,27 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
         "content": widget.panicReason,
       };
 
-      print("📢 전송할 데이터: ${jsonEncode(requestData)}"); // 🚀 요청 데이터 확인
-
-      // ✅ POST 요청 보내기
       final response = await http.post(
         Uri.parse("$baseUrl/diary"),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: {"Content-Type": "application/json"},
         body: jsonEncode(requestData),
       );
 
-      print("📢 서버 응답 코드: ${response.statusCode}"); // 🚀 응답 코드 출력
-      print("📢 서버 응답 바디: ${response.body}"); // 🚀 서버 응답 내용 출력
+      print("📢 1단계 응답 코드: ${response.statusCode}");
+      print("📢 응답 바디: ${response.body}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // ✅ 성공 시 완료 페이지로 이동
+        final diaryId = response.body.trim();
+
+        if (widget.imageFile != null) {
+          await _uploadDiaryImage(baseUrl, diaryId);
+        }
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => RecordPage5()),
         );
       } else {
-        // ❌ 실패 시 서버 응답 내용 출력
         setState(() {
           _isLoading = false;
           _errorMessage = "서버 응답 오류: ${response.statusCode}\n${response.body}";
@@ -116,22 +109,31 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
     }
   }
 
-  // ✅ 이미지를 Base64로 변환하는 함수
-  Future<String> _convertImageToBase64(File imageFile) async {
-    List<int> imageBytes = await imageFile.readAsBytes();
-    return base64Encode(imageBytes);
+  Future<void> _uploadDiaryImage(String baseUrl, String diaryId) async {
+    try {
+      final uri = Uri.parse("$baseUrl/diary/image");
+      final request = http.MultipartRequest("POST", uri);
+
+      request.fields['id'] = diaryId;
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'image',
+          widget.imageFile!.path,
+          contentType: MediaType('image', 'jpeg'),
+        ),
+      );
+
+      final response = await request.send();
+      final resBody = await response.stream.bytesToString();
+      print("📢 이미지 업로드 상태: ${response.statusCode}");
+      print("📢 이미지 응답: $resBody");
+    } catch (e) {
+      print("❌ 이미지 업로드 실패: $e");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // print("📢 데이터 확인:");
-    // print("- userId: ${_userId}");
-    // print("- counselId: ${widget.counselId}");
-    // print("- picture: ${widget.imageFile}");
-    // print("- category: ${widget.selectedSymptoms}");
-    // print("- score: ${widget.painRate}");
-    // print("- title: ${widget.expectation}");
-    // print("- content: ${widget.panicReason}");
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
       body: Center(
@@ -153,17 +155,16 @@ class _RecordLoadingPageState extends State<RecordLoadingPage> {
                   Text(
                     "⚠️ 오류 발생",
                     style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red),
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
                   ),
                   SizedBox(height: 10),
                   Text(_errorMessage ?? "알 수 없는 오류가 발생했습니다."),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: () => Navigator.pop(context),
                     child: Text("돌아가기"),
                   ),
                 ],

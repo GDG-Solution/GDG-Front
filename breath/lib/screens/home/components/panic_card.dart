@@ -6,6 +6,7 @@ import '../../detail/detail_screen.dart'; // DetailScreen import 추가
 
 class PanicCard extends StatelessWidget {
   final String panicId;
+  final String? imageUrl;
   final String title;
   final String description;
   final String time;
@@ -17,6 +18,7 @@ class PanicCard extends StatelessWidget {
 
   const PanicCard({
     required this.panicId,
+    required this.imageUrl,
     required this.title,
     required this.description,
     required this.time,
@@ -84,7 +86,17 @@ class PanicCard extends StatelessWidget {
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(Icons.image, color: Colors.grey[600]),
+                child: imageUrl != null && imageUrl!.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.network(
+                          imageUrl!, // null 아님 보장
+                          width: double.infinity,
+                          height: 110,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Icon(Icons.image, color: Colors.grey[600]),
               ),
               SizedBox(height: 20),
 

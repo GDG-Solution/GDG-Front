@@ -90,7 +90,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                     ? DateFormat('a hh시 mm분')
                         .format(DateTime.parse(record['date']))
                     : "N/A",
-                "picture": record["picture"] ?? [],
+                "imageUrl": record["imageUrl"] ?? [],
                 "category": (record["category"] as List<dynamic>?)
                         ?.map<String>((e) => e.toString())
                         .toList() ??
