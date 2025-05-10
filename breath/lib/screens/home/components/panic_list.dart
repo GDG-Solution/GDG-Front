@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'panic_card.dart';
 
 class PanicList extends StatelessWidget {
@@ -45,17 +46,24 @@ class PanicList extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: PanicCard(
                       panicId: record["id"],
-                      imageUrl: record['imageUrl'] as String? ?? "-",
-                      title: record['title'] as String? ?? "제목 없음", // ✅ 기본값 설정
+                      imageUrl: (() {
+                        final imagePath = record['picture'];
+                        if (imagePath is List && imagePath.isNotEmpty) {
+                          final String fileName = imagePath[0].toString();
+                          final baseUrl = dotenv.env['API_BASE_URL'] ?? "";
+                          return "$baseUrl/$fileName"; // ✅ 정상 이미지 URL
+                        } else {
+                          return "assets/images/card/no_photo.png"; // ✅ 기본 이미지
+                        }
+                      })(),
+                      title: record['title'] as String? ?? "제목 없음",
                       description: record['content'] as String? ?? "내용 없음",
                       time: record['time'] as String? ?? "00:00",
-                      date:
-                          record['date']?.toString() ?? "N/A", // ✅ null-safe 처리
-                      dateTime: record['dateTime']?.toString() ??
-                          "N/A", // ✅ null-safe 처리
+                      date: record['date']?.toString() ?? "N/A",
+                      dateTime: record['dateTime']?.toString() ?? "N/A",
                       day: record['day'] as String? ?? "-",
                       category: List<String>.from(record['category'] ?? []),
-                      painRate: record['score'] as int? ?? 0, // ✅ 0으로 설정
+                      painRate: record['score'] as int? ?? 0,
                     ),
                   ),
                 ),

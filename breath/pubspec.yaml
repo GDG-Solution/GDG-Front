@@ -74,6 +74,8 @@ flutter:
     # 이미지
     - assets/images/record/
     - assets/images/calling/
+    - assets/images/card/
+
     - assets/icons/bottom/
     - assets/icons/home/
 

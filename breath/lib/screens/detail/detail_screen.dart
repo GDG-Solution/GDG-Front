@@ -10,6 +10,7 @@ import 'components/detail_expected.dart';
 import 'components/detail_record.dart';
 import 'components/detail_call_alert.dart';
 import 'components/custom_detail_app_bar.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DetailScreen extends StatefulWidget {
   final String panicId; // 특정 공황 기록을 불러오기 위한 ID
@@ -132,12 +133,15 @@ class _DetailScreenState extends State<DetailScreen> {
 
                       // ✅ 이미지
                       DetailImage(
-                        imageUrl: (selectedRecord?["imageUrl"]
-                                        as List<dynamic>?)
-                                    ?.isNotEmpty ==
-                                true
-                            ? selectedRecord!["imageUrl"][0]
-                            : "https://source.unsplash.com/400x200/?city,people",
+                        imageUrl: () {
+                          final images = selectedRecord?["imageUrl"];
+                          if (images is List && images.isNotEmpty) {
+                            final baseUrl = dotenv.env['API_BASE_URL'] ?? "";
+                            return "$baseUrl/${images.first}";
+                          } else {
+                            return "assets/images/card/no_photo.png"; // 기본 로컬 이미지
+                          }
+                        }(),
                       ),
 
                       const SizedBox(height: 16),

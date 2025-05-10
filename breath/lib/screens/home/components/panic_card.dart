@@ -86,17 +86,25 @@ class PanicCard extends StatelessWidget {
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: imageUrl != null && imageUrl!.isNotEmpty
+                child: imageUrl != null && imageUrl!.startsWith("http")
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(14),
                         child: Image.network(
-                          imageUrl!, // null 아님 보장
+                          imageUrl!,
                           width: double.infinity,
                           height: 110,
                           fit: BoxFit.cover,
                         ),
                       )
-                    : Icon(Icons.image, color: Colors.grey[600]),
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.asset(
+                          imageUrl ?? "assets/images/card/no_photo.png",
+                          width: double.infinity,
+                          height: 110,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
               ),
               SizedBox(height: 20),
 
