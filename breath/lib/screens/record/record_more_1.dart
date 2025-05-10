@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart'; // 이미지 선택을 위한 패키지
+import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as img;
 
 import './components/custom_button.dart';
 import './components/custom_navigation_bar.dart';
@@ -22,37 +23,47 @@ class RecordPage1 extends StatefulWidget {
 }
 
 class _RecordPage1State extends State<RecordPage1> {
-  File? _image; // 찍은 사진을 저장할 변수
-  final picker = ImagePicker(); // 📸 이미지 선택기 인스턴스
+  File? _image;
+  final picker = ImagePicker();
+
+  // ✅ 이미지 리사이징 함수
+  Future<File> resizeImage(File file) async {
+    final bytes = await file.readAsBytes();
+    final original = img.decodeImage(bytes);
+
+    final resized = img.copyResize(original!, width: 800);
+    final resizedBytes = img.encodeJpg(resized, quality: 80);
+
+    final tempDir = Directory.systemTemp;
+    final resizedFile = File('${tempDir.path}/resized_image.jpg');
+    return await resizedFile.writeAsBytes(resizedBytes);
+  }
 
   // ✅ 카메라 실행 함수
   Future<void> _pickImage() async {
-    final pickedFile =
-        await picker.pickImage(source: ImageSource.camera); // 📸 카메라 실행
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
+      final originalFile = File(pickedFile.path);
+      final resizedFile = await resizeImage(originalFile); // ✅ 압축 적용
+
       setState(() {
-        _image = File(pickedFile.path); // 선택한 이미지 저장
+        _image = resizedFile;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print("전달받은 painRate: ${widget.painRate}");
-
     return Scaffold(
       backgroundColor: Color(0xFFF3FCE7),
       body: SafeArea(
         child: Column(
           children: [
             CustomNavigationBar(
-              onBack: () {
-                Navigator.pop(context);
-              },
-              onClose: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
+              onBack: () => Navigator.pop(context),
+              onClose: () =>
+                  Navigator.of(context).popUntil((route) => route.isFirst),
             ),
             CustomGaugeBar(currentValue: 2),
             SizedBox(height: 28),
@@ -67,10 +78,8 @@ class _RecordPage1State extends State<RecordPage1> {
                     subText: "찍기 어렵다면 패스해도 좋아요",
                   ),
                   SizedBox(height: 20),
-
-                  // ✅ 사진 촬영 영역
                   GestureDetector(
-                    onTap: _pickImage, // 📸 카메라 실행
+                    onTap: _pickImage,
                     child: Container(
                       width: double.infinity,
                       height: 250,
@@ -98,10 +107,10 @@ class _RecordPage1State extends State<RecordPage1> {
                           : ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: Image.file(
-                                _image!, // 촬영한 이미지 표시
+                                _image!,
                                 width: double.infinity,
                                 height: 250,
-                                fit: BoxFit.cover, // 이미지가 꽉 차게 표시됨
+                                fit: BoxFit.cover,
                               ),
                             ),
                     ),
@@ -133,8 +142,8 @@ class _RecordPage1State extends State<RecordPage1> {
                         MaterialPageRoute(
                           builder: (context) => RecordPage2(
                             counselId: widget.counselId,
-                            painRate: widget.painRate, // 기존 데이터 유지
-                            imageFile: _image, // 찍은 이미지 전달 (없으면 null)
+                            painRate: widget.painRate,
+                            imageFile: _image,
                           ),
                         ),
                       );

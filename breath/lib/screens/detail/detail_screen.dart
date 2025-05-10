@@ -10,6 +10,7 @@ import 'components/detail_expected.dart';
 import 'components/detail_record.dart';
 import 'components/detail_call_alert.dart';
 import 'components/custom_detail_app_bar.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DetailScreen extends StatefulWidget {
   final String panicId; // 특정 공황 기록을 불러오기 위한 ID
@@ -73,7 +74,7 @@ class _DetailScreenState extends State<DetailScreen> {
             "userId": record["userId"] ?? "",
             "counsel": record["counsel"] ?? {},
             "date": record["date"] ?? "",
-            "picture": record["picture"] ?? [],
+            "imageUrl": record["imageUrl"] ?? [],
             "category": List<String>.from(record["category"] ?? []),
             "score": record["score"] ?? 0,
             "expected": record["expected"] ?? false,
@@ -132,11 +133,17 @@ class _DetailScreenState extends State<DetailScreen> {
 
                       // ✅ 이미지
                       DetailImage(
-                        imageUrl: (selectedRecord?["picture"] as List<dynamic>?)
-                                    ?.isNotEmpty ==
-                                true
-                            ? selectedRecord!["picture"][0]
-                            : "https://source.unsplash.com/400x200/?city,people",
+                        imageUrl: () {
+                          final image = selectedRecord?["imageUrl"];
+                          if (image != null &&
+                              image is String &&
+                              image.isNotEmpty) {
+                            final baseUrl = dotenv.env['API_BASE_URL'] ?? "";
+                            return "$baseUrl$image"; // 슬래시 포함된 상태로 붙이기
+                          } else {
+                            return "assets/images/card/no_photo.png"; // 기본 로컬 이미지
+                          }
+                        }(),
                       ),
 
                       const SizedBox(height: 16),

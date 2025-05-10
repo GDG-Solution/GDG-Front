@@ -30,13 +30,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_plugin_android_lifecycle: ^2.0.19
+
   lottie: ^2.6.0
   flutter_tts: ^3.3.2
+
+  image: ^4.0.17
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
-  speech_to_text: ^6.6.2
+  speech_to_text: ^7.0.0
   intl: ^0.20.2
   image_picker: ^1.1.2
   shared_preferences: ^2.2.3
@@ -70,6 +74,8 @@ flutter:
     # 이미지
     - assets/images/record/
     - assets/images/calling/
+    - assets/images/card/
+
     - assets/icons/bottom/
     - assets/icons/home/
 

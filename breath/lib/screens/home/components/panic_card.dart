@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../../../components/pain_level_dots.dart';
-
-import '../../detail/detail_screen.dart'; // DetailScreen import 추가
+import '../../detail/detail_screen.dart';
 
 class PanicCard extends StatelessWidget {
   final String panicId;
+  final String? imageUrl; // /images/xxx.jpg 형식이거나 null
   final String title;
   final String description;
   final String time;
@@ -17,6 +18,7 @@ class PanicCard extends StatelessWidget {
 
   const PanicCard({
     required this.panicId,
+    required this.imageUrl,
     required this.title,
     required this.description,
     required this.time,
@@ -29,14 +31,17 @@ class PanicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool hasValidImage = imageUrl != null && imageUrl!.isNotEmpty;
+    final String finalImageUrl = hasValidImage
+        ? "${dotenv.env['API_BASE_URL']}$imageUrl"
+        : "assets/images/card/no_photo.png";
+
     return GestureDetector(
-      // 카드 클릭 감지 추가
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                DetailScreen(panicId: panicId), // DetailScreen으로 이동
+            builder: (context) => DetailScreen(panicId: panicId),
           ),
         );
       },
@@ -47,7 +52,10 @@ class PanicCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
-                color: Colors.black26, blurRadius: 5, offset: Offset(0, 2)),
+              color: Colors.black26,
+              blurRadius: 5,
+              offset: Offset(0, 2),
+            ),
           ],
         ),
         child: Padding(
@@ -55,7 +63,7 @@ class PanicCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 날짜 & 옵션 버튼
+              // 날짜 & 공포 점수
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -65,18 +73,14 @@ class PanicCard extends StatelessWidget {
                       Text(date,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
-                      // Text(dateTime,
-                      //     style: TextStyle(fontSize: 12, color: Colors.grey)),
                     ],
                   ),
-                  PainLevelDots(
-                    painRate: painRate,
-                  ),
+                  PainLevelDots(painRate: painRate),
                 ],
               ),
               SizedBox(height: 16),
 
-              // 이미지 공간
+              // ✅ 이미지 공간
               Container(
                 width: double.infinity,
                 height: 110,
@@ -84,11 +88,29 @@ class PanicCard extends StatelessWidget {
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(Icons.image, color: Colors.grey[600]),
+                child: hasValidImage
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.network(
+                          finalImageUrl,
+                          width: double.infinity,
+                          height: 110,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.asset(
+                          finalImageUrl,
+                          width: double.infinity,
+                          height: 110,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
               ),
               SizedBox(height: 20),
 
-              // 카테고리 태그 리스트 (1줄만 표시 & 초과 개수 표현)
+              // ✅ 카테고리
               _buildCategoryTags(),
 
               SizedBox(height: 6),
@@ -98,7 +120,6 @@ class PanicCard extends StatelessWidget {
                 title,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
-
               SizedBox(height: 4),
 
               // 설명
@@ -111,14 +132,11 @@ class PanicCard extends StatelessWidget {
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.start,
               ),
-
               SizedBox(height: 14),
 
-              // 시간 & 아이콘
+              // 통화 아이콘 + 시간
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Image.asset(
                     "assets/icons/home/call_icon.png",
@@ -140,7 +158,7 @@ class PanicCard extends StatelessWidget {
   Widget _buildCategoryTags() {
     List<Widget> tagWidgets = [];
     double currentWidth = 0.0;
-    const double maxWidth = 200.0; // 최대 너비 설정 (적절히 조정 가능)
+    const double maxWidth = 200.0;
 
     for (String tag in category) {
       TextPainter painter = TextPainter(
@@ -152,7 +170,7 @@ class PanicCard extends StatelessWidget {
         textDirection: TextDirection.ltr,
       )..layout();
 
-      double tagWidth = painter.width + 24; // 텍스트 폭 + 패딩 고려
+      double tagWidth = painter.width + 24;
 
       if (currentWidth + tagWidth > maxWidth) {
         int remainingCount = category.length - tagWidgets.length;

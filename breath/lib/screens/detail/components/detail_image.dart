@@ -7,20 +7,30 @@ class DetailImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isNetwork = imageUrl.startsWith("http");
+
     return ClipRRect(
-      borderRadius: BorderRadius.circular(14), // 이미지 모서리 둥글게
-      child: Image.network(
-        imageUrl,
-        width: double.infinity,
-        height: 200,
-        fit: BoxFit.cover, // 이미지 꽉 채우기
-        errorBuilder: (context, error, stackTrace) => Container(
-          width: double.infinity,
-          height: 200,
-          color: Colors.grey[300],
-          child: const Icon(Icons.image, color: Colors.grey, size: 40),
-        ),
-      ),
+      borderRadius: BorderRadius.circular(14),
+      child: isNetwork
+          ? Image.network(
+              imageUrl,
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                width: double.infinity,
+                height: 200,
+                color: Colors.grey[300],
+                child: const Icon(Icons.broken_image,
+                    color: Colors.grey, size: 40),
+              ),
+            )
+          : Image.asset(
+              imageUrl,
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
     );
   }
 }

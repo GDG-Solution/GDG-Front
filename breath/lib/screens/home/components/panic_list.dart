@@ -45,16 +45,24 @@ class PanicList extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: PanicCard(
                       panicId: record["id"],
-                      title: record['title'] as String? ?? "제목 없음", // ✅ 기본값 설정
+                      imageUrl: (() {
+                        final raw = record["imageUrl"];
+                        if (raw is List && raw.isNotEmpty) {
+                          return raw.first.toString();
+                        } else if (raw is String && raw.isNotEmpty) {
+                          return raw;
+                        } else {
+                          return null;
+                        }
+                      })(),
+                      title: record['title'] as String? ?? "제목 없음",
                       description: record['content'] as String? ?? "내용 없음",
                       time: record['time'] as String? ?? "00:00",
-                      date:
-                          record['date']?.toString() ?? "N/A", // ✅ null-safe 처리
-                      dateTime: record['dateTime']?.toString() ??
-                          "N/A", // ✅ null-safe 처리
+                      date: record['date']?.toString() ?? "N/A",
+                      dateTime: record['dateTime']?.toString() ?? "N/A",
                       day: record['day'] as String? ?? "-",
                       category: List<String>.from(record['category'] ?? []),
-                      painRate: record['score'] as int? ?? 0, // ✅ 0으로 설정
+                      painRate: record['score'] as int? ?? 0,
                     ),
                   ),
                 ),
