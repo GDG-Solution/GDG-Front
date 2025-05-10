@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'panic_card.dart';
 
 class PanicList extends StatelessWidget {
@@ -47,13 +46,13 @@ class PanicList extends StatelessWidget {
                     child: PanicCard(
                       panicId: record["id"],
                       imageUrl: (() {
-                        final imagePath = record['picture'];
-                        if (imagePath is List && imagePath.isNotEmpty) {
-                          final String fileName = imagePath[0].toString();
-                          final baseUrl = dotenv.env['API_BASE_URL'] ?? "";
-                          return "$baseUrl/$fileName"; // ✅ 정상 이미지 URL
+                        final raw = record["imageUrl"];
+                        if (raw is List && raw.isNotEmpty) {
+                          return raw.first.toString();
+                        } else if (raw is String && raw.isNotEmpty) {
+                          return raw;
                         } else {
-                          return "assets/images/card/no_photo.png"; // ✅ 기본 이미지
+                          return null;
                         }
                       })(),
                       title: record['title'] as String? ?? "제목 없음",

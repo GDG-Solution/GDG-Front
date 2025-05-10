@@ -134,10 +134,12 @@ class _DetailScreenState extends State<DetailScreen> {
                       // ✅ 이미지
                       DetailImage(
                         imageUrl: () {
-                          final images = selectedRecord?["imageUrl"];
-                          if (images is List && images.isNotEmpty) {
+                          final image = selectedRecord?["imageUrl"];
+                          if (image != null &&
+                              image is String &&
+                              image.isNotEmpty) {
                             final baseUrl = dotenv.env['API_BASE_URL'] ?? "";
-                            return "$baseUrl/${images.first}";
+                            return "$baseUrl$image"; // 슬래시 포함된 상태로 붙이기
                           } else {
                             return "assets/images/card/no_photo.png"; // 기본 로컬 이미지
                           }
