@@ -8,7 +8,7 @@ class PanicCard extends StatelessWidget {
   final String panicId;
   final String title;
   final String description;
-  final String time;
+  final int time;
   final String date;
   final String dateTime;
   final String day;
@@ -26,6 +26,15 @@ class PanicCard extends StatelessWidget {
     required this.category,
     required this.painRate,
   });
+
+  // 초를 "MM:SS" 형식으로 변환하는 함수
+  String formatDuration(int seconds) {
+    int minutes = seconds ~/ 60;
+    int remainingSeconds = seconds % 60;
+    String formattedMinutes = minutes.toString().padLeft(2, '0');
+    String formattedSeconds = remainingSeconds.toString().padLeft(2, '0');
+    return "$formattedMinutes:$formattedSeconds";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +135,7 @@ class PanicCard extends StatelessWidget {
                     height: 24,
                   ),
                   SizedBox(width: 3.5),
-                  Text(time,
+                  Text(formatDuration(time),
                       style: TextStyle(fontSize: 12, color: Colors.grey)),
                 ],
               ),

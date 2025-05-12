@@ -124,13 +124,13 @@ class _DetailScreenState extends State<DetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 50),
-                      // ✅ 커스텀 헤더
+                      // 커스텀 헤더
                       DetailHeader(
                         date: formatDate1(selectedRecord?["date"]),
                       ),
                       const SizedBox(height: 16),
 
-                      // ✅ 이미지
+                      // 이미지
                       DetailImage(
                         imageUrl: (selectedRecord?["picture"] as List<dynamic>?)
                                     ?.isNotEmpty ==
@@ -141,7 +141,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
                       const SizedBox(height: 16),
 
-                      // ✅ 카테고리 태그
+                      // 카테고리 태그
                       TagList(
                         tags: selectedRecord?["category"] != null
                             ? (selectedRecord?["category"] as List<dynamic>)
@@ -152,7 +152,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
                       const SizedBox(height: 16),
 
-                      // ✅ 제목 + 날짜
+                      // 제목 + 날짜
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -177,7 +177,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
                       const SizedBox(height: 12),
 
-                      // ✅ 공포 수치 + 예상 여부
+                      // 공포 수치 + 예상 여부
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -190,14 +190,14 @@ class _DetailScreenState extends State<DetailScreen> {
                       ),
                       const SizedBox(height: 16),
 
-                      // ✅ 상세 기록 내용
+                      // 상세 기록 내용
                       DetailRecordMemo(
                         memoText: selectedRecord?["content"] ?? "내용 없음",
                       ),
 
                       const SizedBox(height: 16),
 
-                      // ✅ 상담 통화 시간 (있을 경우 표시)
+                      // 상담 통화 시간 (있을 경우 표시)
                       if (selectedRecord?["counsel"] != null &&
                           selectedRecord!["counsel"]["seconds"] != null)
                         DetailCallAlert(

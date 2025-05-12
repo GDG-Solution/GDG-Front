@@ -47,7 +47,9 @@ class PanicList extends StatelessWidget {
                       panicId: record["id"],
                       title: record['title'] as String? ?? "제목 없음", // ✅ 기본값 설정
                       description: record['content'] as String? ?? "내용 없음",
-                      time: record['time'] as String? ?? "00:00",
+                      time: record["counsel"] != null
+                          ? record["counsel"]["seconds"]
+                          : {},
                       date:
                           record['date']?.toString() ?? "N/A", // ✅ null-safe 처리
                       dateTime: record['dateTime']?.toString() ??
