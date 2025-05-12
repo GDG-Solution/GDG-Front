@@ -49,48 +49,56 @@ class _RecordPage4State extends State<RecordPage4> {
 
             SizedBox(height: 38),
 
-            // ✅ 기존 메시지 유지
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
                   children: [
-                    Text(
-                      "마지막 질문이에요",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff728C78),
-                      ),
+                    // ✅ 기존 메시지 유지
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "마지막 질문이에요",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xff728C78),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "오늘의 공황은 예상하셨나요?",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xff275220),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 5),
-                    Text(
-                      "오늘의 공황은 예상하셨나요?",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff275220),
+
+                    SizedBox(height: 20),
+
+                    Container(
+                      height: 231,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image:
+                              AssetImage("assets/images/record/record_ox.png"),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
-              ],
-            ),
-
-            SizedBox(height: 20),
-
-            Container(
-              height: 231,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/record/record_ox.png"),
-                  fit: BoxFit.cover,
-                ),
               ),
             ),
-
-            Spacer(),
 
             // ✅ 기존 버튼 유지
             Padding(
