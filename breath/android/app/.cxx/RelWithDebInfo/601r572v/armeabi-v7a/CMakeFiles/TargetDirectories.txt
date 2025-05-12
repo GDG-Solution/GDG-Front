@@ -1,0 +1,2 @@
+C:/Users/khj02/Documents/GitHub/GDG-Front/breath/android/app/.cxx/RelWithDebInfo/601r572v/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/khj02/Documents/GitHub/GDG-Front/breath/android/app/.cxx/RelWithDebInfo/601r572v/armeabi-v7a/CMakeFiles/rebuild_cache.dir

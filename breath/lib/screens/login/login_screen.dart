@@ -47,7 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
       print("🔹 응답 바디: ${response.body}");
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+        final data = json.decode(utf8.decode(response.bodyBytes));
+
         String userId = data["id"] ?? "Unknown";
         String userName = data["name"] ?? "No Name";
         String userDate =
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isLoggedIn', true);
         await prefs.setString('id', userId);
-        await prefs.setString('name', userName);
+        await prefs.setString('name', base64Encode(utf8.encode(userName)));
         await prefs.setString('date', userDate);
 
         Navigator.pushReplacement(

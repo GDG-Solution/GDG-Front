@@ -11,13 +11,15 @@ class RecordPage4 extends StatefulWidget {
   final File? imageFile;
   final List<String> selectedSymptoms;
   final String panicReason; // 공황 이유 추가
+  final String title;
 
   RecordPage4({
     required this.counselId,
     required this.painRate,
     this.imageFile,
     required this.selectedSymptoms,
-    required this.panicReason, // 생성자에서 받아오기
+    required this.panicReason,
+    required this.title,
   });
 
   @override
@@ -111,8 +113,9 @@ class _RecordPage4State extends State<RecordPage4> {
                             painRate: widget.painRate,
                             imageFile: widget.imageFile,
                             selectedSymptoms: widget.selectedSymptoms,
+                            title: widget.title,
                             panicReason: widget.panicReason,
-                            expectation: "예상했어요",
+                            expectation: true,
                           ),
                         ),
                       );
@@ -133,8 +136,9 @@ class _RecordPage4State extends State<RecordPage4> {
                             painRate: widget.painRate,
                             imageFile: widget.imageFile,
                             selectedSymptoms: widget.selectedSymptoms,
+                            title: widget.title,
                             panicReason: widget.panicReason,
-                            expectation: "예상 못했어요",
+                            expectation: false,
                           ),
                         ),
                       );

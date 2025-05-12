@@ -45,100 +45,107 @@ class _RecordPage2State extends State<RecordPage2> {
         child: Column(
           children: [
             CustomNavigationBar(
-              onBack: () {
-                Navigator.pop(context);
-              },
-              onClose: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
+              onBack: () => Navigator.pop(context),
+              onClose: () =>
+                  Navigator.of(context).popUntil((route) => route.isFirst),
             ),
             CustomGaugeBar(currentValue: 3),
             SizedBox(height: 28),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomQuestionCard(
-                    questionNumber: 2,
-                    question: "증상을 모두 선택해주세요",
-                    subText: "약한 증상도 선택해주세요",
-                  ),
-                  SizedBox(height: 20),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: symptomList.map((symptom) {
-                      bool isSelected = selectedSymptoms.contains(symptom);
-                      return GestureDetector(
-                        onTap: () => _toggleSymptom(symptom),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 20),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? Color(0xFFFFFFFF)
-                                : Color(0xffF9FEF3),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Color(0xFFE1F8CC),
-                              width: 1.5,
-                            ),
-                          ),
-                          child: Text(
-                            symptom,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: isSelected
-                                  ? FontWeight.w700
-                                  : FontWeight.w500,
+
+            // ✅ 여기가 스크롤 영역
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomQuestionCard(
+                      questionNumber: 2,
+                      question: "증상을 모두 선택해주세요",
+                      subText: "약한 증상도 선택해주세요",
+                    ),
+                    SizedBox(height: 20),
+                    Column(
+                      children: List.generate(symptomList.length, (index) {
+                        final symptom = symptomList[index];
+                        final bool isSelected =
+                            selectedSymptoms.contains(symptom);
+                        return GestureDetector(
+                          onTap: () => _toggleSymptom(symptom),
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 12),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 7, horizontal: 32),
+                            decoration: BoxDecoration(
                               color: isSelected
-                                  ? Color(0xFF275220)
-                                  : Color(0xFF728C78),
+                                  ? Color(0xFFFFFFFF)
+                                  : Color(0xFFF9FEF3),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: isSelected
+                                    ? Color(0xFF90DD85)
+                                    : Color(0xFFE1F8CC),
+                                width: 1,
+                              ),
                             ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ),
-            Spacer(),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomButton(
-                      text: "다음",
-                      width: 365,
-                      bgColor: nextButtonEnabled
-                          ? Color(0xFFE1F8CC)
-                          : Colors.black.withOpacity(0.1),
-                      textColor: nextButtonEnabled
-                          ? Color(0xFF275220)
-                          : Color(0xffA1A1A1),
-                      borderColor: nextButtonEnabled
-                          ? Color(0xffCBE0B8)
-                          : Colors.black.withOpacity(0.1),
-                      onPressed: nextButtonEnabled
-                          ? () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RecordPage3(
-                                    counselId: widget.counselId,
-                                    painRate: widget.painRate, // 기존 데이터 유지
-                                    imageFile: widget.imageFile, // 기존 데이터 유지
-                                    selectedSymptoms:
-                                        selectedSymptoms, // 증상 리스트 전달
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  symptom,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: isSelected
+                                        ? FontWeight.w700
+                                        : FontWeight.w500,
+                                    color: isSelected
+                                        ? Color(0xFF275220)
+                                        : Color(0xFF728C78),
                                   ),
                                 ),
-                              );
-                            }
-                          : () {}), // 버튼 비활성화
-                ],
+                                if (isSelected)
+                                  Icon(Icons.check,
+                                      color: Color(0xFF275220), size: 20),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // ✅ 하단 버튼
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: CustomButton(
+                text: "다음",
+                width: 365,
+                bgColor: nextButtonEnabled
+                    ? Color(0xFFE1F8CC)
+                    : Colors.black.withOpacity(0.1),
+                textColor:
+                    nextButtonEnabled ? Color(0xFF275220) : Color(0xffA1A1A1),
+                borderColor: nextButtonEnabled
+                    ? Color(0xffCBE0B8)
+                    : Colors.black.withOpacity(0.1),
+                onPressed: nextButtonEnabled
+                    ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecordPage3(
+                              counselId: widget.counselId,
+                              painRate: widget.painRate,
+                              imageFile: widget.imageFile,
+                              selectedSymptoms: selectedSymptoms,
+                            ),
+                          ),
+                        );
+                      }
+                    : () {},
               ),
             ),
           ],
@@ -149,15 +156,16 @@ class _RecordPage2State extends State<RecordPage2> {
 
   // ✅ 증상 리스트
   final List<String> symptomList = [
+    "죽음에 대한 공포",
     "가슴통증",
     "호흡곤란",
     "복통",
-    "구역질",
     "비현실감",
     "열감/오한",
     "떨림",
     "어지러움",
     "두근거림",
-    "죽음에 대한 공포"
+    "피로감",
+    "불안감",
   ];
 }
