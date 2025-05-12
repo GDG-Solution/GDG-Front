@@ -18,15 +18,22 @@ class DetailExpected extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            //"예상 여부",
-            expected ? "O" : "X", // 예상 여부 표시
+            // 예상 여부 표시
+            "예상 여부",
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFFC3D1B8)),
+          ),
+          const SizedBox(width: 12),
+          Text(
+            expected ? "O" : "X",
             style: const TextStyle(
               fontSize: 14,
               color: Colors.white,
               fontWeight: FontWeight.w600,
             ),
-          ),
-          const SizedBox(width: 12),
+          )
         ],
       ),
     );

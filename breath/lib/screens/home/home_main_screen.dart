@@ -140,44 +140,52 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: CustomAppBar(userName: _userName),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF375E43), Color(0xFF3A413B)],
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 100),
-            MonthlyPanicCount(count: panicRecords.length),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: CategoryFilter(onCategorySelected: _onCategoryChanged),
-            ),
-            SizedBox(height: 50),
-            Align(
-              alignment: Alignment.topCenter,
-              child: SizedBox(
-                height: 400,
-                child: panicRecords.isEmpty
-                    ? Center(
-                        child: Text(
-                          "아직 기록이 없습니다 😊",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ) // ✅ 데이터가 없을 경우, "아직 기록이 없습니다." 메시지 표시
-                    : PanicList(panicRecords: filteredRecords),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFF375E43), Color(0xFF3A413B)],
               ),
             ),
-          ],
-        ),
+          ),
+          // 전체 화면 스크롤
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 50),
+                MonthlyPanicCount(count: panicRecords.length),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  child: CategoryFilter(onCategorySelected: _onCategoryChanged),
+                ),
+                SizedBox(height: 50),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: SizedBox(
+                    height: 400,
+                    child: panicRecords.isEmpty
+                        ? Center(
+                            child: Text(
+                              "아직 기록이 없습니다 😊",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ) // ✅ 데이터가 없을 경우, "아직 기록이 없습니다." 메시지 표시
+                        : PanicList(panicRecords: filteredRecords),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
