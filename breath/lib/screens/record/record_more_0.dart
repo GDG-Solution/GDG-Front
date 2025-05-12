@@ -39,49 +39,59 @@ class _RecordPage0State extends State<RecordPage0> {
 
             SizedBox(height: 38),
 
-            // ✅ 상단 메시지
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
+            // ✅ 내용은 스크롤이 가능하도록 처리
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
                   children: [
-                    Text(
-                      "분석을 위해\n더 정확한 기록이 필요해요",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff275220),
-                      ),
-                      textAlign: TextAlign.center,
+                    // ✅ 상단 메시지
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "분석을 위해\n더 정확한 기록이 필요해요",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xff275220),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "기록하면 트로피를 드려요",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xff728C78),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 5),
-                    Text(
-                      "기록하면 트로피를 드려요",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff728C78),
+
+                    SizedBox(height: 70),
+
+                    // ✅ 이미지
+                    Container(
+                      width: 259.53,
+                      height: 264,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              "assets/images/record/record_medal.png"),
+                          fit: BoxFit.cover, // 이미지가 컨테이너에 맞게 채워지도록 설정
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
-
-            SizedBox(height: 70),
-
-            Container(
-              width: 259.53,
-              height: 264,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/record/record_medal.png"),
-                  fit: BoxFit.cover, // 이미지가 컨테이너에 맞게 채워지도록 설정
-                ),
               ),
             ),
-
-            Spacer(),
 
             // ✅ 하단 버튼
             Padding(

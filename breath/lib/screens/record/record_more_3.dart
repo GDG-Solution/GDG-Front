@@ -75,99 +75,106 @@ class _RecordPage3State extends State<RecordPage3> {
 
             SizedBox(height: 28),
 
-            // ✅ 질문 카드
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomQuestionCard(
-                    questionNumber: 3,
-                    question: "공황이 일어난 이유는 무엇인가요",
-                    subText: "이유를 알면 두려움이 줄어들어요",
-                  ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    // ✅ 질문 카드
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomQuestionCard(
+                            questionNumber: 3,
+                            question: "공황이 일어난 이유는 무엇인가요",
+                            subText: "이유를 알면 두려움이 줄어들어요",
+                          ),
 
-                  SizedBox(height: 20),
+                          SizedBox(height: 20),
 
-                  // 제목 TextField
-                  TextField(
-                    controller: _titleController,
-                    decoration: InputDecoration(
-                      hintText: "제목을 적어주세요",
-                      hintStyle: TextStyle(color: Colors.grey),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide:
-                            BorderSide(color: Color(0xFF90DD85), width: 1),
+                          // 제목 TextField
+                          TextField(
+                            controller: _titleController,
+                            decoration: InputDecoration(
+                              hintText: "제목을 적어주세요",
+                              hintStyle: TextStyle(color: Colors.grey),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide(
+                                    color: Color(0xFF90DD85), width: 1),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide(
+                                    color: Color(0xFF90DD85), width: 1),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide(
+                                    color: Color(0xFF98D87A), width: 2),
+                              ),
+                              filled: true,
+                              fillColor: Color(0xFFFFFFFF),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 12),
+                            ),
+                            maxLines: 1,
+                          ),
+
+                          SizedBox(height: 16),
+
+                          // 내용 TextField + 글자 수
+                          Stack(
+                            children: [
+                              TextField(
+                                controller: _contentController,
+                                maxLength: 100,
+                                maxLines: 4,
+                                decoration: InputDecoration(
+                                  hintText: "ex) 거리에 갑자기 사람들이 많아지니까 머리가 너무 아팠어",
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide(
+                                        color: Color(0xFF90DD85), width: 1),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide(
+                                        color: Color(0xFF90DD85), width: 1),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide(
+                                        color: Color(0xFF98D87A), width: 2),
+                                  ),
+                                  filled: true,
+                                  fillColor: Color(0xFFFFFFFF),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 12),
+                                  counterText: "", // 하단 기본 카운터 숨기기
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 8,
+                                right: 12,
+                                child: Text(
+                                  "${_contentController.text.length}/100",
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.grey),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide:
-                            BorderSide(color: Color(0xFF90DD85), width: 1),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide:
-                            BorderSide(color: Color(0xFF98D87A), width: 2),
-                      ),
-                      filled: true,
-                      fillColor: Color(0xFFFFFFFF),
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     ),
-                    maxLines: 1,
-                  ),
-
-                  SizedBox(height: 16),
-
-                  // 내용 TextField + 글자 수
-                  Stack(
-                    children: [
-                      TextField(
-                        controller: _contentController,
-                        maxLength: 100,
-                        maxLines: 4,
-                        decoration: InputDecoration(
-                          hintText: "ex) 거리에 갑자기 사람들이 많아지니까 머리가 너무 아팠어",
-                          hintStyle: TextStyle(color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide:
-                                BorderSide(color: Color(0xFF90DD85), width: 1),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide:
-                                BorderSide(color: Color(0xFF90DD85), width: 1),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide:
-                                BorderSide(color: Color(0xFF98D87A), width: 2),
-                          ),
-                          filled: true,
-                          fillColor: Color(0xFFFFFFFF),
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
-                          counterText: "", // 하단 기본 카운터 숨기기
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 8,
-                        right: 12,
-                        child: Text(
-                          "${_contentController.text.length}/100",
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+                  ],
+                ),
               ),
             ),
-
-            Spacer(), // 남은 공간 차지하여 하단 버튼 고정
-
             // ✅ 하단 버튼 추가 (CustomButton 사용)
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

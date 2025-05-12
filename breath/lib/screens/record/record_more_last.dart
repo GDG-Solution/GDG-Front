@@ -57,19 +57,27 @@ class _RecordPage5State extends State<RecordPage5> {
               ),
               SizedBox(height: 80),
 
-              // ✅ 캐릭터 박스
-              Container(
-                width: 236,
-                height: 236,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/record/record_last.png"),
-                    fit: BoxFit.cover,
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      // ✅ 캐릭터 박스
+                      Container(
+                        width: 236,
+                        height: 236,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/record/record_last.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-
-              Spacer(),
 
               // ✅ 하단 버튼
               Padding(

@@ -52,51 +52,59 @@ class _CallingMainState extends State<CallingMain>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context), // 상단 앱바
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: RadialGradient(
-            center: Alignment.center,
-            radius: 1.2,
-            colors: [
-              Color(0xFF35643E), // 진한 녹색 (중심)
-              Color(0xFF728C78), // 밝은 연두색 (외곽)
-            ],
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, // 상, 중, 하 균등 분배
-          children: [
-            SizedBox(height: 10),
-            Column(
-              children: [
-                Container(
-                  height: 300,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      AnimatedWaveCircle(),
-                      CharacterCircle(),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 0),
-                CustomMessageBox(message: _agentResponse), // 변경된 메시지 반영
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 100),
-              child: MicButton(
-                counselId: widget.counselId, // 상담 ID 전달
-                onResponseReceived: (response) {
-                  setState(() {
-                    _agentResponse = response; // 서버 응답을 반영
-                  });
-                  _speakResponse(response); // 음성으로 응답 읽기
-                },
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment.center,
+                radius: 1.2,
+                colors: [
+                  Color(0xFF35643E), // 진한 녹색 (중심)
+                  Color(0xFF728C78), // 밝은 연두색 (외곽)
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween, // 상, 중, 하 균등 분배
+              children: [
+                SizedBox(height: 10),
+                Column(
+                  children: [
+                    Container(
+                      height: 300,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          AnimatedWaveCircle(),
+                          CharacterCircle(),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 0),
+                    CustomMessageBox(message: _agentResponse), // 변경된 메시지 반영
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 100),
+                  child: MicButton(
+                    counselId: widget.counselId, // 상담 ID 전달
+                    onResponseReceived: (response) {
+                      setState(() {
+                        _agentResponse = response; // 서버 응답을 반영
+                      });
+                      _speakResponse(response); // 음성으로 응답 읽기
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
