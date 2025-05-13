@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         return Color(0xFF3A413B); // HomeMainScreen 배경색 (예제)
       case 1:
-        return Colors.blue.shade100; // CalendarScreen 배경색 (예제)
+        return Color(0xFF3A413B); // CalendarScreen 배경색 (예제)
       default:
         return Colors.white;
     }
