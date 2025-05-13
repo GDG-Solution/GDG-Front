@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 class ConversationScreen extends StatefulWidget {
   final String counselId;
@@ -21,6 +22,25 @@ class _ConversationScreenState extends State<ConversationScreen> {
   void initState() {
     super.initState();
     fetchMessages();
+  }
+
+  String formatTime(String dateStr) {
+    try {
+      final dateTime = DateTime.parse(dateStr);
+      return DateFormat('HH:mm').format(dateTime); // 시간만 출력
+    } catch (_) {
+      return "";
+    }
+  }
+
+  String? getConversationDate() {
+    if (messages.isNotEmpty) {
+      try {
+        final dateTime = DateTime.parse(messages.first["time"]);
+        return DateFormat('yyyy년 M월 d일').format(dateTime);
+      } catch (_) {}
+    }
+    return null;
   }
 
   Future<void> fetchMessages() async {
@@ -76,6 +96,11 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 SizedBox(height: 16),
                 Text(
                   "상담 ID: ${widget.counselId}",
+                  style: TextStyle(color: Colors.white54, fontSize: 12),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  getConversationDate() ?? "",
                   style: TextStyle(color: Colors.white70, fontSize: 14),
                 ),
                 SizedBox(height: 8),
@@ -121,7 +146,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                                 right: isUser ? 8 : 0,
                               ),
                               child: Text(
-                                msg['time'],
+                                formatTime(msg['time']),
                                 style: TextStyle(
                                     color: Colors.white38, fontSize: 11),
                               ),
