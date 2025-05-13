@@ -210,6 +210,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         DetailCallAlert(
                           callDurationSeconds: selectedRecord!["counsel"]
                               ["seconds"],
+                          counselId: selectedRecord!["counsel"]["id"],
                         ),
                     ],
                   ),

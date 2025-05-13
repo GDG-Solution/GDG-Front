@@ -3,8 +3,10 @@ import 'package:breath/screens/conversation/conversation_screen.dart';
 
 class DetailCallAlert extends StatelessWidget {
   final int callDurationSeconds;
+  final String counselId;
 
-  const DetailCallAlert({Key? key, required this.callDurationSeconds})
+  const DetailCallAlert(
+      {Key? key, required this.callDurationSeconds, required this.counselId})
       : super(key: key);
 
   String formatDuration(int seconds) {
@@ -22,7 +24,8 @@ class DetailCallAlert extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ConversationScreen(), // ✅ 여기로 이동
+            builder: (context) =>
+                ConversationScreen(counselId: counselId), // ✅ 전달
           ),
         );
       },
