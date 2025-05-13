@@ -19,42 +19,46 @@ class CallAnalysisScreen extends StatelessWidget {
         backgroundColor: Color(0xFF375E43), // 상단바 배경색
         elevation: 0,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF375E43), Color(0xFF3A413B)],
-          ),
-        ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0), // 전체 여백 추가
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 50),
-              // 기록 트로피 수
-              Center(
-                child: _buildTrophyCount(),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFF375E43), Color(0xFF3A413B)],
               ),
-
-              SizedBox(height: 20),
-
-              // 가장 많이 나타낸 증상
-              _buildMostCommonSymptoms(),
-
-              SizedBox(height: 20),
-
-              // 예상했던 공황의 수
-              _buildExpectedPanicCount(),
-
-              SizedBox(height: 20),
-
-              // 나의 공포수치 변화
-              _buildPanicLevelChanges(),
-            ],
+            ),
           ),
-        ),
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0), // 전체 여백 추가
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 50),
+                // 기록 트로피 수
+                Center(
+                  child: _buildTrophyCount(),
+                ),
+
+                SizedBox(height: 20),
+
+                // 가장 많이 나타낸 증상
+                _buildMostCommonSymptoms(),
+
+                SizedBox(height: 20),
+
+                // 예상했던 공황의 수
+                _buildExpectedPanicCount(),
+
+                SizedBox(height: 20),
+
+                // 나의 공포수치 변화
+                _buildPanicLevelChanges(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

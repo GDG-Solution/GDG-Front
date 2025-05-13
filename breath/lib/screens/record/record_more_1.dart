@@ -67,64 +67,73 @@ class _RecordPage1State extends State<RecordPage1> {
             ),
             CustomGaugeBar(currentValue: 2),
             SizedBox(height: 28),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomQuestionCard(
-                    questionNumber: 1,
-                    question: "공황이 일어난 환경을 기록해보세요",
-                    subText: "찍기 어렵다면 패스해도 좋아요",
-                  ),
-                  SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: _pickImage,
-                    child: Container(
-                      width: double.infinity,
-                      height: 250,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFE1F8CC),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: _image == null
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.camera_alt,
-                                    color: Color(0xff428C37), size: 40),
-                                SizedBox(height: 8),
-                                Text(
-                                  "이곳을 터치해서 사진을 찍어봐",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff428C37),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Image.file(
-                                _image!,
-                                width: double.infinity,
-                                height: 250,
-                                fit: BoxFit.cover,
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomQuestionCard(
+                            questionNumber: 1,
+                            question: "공황이 일어난 환경을 기록해보세요",
+                            subText: "찍기 어렵다면 패스해도 좋아요",
+                          ),
+                          SizedBox(height: 20),
+                          GestureDetector(
+                            onTap: _pickImage,
+                            child: Container(
+                              width: double.infinity,
+                              height: 250,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFE1F8CC),
+                                borderRadius: BorderRadius.circular(15),
                               ),
+                              child: _image == null
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.camera_alt,
+                                            color: Color(0xff428C37), size: 40),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          "이곳을 터치해서 사진을 찍어봐",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xff428C37),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: Image.file(
+                                        _image!,
+                                        width: double.infinity,
+                                        height: 250,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                             ),
+                          ),
+                          Center(
+                            child: Image.asset(
+                              "assets/images/record/record_camera.png",
+                              width: 157,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Center(
-                    child: Image.asset(
-                      "assets/images/record/record_camera.png",
-                      width: 157,
-                    ),
-                  )
-                ],
+                  ],
+                ),
               ),
             ),
-            Spacer(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
