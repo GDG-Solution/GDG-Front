@@ -34,8 +34,8 @@ dependencies:
 
   lottie: ^2.6.0
   flutter_tts: ^3.3.2
-
   image: ^4.0.17
+  flutter_native_splash: ^2.3.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -58,6 +58,22 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+
+# 앱 아이콘
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: 'assets/icons/app_icon.png' # 원하는 아이콘 경로
+
+# 앱 스플래쉬 화면
+flutter_native_splash:
+  color: '#F1FDEF' # 배경색
+  image: assets/icons/splash_icon.png # 스플래시용 로고
+  android: true
+  ios: true
+  android_gravity: center
+  ios_content_mode: center
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
