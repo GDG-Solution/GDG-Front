@@ -14,7 +14,9 @@ class CallAnalysisScreen extends StatefulWidget {
 }
 
 class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
-  String selectedMonth = "5월";
+  int selectedYear = DateTime.now().year;
+  int selectedMonthInt = DateTime.now().month;
+
   String _userId = "";
   List<dynamic> symptomStats = [];
   Map<String, dynamic> expectationStat = {};
@@ -36,20 +38,24 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
     });
   }
 
+  //String get selectedMonthText => "$selectedYear년 ${selectedMonthInt}월";
+  String get selectedMonthText => "${selectedMonthInt}월";
+
   String _getFormattedYearMonth() {
-    int month = int.parse(selectedMonth.replaceAll("월", ""));
-    final now = DateTime.now();
-    return "${now.year}-${month.toString().padLeft(2, '0')}";
+    return "$selectedYear-${selectedMonthInt.toString().padLeft(2, '0')}";
   }
 
   void _changeMonth(int direction) {
-    int month = int.parse(selectedMonth.replaceAll("월", ""));
-    month += direction;
-    if (month < 1) month = 12;
-    if (month > 12) month = 1;
-
     setState(() {
-      selectedMonth = "$month월";
+      selectedMonthInt += direction;
+
+      if (selectedMonthInt < 1) {
+        selectedMonthInt = 12;
+        selectedYear -= 1;
+      } else if (selectedMonthInt > 12) {
+        selectedMonthInt = 1;
+        selectedYear += 1;
+      }
     });
 
     _fetchAnalysisData();
@@ -97,23 +103,6 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
       ),
       body: Stack(
         children: [
-          // 이전 / 다음 월 화살표
-          Positioned(
-            left: 16,
-            top: 80,
-            child: IconButton(
-              icon: Icon(Icons.arrow_left),
-              onPressed: () => _changeMonth(-1), // 이전 월로 이동
-            ),
-          ),
-          Positioned(
-            right: 16,
-            top: 80,
-            child: IconButton(
-              icon: Icon(Icons.arrow_right),
-              onPressed: () => _changeMonth(1), // 다음 월로 이동
-            ),
-          ),
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -129,6 +118,7 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 50),
+                _buildMonthSelector(), // 월 선택
                 // 기록 트로피 수
                 Center(
                   child: _buildTrophyCount(),
@@ -153,6 +143,33 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
           ),
         ],
       ),
+    );
+  }
+
+// 월 선택
+  Widget _buildMonthSelector() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: Icon(Icons.arrow_left, color: Colors.white),
+          onPressed: () => _changeMonth(-1),
+        ),
+        SizedBox(width: 10),
+        Text(
+          selectedMonthText,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(width: 10),
+        IconButton(
+          icon: Icon(Icons.arrow_right, color: Colors.white),
+          onPressed: () => _changeMonth(1),
+        ),
+      ],
     );
   }
 
