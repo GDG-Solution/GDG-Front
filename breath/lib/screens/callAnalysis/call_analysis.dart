@@ -1,8 +1,84 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './panic_level_card.dart';
 
-class CallAnalysisScreen extends StatelessWidget {
+class CallAnalysisScreen extends StatefulWidget {
+  @override
+  _CallAnalysisScreenState createState() => _CallAnalysisScreenState();
+}
+
+class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
+  String selectedMonth = "5월";
+  String _userId = "";
+  List<dynamic> symptomStats = [];
+  Map<String, dynamic> expectationStat = {};
+  List<dynamic> scoreStats = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserInfo().then((_) {
+      _fetchAnalysisData(); // 최초 분석 데이터 호출
+    });
+  }
+
+  Future<void> _loadUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    final id = prefs.getString('id');
+    setState(() {
+      _userId = id ?? "";
+    });
+  }
+
+  String _getFormattedYearMonth() {
+    int month = int.parse(selectedMonth.replaceAll("월", ""));
+    final now = DateTime.now();
+    return "${now.year}-${month.toString().padLeft(2, '0')}";
+  }
+
+  void _changeMonth(int direction) {
+    int month = int.parse(selectedMonth.replaceAll("월", ""));
+    month += direction;
+    if (month < 1) month = 12;
+    if (month > 12) month = 1;
+
+    setState(() {
+      selectedMonth = "$month월";
+    });
+
+    _fetchAnalysisData();
+  }
+
+  Future<void> _fetchAnalysisData() async {
+    final String baseUrl = dotenv.env['API_BASE_URL'] ?? "";
+    final String yearMonth = _getFormattedYearMonth();
+
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/analysis?id=$_userId&yearMonth=$yearMonth"),
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(utf8.decode(response.bodyBytes));
+        setState(() {
+          symptomStats = jsonData['symptomStats'] ?? [];
+          expectationStat = jsonData['expectationStat'] ?? {};
+          scoreStats = jsonData['scoreStats'] ?? [];
+        });
+      } else {
+        print("❌ 분석 API 오류: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("❌ 분석 API 호출 실패: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +97,23 @@ class CallAnalysisScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
+          // 이전 / 다음 월 화살표
+          Positioned(
+            left: 16,
+            top: 80,
+            child: IconButton(
+              icon: Icon(Icons.arrow_left),
+              onPressed: () => _changeMonth(-1), // 이전 월로 이동
+            ),
+          ),
+          Positioned(
+            right: 16,
+            top: 80,
+            child: IconButton(
+              icon: Icon(Icons.arrow_right),
+              onPressed: () => _changeMonth(1), // 다음 월로 이동
+            ),
+          ),
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -98,6 +191,8 @@ class CallAnalysisScreen extends StatelessWidget {
 
   // 가장 많이 나타낸 증상
   Widget _buildMostCommonSymptoms() {
+    final top2 = symptomStats.take(2).toList();
+
     return Container(
       width: 369,
       padding: const EdgeInsets.all(16.0),
@@ -114,39 +209,47 @@ class CallAnalysisScreen extends StatelessWidget {
                 fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           SizedBox(height: 10),
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10), // 모서리 둥글게
-                child: TweenAnimationBuilder<double>(
-                  tween: Tween<double>(begin: 0.0, end: 0.8), // 0 ~ 1 사이
-                  duration: Duration(seconds: 2), // 애니메이션 시간
-                  builder: (context, value, child) {
-                    return LinearProgressIndicator(
-                      value: value, // 진행 상태 (0~1 사이)
-                      backgroundColor: Colors.transparent, // 배경색
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Colors.orange), // 진행 색
-                      minHeight: 36, // 진행바 높이
-                    );
-                  },
-                ),
+          ...top2.map((symptom) {
+            final name = symptom['name'] ?? 'N/A';
+            final count = symptom['count'] ?? 0;
+            final ratio = (count / (top2[0]['count'] ?? 1)).clamp(0.0, 1.0);
+
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: TweenAnimationBuilder<double>(
+                tween: Tween<double>(begin: 0.0, end: ratio),
+                duration: Duration(milliseconds: 800),
+                builder: (context, animatedValue, child) {
+                  return Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: LinearProgressIndicator(
+                          value: animatedValue,
+                          backgroundColor: Colors.transparent,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.orange),
+                          minHeight: 36,
+                        ),
+                      ),
+                      Positioned.fill(
+                        child: Center(
+                          child: Text(
+                            name,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
-              // 진행바 위에 텍스트
-              Positioned.fill(
-                child: Center(
-                  child: Text(
-                    "기술 통증",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            );
+          }).toList(),
         ],
       ),
     );
@@ -154,6 +257,16 @@ class CallAnalysisScreen extends StatelessWidget {
 
 // 예상했던 공황의 수
   Widget _buildExpectedPanicCount() {
+    final int o = expectationStat['o'] ?? 0;
+    final int x = expectationStat['x'] ?? 0;
+
+    final bool isOBigger = o >= x;
+    final Color oColor = isOBigger ? Colors.orange : Colors.grey;
+    final Color xColor = !isOBigger ? Colors.orange : Colors.grey;
+
+    final double bigSize = 100;
+    final double smallSize = 80;
+
     return Container(
       width: 369,
       padding: const EdgeInsets.all(16.0),
@@ -171,30 +284,64 @@ class CallAnalysisScreen extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "0", // 예시로 0으로 설정, 실제 데이터에 맞게 수정
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(width: 10),
-              Text(
-                "32번", // 예시로 32번, 실제 데이터에 맞게 수정
-                style: TextStyle(fontSize: 16),
-              ),
+              _buildCircle("O", oColor, "${o}번",
+                  size: isOBigger ? bigSize : smallSize),
+              SizedBox(width: 20),
+              _buildCircle("X", xColor, "${x}번",
+                  size: isOBigger ? smallSize : bigSize),
             ],
-          ),
-          SizedBox(height: 10),
-          Text(
-            "20회", // 예시로 20회, 실제 데이터에 맞게 수정
-            style: TextStyle(fontSize: 16),
           ),
         ],
       ),
     );
   }
 
+// 동그라미와 그 안의 텍스트를 빌드하는 함수
+  Widget _buildCircle(String text, Color color, String number,
+      {double size = 100}) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: color, // 동그라미 색
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              text, // O 또는 X
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              number,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 // 나의 공포수치 변화
   Widget _buildPanicLevelChanges() {
+    final List<dynamic> recentScores = List.from(scoreStats)
+      ..sort((a, b) =>
+          DateTime.parse(b['date']).compareTo(DateTime.parse(a['date'])));
+    final top3 = recentScores.take(3).toList();
+
     return Container(
       width: 369,
       padding: const EdgeInsets.all(16.0),
@@ -211,12 +358,17 @@ class CallAnalysisScreen extends StatelessWidget {
                 fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           SizedBox(height: 10),
-          // 공포수치에 따라 카드 변경
-          PanicLevelCard(month: "6월", time: "오후 13:00", level: 5),
-          SizedBox(height: 10),
-          PanicLevelCard(month: "5월", time: "오후 13:00", level: 4),
-          SizedBox(height: 10),
-          PanicLevelCard(month: "1월", time: "오후 13:00", level: 3),
+          ...top3.map((entry) {
+            final date =
+                DateTime.tryParse(entry['date'] ?? "") ?? DateTime.now();
+            final score = entry['score'] ?? 0;
+            final month = "${date.month}월";
+            final time = DateFormat('a hh:mm', 'ko').format(date);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: PanicLevelCard(month: month, time: time, level: score),
+            );
+          }).toList(),
         ],
       ),
     );

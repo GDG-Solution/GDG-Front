@@ -99,33 +99,39 @@ class _RecordPage0State extends State<RecordPage0> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomButton(
-                    text: "안하기",
-                    width: 88,
-                    bgColor: Color(0xFFDBE3D0),
-                    textColor: Color(0xff728C78),
-                    borderColor: Color(0xffCBE0B8),
-                    onPressed: () {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    },
+                  Expanded(
+                    child: CustomButton(
+                      text: "안하기",
+                      width: 88,
+                      bgColor: Color(0xFFDBE3D0),
+                      textColor: Color(0xff728C78),
+                      borderColor: Color(0xffCBE0B8),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                      },
+                    ),
                   ),
-                  CustomButton(
-                    text: "기록하기",
-                    width: 272,
-                    bgColor: Color(0xFFE1F8CC),
-                    textColor: Color(0xFF275220),
-                    borderColor: Color(0xffCBE0B8),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RecordPage1(
-                            counselId: widget.counselId,
-                            painRate: widget.painRate,
+                  SizedBox(width: 10), // 버튼 사이의 간격 추가
+                  Expanded(
+                    child: CustomButton(
+                      text: "기록하기",
+                      width: 272,
+                      bgColor: Color(0xFFE1F8CC),
+                      textColor: Color(0xFF275220),
+                      borderColor: Color(0xffCBE0B8),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecordPage1(
+                              counselId: widget.counselId,
+                              painRate: widget.painRate,
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
