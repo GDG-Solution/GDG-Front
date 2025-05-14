@@ -119,6 +119,7 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
               children: [
                 SizedBox(height: 50),
                 _buildMonthSelector(), // 월 선택
+                SizedBox(height: 10),
                 // 기록 트로피 수
                 Center(
                   child: _buildTrophyCount(),
@@ -148,28 +149,46 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
 
 // 월 선택
   Widget _buildMonthSelector() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          icon: Icon(Icons.arrow_left, color: Colors.white),
-          onPressed: () => _changeMonth(-1),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40.0), // 양옆 여백
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildArrowButton(Icons.chevron_left, () => _changeMonth(-1)),
+          Text(
+            selectedMonthText, // "2025년 5월"
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          _buildArrowButton(Icons.chevron_right, () => _changeMonth(1)),
+        ],
+      ),
+    );
+  }
+
+// 달 이동 버튼 UI
+  Widget _buildArrowButton(IconData icon, VoidCallback onPressed) {
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        width: 28,
+        height: 28,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.2), // 반투명 회색 배경
+          shape: BoxShape.circle,
         ),
-        SizedBox(width: 10),
-        Text(
-          selectedMonthText,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        child: Center(
+          child: Icon(
+            icon,
+            size: 16,
             color: Colors.white,
           ),
         ),
-        SizedBox(width: 10),
-        IconButton(
-          icon: Icon(Icons.arrow_right, color: Colors.white),
-          onPressed: () => _changeMonth(1),
-        ),
-      ],
+      ),
     );
   }
 
@@ -177,6 +196,7 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
   Widget _buildTrophyCount() {
     return Container(
       width: 369,
+      height: 103,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Color(0x1A000000),
@@ -192,15 +212,20 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
                 fontWeight: FontWeight.w600,
                 color: Color(0xFFFFFFFF)),
           ),
-          SizedBox(height: 10),
-          Image.asset("assets/images/record/trophy.png", width: 39),
-          Text(
-            "1", // 트로피 수 예시
-            style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFFFFFFF)),
-          ),
+          SizedBox(height: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset("assets/images/record/trophy.png", width: 39),
+              Text(
+                "1", // 트로피 수 예시
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFFFFFFF)),
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -254,7 +279,7 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
                           child: Text(
                             name,
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
@@ -304,10 +329,10 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildCircle("O", oColor, "${o}번",
-                  size: isOBigger ? bigSize : smallSize),
+                  size: isOBigger ? 100 : 80, isHighlighted: isOBigger),
               SizedBox(width: 20),
               _buildCircle("X", xColor, "${x}번",
-                  size: isOBigger ? smallSize : bigSize),
+                  size: isOBigger ? 80 : 100, isHighlighted: !isOBigger),
             ],
           ),
         ],
@@ -316,8 +341,19 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
   }
 
 // 동그라미와 그 안의 텍스트를 빌드하는 함수
-  Widget _buildCircle(String text, Color color, String number,
-      {double size = 100}) {
+  Widget _buildCircle(
+    String text,
+    Color color,
+    String number, {
+    double size = 100,
+    bool isHighlighted = true, // 큰 값일 때 true, 작은 값일 때 false
+  }) {
+    final Color circleColor = isHighlighted ? color : color.withOpacity(0.6);
+    final double mainFontSize = isHighlighted ? 32 : 24;
+    final double subFontSize = isHighlighted ? 16 : 14;
+    final Color textColor =
+        isHighlighted ? Colors.black : Colors.black.withOpacity(0.6);
+
     return Container(
       width: size,
       height: size,
@@ -332,18 +368,18 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
             Text(
               text, // O 또는 X
               style: TextStyle(
-                fontSize: 24,
+                fontSize: mainFontSize,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: textColor,
               ),
             ),
             SizedBox(height: 5),
             Text(
               number,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: subFontSize,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: textColor,
               ),
             ),
           ],
