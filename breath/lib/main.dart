@@ -4,10 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:breath/screens/home_screen.dart';
 import 'package:breath/screens/login/login_screen.dart';
 
+import 'package:intl/date_symbol_data_local.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env"); // .env 파일 로드
-
+  await initializeDateFormatting('ko');
   runApp(MyApp());
 }
 
