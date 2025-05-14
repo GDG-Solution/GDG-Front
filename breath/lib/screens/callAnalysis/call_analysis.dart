@@ -18,6 +18,7 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
   int selectedMonthInt = DateTime.now().month;
 
   String _userId = "";
+  int diaryNum = 0;
   List<dynamic> symptomStats = [];
   Map<String, dynamic> expectationStat = {};
   List<dynamic> scoreStats = [];
@@ -73,6 +74,7 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
       if (response.statusCode == 200) {
         final jsonData = json.decode(utf8.decode(response.bodyBytes));
         setState(() {
+          diaryNum = jsonData['diaryNum'] ?? 0;
           symptomStats = jsonData['symptomStats'] ?? [];
           expectationStat = jsonData['expectationStat'] ?? {};
           scoreStats = jsonData['scoreStats'] ?? [];
@@ -208,17 +210,16 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
           Text(
             "기록 트로피 수",
             style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFFFFFFFF)),
+                fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
           ),
           SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset("assets/images/record/trophy.png", width: 39),
+              SizedBox(width: 5),
               Text(
-                "1", // 트로피 수 예시
+                "$diaryNum", // 트로피 수 예시
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
