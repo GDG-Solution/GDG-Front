@@ -95,7 +95,7 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
         title: Text(
           "전화 분석",
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -252,10 +252,19 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
                 fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           SizedBox(height: 10),
-          ...top2.map((symptom) {
+          ...top2.asMap().entries.map((entry) {
+            final index = entry.key;
+            final symptom = entry.value;
             final name = symptom['name'] ?? 'N/A';
             final count = symptom['count'] ?? 0;
             final ratio = (count / (top2[0]['count'] ?? 1)).clamp(0.0, 1.0);
+
+            // 색상 구분
+            final isPrimary = index == 0;
+            final barColor =
+                isPrimary ? Color(0xFFFFBD24) : Colors.grey.withOpacity(0.6);
+            final textColor =
+                isPrimary ? Colors.black : Colors.black.withOpacity(0.5);
 
             return Padding(
               padding: const EdgeInsets.only(bottom: 10),
@@ -270,8 +279,7 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
                         child: LinearProgressIndicator(
                           value: animatedValue,
                           backgroundColor: Colors.transparent,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.orange),
+                          valueColor: AlwaysStoppedAnimation<Color>(barColor),
                           minHeight: 36,
                         ),
                       ),
@@ -281,8 +289,8 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
                             name,
                             style: TextStyle(
                               fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              color: textColor,
                             ),
                           ),
                         ),
@@ -304,8 +312,8 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
     final int x = expectationStat['x'] ?? 0;
 
     final bool isOBigger = o >= x;
-    final Color oColor = isOBigger ? Colors.orange : Colors.grey;
-    final Color xColor = !isOBigger ? Colors.orange : Colors.grey;
+    final Color oColor = isOBigger ? Color(0xFFFFBD24) : Colors.grey;
+    final Color xColor = !isOBigger ? Color(0xFFFFBD24) : Colors.grey;
 
     final double bigSize = 100;
     final double smallSize = 80;
@@ -416,11 +424,11 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
             final date =
                 DateTime.tryParse(entry['date'] ?? "") ?? DateTime.now();
             final score = entry['score'] ?? 0;
-            final month = "${date.month}월";
+            final day = "${date.day}일";
             final time = DateFormat('a hh:mm', 'ko').format(date);
             return Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: PanicLevelCard(month: month, time: time, level: score),
+              child: PanicLevelCard(day: day, time: time, level: score),
             );
           }).toList(),
         ],
