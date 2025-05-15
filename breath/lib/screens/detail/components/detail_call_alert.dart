@@ -52,7 +52,7 @@ class DetailCallAlert extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                "평소보다 통화 시간이 길어요",
+                "Click to view call record",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF275220),
