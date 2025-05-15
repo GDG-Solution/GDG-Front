@@ -114,34 +114,37 @@ class _CallAnalysisScreenState extends State<CallAnalysisScreen> {
               ),
             ),
           ),
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0), // 전체 여백 추가
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 50),
-                _buildMonthSelector(), // 월 선택
-                SizedBox(height: 10),
-                // 기록 트로피 수
-                Center(
-                  child: _buildTrophyCount(),
-                ),
+          SafeArea(
+            bottom: true,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 50),
+                  _buildMonthSelector(), // 월 선택
+                  SizedBox(height: 10),
+                  // 기록 트로피 수
+                  Center(
+                    child: _buildTrophyCount(),
+                  ),
 
-                SizedBox(height: 20),
+                  SizedBox(height: 20),
 
-                // 가장 많이 나타낸 증상
-                _buildMostCommonSymptoms(),
+                  // 가장 많이 나타낸 증상
+                  _buildMostCommonSymptoms(),
 
-                SizedBox(height: 20),
+                  SizedBox(height: 20),
 
-                // 예상했던 공황의 수
-                _buildExpectedPanicCount(),
+                  // 예상했던 공황의 수
+                  _buildExpectedPanicCount(),
 
-                SizedBox(height: 20),
+                  SizedBox(height: 20),
 
-                // 나의 공포수치 변화
-                _buildPanicLevelChanges(),
-              ],
+                  // 나의 공포수치 변화
+                  _buildPanicLevelChanges(),
+                ],
+              ),
             ),
           ),
         ],

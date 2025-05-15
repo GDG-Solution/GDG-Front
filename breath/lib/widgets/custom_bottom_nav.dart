@@ -14,21 +14,23 @@ class CustomBottomBar extends StatelessWidget {
         topRight: Radius.circular(20),
       ),
       child: SizedBox(
-        height: 90,
-        child: BottomAppBar(
-          // color: Colors.white,
-          shape: CircularNotchedRectangle(),
-          notchMargin: 8.0,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildNavItem(
-                    "assets/icons/bottom/first_active.png", "공황기록", 0),
-                SizedBox(width: 50),
-                _buildNavItem("assets/icons/bottom/second.png", "전화분석", 1),
-              ],
+        height: 130,
+        child: SafeArea(
+          child: BottomAppBar(
+            // color: Colors.white,
+            shape: CircularNotchedRectangle(),
+            notchMargin: 8.0,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildNavItem(
+                      "assets/icons/bottom/first_active.png", "공황기록", 0),
+                  SizedBox(width: 50),
+                  _buildNavItem("assets/icons/bottom/second.png", "전화분석", 1),
+                ],
+              ),
             ),
           ),
         ),

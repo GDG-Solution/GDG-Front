@@ -77,7 +77,7 @@ class _RecordPage3State extends State<RecordPage3> {
 
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
+                // padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
                     // ✅ 질문 카드

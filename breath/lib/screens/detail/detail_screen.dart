@@ -65,7 +65,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Future<void> loadPanicRecord() async {
     try {
       final record = await ApiRecordList.fetchPanicRecordById(widget.panicId);
-      print("✅ API 응답 데이터: $record"); // API에서 받아온 데이터 출력
+      // print("✅ API 응답 데이터: $record"); // API에서 받아온 데이터 출력
 
       if (record.isNotEmpty) {
         setState(() {
@@ -86,7 +86,7 @@ class _DetailScreenState extends State<DetailScreen> {
         });
       }
     } catch (e) {
-      print("❌ detail screen API 호출 실패: $e");
+      // print("❌ detail screen API 호출 실패: $e");
       setState(() {
         isLoading = false;
       });
@@ -119,8 +119,9 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
 
                 // 전체 화면 스크롤
+
                 SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(16, 36, 16, 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
