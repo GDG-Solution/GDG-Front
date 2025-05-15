@@ -157,6 +157,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                     },
                   ),
                 ),
+                SizedBox(height: 50),
               ],
             ),
     );

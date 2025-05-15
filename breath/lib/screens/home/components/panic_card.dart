@@ -81,7 +81,7 @@ class PanicCard extends StatelessWidget {
                     children: [
                       Text(date,
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                     ],
                   ),
                   PainLevelDots(painRate: painRate),

@@ -130,7 +130,7 @@ class _CallingMainState extends State<CallingMain>
           Image.asset("assets/images/calling/timer_icon.png", width: 18),
           SizedBox(width: 10),
           Text(
-            "05:00",
+            "전화 연결됨!",
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
