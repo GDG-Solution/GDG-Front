@@ -26,8 +26,15 @@
 - Front: Flutter, Google Cloud AI(Speech-To-Text)
 - Back-end: Google Cloud Vertex AI(Gemini 1.5 flash 001), MongoDB Atlas, Spring Boot
 - Design: Figma
+<img width="6255" height="3240" alt="image" src="https://github.com/user-attachments/assets/e6061c2c-fb30-4daa-92c9-a459bad24264" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d8a1590c-1bfc-4420-affd-86118693be0f" />
+
 
 ---
 
 ### 개발 기간
 - 2024.11.01 ~ 2025.04.27
+
+---
+
+<img width="5760" height="3240" alt="image" src="https://github.com/user-attachments/assets/337f3b90-8068-4de1-904e-1716b65a531d" />
