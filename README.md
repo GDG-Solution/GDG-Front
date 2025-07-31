@@ -1,5 +1,5 @@
 ## 🟢 공황 장애 극복 앱, Poco
-<img width="5760" height="3240" alt="image" src="https://github.com/user-attachments/assets/d47c38fa-7ca8-4c7d-9c1a-53589fa1c96c" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d47c38fa-7ca8-4c7d-9c1a-53589fa1c96c" />
 - Youtube video: https://www.youtube.com/watch?v=yBWpN-qHgEc
 
 ---
@@ -26,7 +26,7 @@
 - Front: Flutter, Google Cloud AI(Speech-To-Text)
 - Back-end: Google Cloud Vertex AI(Gemini 1.5 flash 001), MongoDB Atlas, Spring Boot
 - Design: Figma
-<img width="6255" height="3240" alt="image" src="https://github.com/user-attachments/assets/e6061c2c-fb30-4daa-92c9-a459bad24264" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e6061c2c-fb30-4daa-92c9-a459bad24264" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d8a1590c-1bfc-4420-affd-86118693be0f" />
 
 
@@ -37,4 +37,4 @@
 
 ---
 
-<img width="5760" height="3240" alt="image" src="https://github.com/user-attachments/assets/337f3b90-8068-4de1-904e-1716b65a531d" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/337f3b90-8068-4de1-904e-1716b65a531d" />
